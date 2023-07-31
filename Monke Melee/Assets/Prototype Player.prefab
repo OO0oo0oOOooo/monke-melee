@@ -172,7 +172,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &819619695160841825
 MonoBehaviour:
@@ -269,6 +269,11 @@ MonoBehaviour:
   _autoJump: 1
   _clampGroundSpeed: 0
   _disableBunnyHopping: 0
+  _transform: {fileID: 0}
+  _rb: {fileID: 0}
+  _customInput: {fileID: 0}
+  _collision: {fileID: 0}
+  _cam: {fileID: 5989480396880663670}
 --- !u!114 &3073627810938080265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,7 +439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &68979749564441247
 Transform:
   m_ObjectHideFlags: 0
