@@ -1,52 +1,31 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using Unity.Netcode;
 
 [RequireComponent(typeof(Rigidbody))] [RequireComponent(typeof(CylinderCollider))]
-public partial class Movement : NetworkBehaviour
+public partial class Movement : MonoBehaviour
 {
     #region Unity Event Functions
-    // public override void OnNetworkSpawn()
-    // {
-    //     if(!IsOwner) return;
-
-    //     _cam.gameObject.SetActive(true);
-    // }
-
+    
     private void Awake()
     {
-        // if (!IsOwner) return;
-
-        _transform = transform;
-        _customInput = GetComponent<CustomInput>();
-        _rb = GetComponent<Rigidbody>();
-        _collision = GetComponent<CylinderCollider>();
-        _cam = GetComponentInChildren<Camera>();
+        _player = GetComponent<Player>();
     }
 
     private void Update()
     {
-        if (!IsSpawned) return;
-        if (!IsOwner) return;
-
-        _inputDir = _customInput.InputDir;
+        _inputDir = _player.CustomInput.InputDir;
     }
     
     private void FixedUpdate()
     {
-        // if (!IsSpawned) return;
-        // if (!IsOwner) return;
-
         // Sync before changing
-        _vel = _rb.velocity;
+        _vel = _player.Rigidbody.velocity;
 
         // Measure Speed
-        _currentSpeed = (_transform.position - _lastPosition).magnitude / Time.deltaTime;
-        _lastPosition = _transform.position;
+        _currentSpeed = _player.Rigidbody.velocity.magnitude;
 
         // Clamp speed if bunnyhopping is disabled
-        if (_disableBunnyHopping && _collision.OnGround)
+        if (_disableBunnyHopping && _player.CylinderCollider.OnGround)
             ClampVel(_groundBaseLimit);
 
         if (JumpPending)
@@ -56,7 +35,7 @@ public partial class Movement : NetworkBehaviour
         
         // We use air physics if moving upwards at high speed
         if (_rampSlideLimit >= 0f && _vel.y > _rampSlideLimit)
-            _collision.OnGround = false;
+            _player.CylinderCollider.OnGround = false;
 
         switch (GetMovementState())
         {
@@ -80,11 +59,11 @@ public partial class Movement : NetworkBehaviour
         }
         
         // Apply changes
-        _rb.velocity = _vel;
+        _player.Rigidbody.velocity = _vel;
 
         // Reset onGround before next collision checks
-        _collision.OnGround = false;
-        _collision.GroundNormal = Vector3.zero;
+        _player.CylinderCollider.OnGround = false;
+        _player.CylinderCollider.GroundNormal = Vector3.zero;
 
         // Set OnWall to false
     }
@@ -95,7 +74,7 @@ public partial class Movement : NetworkBehaviour
         // if(_fly && _flyToggle)
         //     return MovementState.FLY;
 
-        if(_collision.OnGround)
+        if(_player.CylinderCollider.OnGround)
             return MovementState.Ground;
         else
             return MovementState.Air;
@@ -104,7 +83,7 @@ public partial class Movement : NetworkBehaviour
     private void Ground()
     {
         // Rotate movement vector to match ground tangent
-        _inputDir = Vector3.Cross(Vector3.Cross(_collision.GroundNormal, _inputDir), _collision.GroundNormal);
+        _inputDir = Vector3.Cross(Vector3.Cross(_player.CylinderCollider.GroundNormal, _inputDir), _player.CylinderCollider.GroundNormal);
 
         GroundAccelerate();
         ApplyFriction(_friction);
@@ -190,10 +169,10 @@ public partial class Movement : NetworkBehaviour
             _vel.y = 0f;
 
         _vel.y += _jumpHeight;
-        _collision.OnGround = false;
+        _player.CylinderCollider.OnGround = false;
 
         if (!_autoJump)
-            _customInput._jumpPending = false;
+            _player.CustomInput._jumpPending = false;
 
         StartCoroutine(JumpTimer());
     }
@@ -208,7 +187,7 @@ public partial class Movement : NetworkBehaviour
     #region Duck
     private void Duck()
     {
-        if(Ducking && _collision.OnGround)
+        if(Ducking && _player.CylinderCollider.OnGround)
             ClampVel(_duckBaseLimit);
         
         if(!duringCrouch)
@@ -217,26 +196,26 @@ public partial class Movement : NetworkBehaviour
 
     private IEnumerator ScaleCollider()
     {
-        if(!_customInput.IsDucking && _collision.SphereCastHead())
+        if(!_player.CustomInput.IsDucking && _player.CylinderCollider.SphereCastHead())
             yield break;
 
         duringCrouch = true;
 
         float t = 0;
         float totalTime = 0.2f;
-        float targetHeight = _customInput.IsDucking ? _duckColliderHeight : _standColliderHeight;
-        float height = _collision.Cylinder.transform.localScale.y;
+        float targetHeight = _player.CustomInput.IsDucking ? _duckColliderHeight : _standColliderHeight;
+        float height = _player.CylinderCollider.Cylinder.transform.localScale.y;
 
         while (height != targetHeight)
         {
             height = Mathf.Lerp(height, targetHeight, t/totalTime);
-            _collision.SetHeight(height);
+            _player.CylinderCollider.SetHeight(height);
             
             t += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
-        _collision.SetHeight(targetHeight);
+        _player.CylinderCollider.SetHeight(targetHeight);
         duringCrouch = false;
     }
     #endregion

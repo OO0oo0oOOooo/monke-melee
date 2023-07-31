@@ -9,16 +9,9 @@ public class CustomInput : MonoBehaviour
     [SerializeField] private string _inputMouseY = "Mouse Y";
 
     [SerializeField] private string _jumpButton = "Jump";
-    // [SerializeField] private string _lCtrl = "Left Ctrl";
-    // [SerializeField] private string _lShift = "Left Shift";
-    // [SerializeField] private string _escButton = "Escape";
-    // [SerializeField] private string _tabButton = "Tab";
 
-    [SerializeField] private Camera _camera;
+    private Player _player;
     private Transform _transform;
-    private Movement _movement;
-    // private Player _player;
-
 
     [SerializeField] private float _mouseSensitivity = 1f;
     [SerializeField] private float _slideThreshold = 8f;
@@ -69,15 +62,10 @@ public class CustomInput : MonoBehaviour
     public static event Action<bool> OnTabPressed;
     public static event Action<bool> OnEscPressed;
 
-
-   
-
-
     void Awake()
     {
+        _player = GetComponent<Player>();
         _transform = transform;
-        // _player = GetComponent<Player>();
-        _movement = GetComponent<Movement>();
     }
 
     private void Update()
@@ -121,7 +109,7 @@ public class CustomInput : MonoBehaviour
             _isDucking = false;
 
         // Slide
-        if (_isDucking && _slideThreshold < _movement.CurrentSpeed)
+        if (_isDucking && _slideThreshold < _player.Movement.CurrentSpeed)
             _isSliding = true;
         else
             _isSliding = false;
@@ -197,6 +185,4 @@ public class CustomInput : MonoBehaviour
             OnEscPressed?.Invoke(_esc);
         }
     }
-
-    
 }

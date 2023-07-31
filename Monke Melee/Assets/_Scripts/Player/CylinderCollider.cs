@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Make Step logic use direction of player and momentum to fix bug of sliding off edges and getting stuck
-
 [RequireComponent(typeof(Rigidbody))]
 public class CylinderCollider : MonoBehaviour
 {
+    [SerializeField] Player _player;
     public GameObject Cylinder;
-    [SerializeField] private Rigidbody _rb;
 
 
     [Header("Collision Parameters")]
@@ -44,7 +42,7 @@ public class CylinderCollider : MonoBehaviour
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+        _player = GetComponent<Player>();
     }
 
     private void Start()
@@ -104,7 +102,7 @@ public class CylinderCollider : MonoBehaviour
     #region Steps
     private void Step()
     {
-        Vector3 velocity = _rb.velocity;
+        Vector3 velocity = _player.Rigidbody.velocity;
 
         bool grounded = FindGround(out ContactPoint groundCP, _contactPoints);
 
@@ -115,8 +113,8 @@ public class CylinderCollider : MonoBehaviour
         
         if(stepUp)
         {
-            _rb.position += stepUpOffset;
-            _rb.velocity = _lastVelocity;
+            _player.Rigidbody.position += stepUpOffset;
+            _player.Rigidbody.velocity = _lastVelocity;
         }
         
         _contactPoints.Clear();

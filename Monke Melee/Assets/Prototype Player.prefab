@@ -94,12 +94,13 @@ GameObject:
   - component: {fileID: 3184367596289464284}
   - component: {fileID: 3592239814798303541}
   - component: {fileID: 7593509117027679713}
+  - component: {fileID: 84778413093905855}
   - component: {fileID: 819619695160841825}
   - component: {fileID: 4851236520112898871}
   - component: {fileID: 4385335074373300744}
   - component: {fileID: 3073627810938080265}
-  - component: {fileID: 3449174436854956829}
-  - component: {fileID: 4866751483042431176}
+  - component: {fileID: 8044243911717409596}
+  - component: {fileID: -5511609570139695102}
   m_Layer: 0
   m_Name: Prototype Player
   m_TagString: Untagged
@@ -172,8 +173,29 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &84778413093905855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5285989029856685864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68b147cf05420b4eb532c48093b40db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerTransform: {fileID: 3184367596289464284}
+  Rigidbody: {fileID: 7593509117027679713}
+  CustomInput: {fileID: 819619695160841825}
+  Movement: {fileID: 4385335074373300744}
+  CylinderCollider: {fileID: 4851236520112898871}
+  PlayerCamera: {fileID: 5989480396880663670}
+  CameraTransform: {fileID: 68979749564441247}
+  CameraRigTransform: {fileID: 7199470534555750134}
+  ThirdPersonCamera: {fileID: 8052648722368467548}
 --- !u!114 &819619695160841825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +213,6 @@ MonoBehaviour:
   _inputMouseX: Mouse X
   _inputMouseY: Mouse Y
   _jumpButton: Jump
-  _camera: {fileID: 5989480396880663670}
   _mouseSensitivity: 1
   _slideThreshold: 8
   _jumpPending: 0
@@ -209,8 +230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b277e653715a6548a2cb632900a1d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
   Cylinder: {fileID: 5285989029856685864}
-  _rb: {fileID: 7593509117027679713}
   _slopeLimit: 45
   GroundNormal: {x: 0, y: 0, z: 0}
   OnGround: 0
@@ -289,7 +310,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &3449174436854956829
+--- !u!114 &8044243911717409596
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -298,7 +319,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5285989029856685864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
@@ -319,7 +340,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &4866751483042431176
+--- !u!114 &-5511609570139695102
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

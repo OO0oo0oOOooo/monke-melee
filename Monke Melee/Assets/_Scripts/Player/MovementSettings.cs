@@ -46,11 +46,7 @@ public partial class Movement
 
     #region Global Variables
 
-    private Transform _transform;
-    private Rigidbody _rb;
-    private CustomInput _customInput;
-    private CylinderCollider _collision;
-    private Camera _cam;
+    private Player _player;
 
     MovementState _state = MovementState.Air;
     public enum MovementState
@@ -69,7 +65,6 @@ public partial class Movement
     public Vector3 Velocity { get => _vel; }
     private float _currentSpeed = 0f;
     public float CurrentSpeed { get => _currentSpeed; }
-    private Vector3 _lastPosition;
 
     // Jump
     private bool _ableToJump = true;
@@ -79,8 +74,8 @@ public partial class Movement
 
 
     // Boolean Properties
-    private bool JumpPending => _customInput._jumpPending && _collision.OnGround;
-    private bool Ducking => _customInput.IsDucking;
+    private bool JumpPending => _player.CustomInput._jumpPending && _player.CylinderCollider.OnGround;
+    private bool Ducking => _player.CustomInput.IsDucking;
 
     #endregion
 }
