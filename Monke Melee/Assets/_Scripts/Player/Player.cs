@@ -6,6 +6,7 @@ public class Player : NetworkBehaviour
     // Player
     public Transform PlayerTransform;
     public Rigidbody Rigidbody;
+    public Animator Animator;
 
     public CustomInput CustomInput;
     public Movement Movement;

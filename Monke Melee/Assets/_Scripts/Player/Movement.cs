@@ -14,6 +14,7 @@ public partial class Movement : MonoBehaviour
     private void Update()
     {
         _inputDir = _player.CustomInput.InputDir;
+        _player.Animator.SetFloat("Velocity", _currentSpeed);
     }
     
     private void FixedUpdate()
