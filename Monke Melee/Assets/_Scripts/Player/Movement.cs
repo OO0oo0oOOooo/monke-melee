@@ -7,23 +7,22 @@ using Unity.Netcode;
 public partial class Movement : NetworkBehaviour
 {
     #region Unity Event Functions
-    public override void OnNetworkSpawn()
-    {
-        if(!IsOwner)
-        {
-            Destroy(this);
-            return;
-        }
+    // public override void OnNetworkSpawn()
+    // {
+    //     if(!IsOwner) return;
 
-        _cam.gameObject.SetActive(true);
-    }
+    //     _cam.gameObject.SetActive(true);
+    // }
 
     private void Awake()
     {
+        // if (!IsOwner) return;
+
         _transform = transform;
         _customInput = GetComponent<CustomInput>();
         _rb = GetComponent<Rigidbody>();
         _collision = GetComponent<CylinderCollider>();
+        _cam = GetComponentInChildren<Camera>();
     }
 
     private void Update()
@@ -36,8 +35,8 @@ public partial class Movement : NetworkBehaviour
     
     private void FixedUpdate()
     {
-        if (!IsSpawned) return;
-        if (!IsOwner) return;
+        // if (!IsSpawned) return;
+        // if (!IsOwner) return;
 
         // Sync before changing
         _vel = _rb.velocity;
