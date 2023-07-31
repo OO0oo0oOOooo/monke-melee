@@ -46,11 +46,11 @@ public partial class Movement
 
     #region Global Variables
 
-    private Transform _transform;
-    private Rigidbody _rb;
-    private CustomInput _customInput;
-    private CylinderCollider _collision;
-    private Camera _cam;
+    [SerializeField] private Transform _transform;
+    [SerializeField] private Rigidbody _rb;
+    [SerializeField] private CustomInput _customInput;
+    [SerializeField] private CylinderCollider _collision;
+    [SerializeField] private Camera _cam;
 
     MovementState _state = MovementState.Air;
     public enum MovementState
