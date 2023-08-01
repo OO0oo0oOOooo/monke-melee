@@ -24,15 +24,14 @@ public class ThirdPersonCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         ThirdPerson();
     }
 
     private void ThirdPerson()
     {
-        _camRigTransform.localRotation = Quaternion.Euler(_customInput.InputRot.x, 0, 0f);
-        _playerTransform.rotation = Quaternion.Euler(0f, _customInput.InputRot.y, 0f);
+        _camRigTransform.rotation = Quaternion.Euler(_customInput.InputRot.x, _customInput.InputRot.y, 0f);
     }
 }
 

@@ -93,7 +93,7 @@ public class CustomInput : MonoBehaviour
         zAxis = Input.GetAxis(_yAxisInput);
         _input = new Vector3(xAxis, 0, zAxis);
 
-        _inputDir = _transform.rotation * new Vector3(xAxisRaw, 0f, zAxisRaw).normalized;
+        _inputDir = _player.CameraTransform.rotation * new Vector3(xAxisRaw, 0f, zAxisRaw).normalized;
 
         // Jump
         if (Input.GetButtonDown(_jumpButton))

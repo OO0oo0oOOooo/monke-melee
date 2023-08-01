@@ -14,6 +14,11 @@ public partial class Movement : MonoBehaviour
     private void Update()
     {
         _inputDir = _player.CustomInput.InputDir;
+
+        if(Velocity.magnitude > 0.1f)
+            _player.PlayerTransform.rotation = Quaternion.LookRotation(_vel.normalized, Vector3.up);
+
+        // _player.PlayerTransform.rotation = Quaternion.Euler(0f, _player.CustomInput.InputRot.y, 0f);
         _player.Animator.SetFloat("Velocity", _currentSpeed);
     }
     
