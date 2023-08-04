@@ -5,12 +5,13 @@ public class Player : NetworkBehaviour
 {
     // Player
     public Transform PlayerTransform;
+    public Transform ModelTransform;
     public Rigidbody Rigidbody;
     public Animator Animator;
 
     public CustomInput CustomInput;
     public Movement Movement;
-    public CylinderCollider CylinderCollider;
+    public PlayerCollider PlayerCollider;
 
     // Camera
     public Camera PlayerCamera;
@@ -24,7 +25,7 @@ public class Player : NetworkBehaviour
         if(!IsOwner)
         {
             Destroy(Movement);
-            Destroy(CylinderCollider);
+            Destroy(PlayerCollider);
             Destroy(CustomInput);
             Destroy(PlayerCamera.gameObject);
             Destroy(CameraRigTransform.gameObject);
