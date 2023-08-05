@@ -26,12 +26,12 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void Update()
     {
-        ThirdPersonUnlocked();
+        // ThirdPersonUnlocked();
 
-        // if(_customInput.Attack2Pending)
-        //     ThirdPersonUnlocked();
-        // else
-        //     ThirdPersonLocked();
+        if(_customInput.Mouse2Pending)
+            ThirdPersonLocked();
+        else
+            ThirdPersonUnlocked();
     }
 
     private void ThirdPersonUnlocked()
@@ -41,8 +41,14 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void ThirdPersonLocked()
     {
-        _camRigTransform.localRotation = Quaternion.Euler(_customInput.InputRot.x, 0, 0f);
-        _playerTransform.localRotation = Quaternion.Euler(0, _customInput.InputRot.y, 0f);
+        // _camRigTransform.localRotation = Quaternion.Euler(_customInput.InputRot.x, 0, 0f);
+        _camRigTransform.localRotation = Quaternion.Euler(0, 0, 0f);
+        _customInput._inputRot = new Vector3(0, _playerTransform.localEulerAngles.y, 0);
+
+
+        Quaternion localRot = Quaternion.Euler(0, _customInput._mAxisRawX, 0f);
+        _playerTransform.rotation *= localRot;
+
     }
 }
 

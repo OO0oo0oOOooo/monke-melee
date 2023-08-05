@@ -20,20 +20,18 @@ public partial class Movement
     [SerializeField] private float _friction = 6f;
     [SerializeField] private float _jumpHeight = 6f;
 
-
     // [Header("Collider")]
     // [SerializeField] private float _duckColliderHeight = 0.6f;
     // [SerializeField] private float _standColliderHeight = 1f;
 
+    [Header("Hover Threshold")]
+    [SerializeField] private float thresholdBot = 1.19f;
+    [SerializeField] private float thresholdTop = 1.2f;
 
     [Header("Movement Toggles")]
     [SerializeField] private bool _flyToggle = true;
-    // [SerializeField] private bool _jumpToggle = true;
-    // [SerializeField] private bool _duckToggle = true;
-    // [SerializeField] private bool _airControl = true;
 
     [SerializeField] private bool _additiveJump = true;
-    [SerializeField] private bool _autoJump = true;
     [SerializeField] private bool _clampGroundSpeed = false;
     // [SerializeField] private bool _disableBunnyHopping = false;
 
@@ -67,6 +65,9 @@ public partial class Movement
 
     // Jump
     private bool _ableToJump = true;
+
+    // Climb
+    private bool _ableToClimb = true;
 
     // Duck
     // private bool _duringCrouch = false;

@@ -1295,7 +1295,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
+  m_Height: 1.25
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7593509117027679713
@@ -1340,11 +1340,9 @@ MonoBehaviour:
   PlayerTransform: {fileID: 3184367596289464284}
   ModelTransform: {fileID: 8275426641965187071}
   Rigidbody: {fileID: 7593509117027679713}
-  CharacterController: {fileID: 0}
   Animator: {fileID: 2609858502748710277}
   CustomInput: {fileID: 819619695160841825}
   Movement: {fileID: 4385335074373300744}
-  CylinderCollider: {fileID: 0}
   PlayerCollider: {fileID: -8588988616219552172}
   PlayerCamera: {fileID: 5989480396880663670}
   CameraTransform: {fileID: 68979749564441247}
@@ -1384,8 +1382,14 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 1
+  _raycastDistance: 1.5
   IsGrounded: 0
   AdverageNormal: {x: 0, y: 0, z: 0}
+  AdveragePoint: {x: 0, y: 0, z: 0}
+  AdverageDistance: 0
+  radius: 0.75
+  totalRays: 24
+  numLayers: 4
 --- !u!114 &4385335074373300744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,6 +1402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e90b32067bfb3843807072e235a84ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  threshold: 1.19
+  threshold2: 1.2
   _groundAcceleration: 100
   _groundBaseLimit: 12
   _airAcceleration: 100

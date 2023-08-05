@@ -13,7 +13,10 @@ public class CustomInput : MonoBehaviour
     // Mouse
     [SerializeField] private float _mouseSensitivity = 1f;
 
-    private Vector3 _inputRot;
+    public float _mAxisRawX;
+    public float _mAxisRawY;
+
+    public Vector3 _inputRot;
     public Vector3 InputRot { get => _inputRot; }
 
     private bool _mouse1Pending = false;
@@ -96,6 +99,9 @@ public class CustomInput : MonoBehaviour
     {
         _inputRot.y += Input.GetAxisRaw(_inputMouseX) * _mouseSensitivity;
         _inputRot.x -= Input.GetAxisRaw(_inputMouseY) * _mouseSensitivity;
+
+        _mAxisRawX = Input.GetAxisRaw(_inputMouseX) * _mouseSensitivity;
+        _mAxisRawY = Input.GetAxisRaw(_inputMouseY) * _mouseSensitivity;
 
         // clamp
         if (_inputRot.x > 90f)
