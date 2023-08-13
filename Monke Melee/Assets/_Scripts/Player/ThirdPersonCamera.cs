@@ -41,10 +41,9 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void ThirdPersonLocked()
     {
-        // _camRigTransform.localRotation = Quaternion.Euler(_customInput.InputRot.x, 0, 0f);
-        _camRigTransform.localRotation = Quaternion.Euler(0, 0, 0f);
-        _customInput._inputRot = new Vector3(0, _playerTransform.localEulerAngles.y, 0);
-
+        // _camRigTransform.localRotation = Quaternion.Euler(_customInput.InputRot.x, 0, 0);
+        _camRigTransform.localRotation = Quaternion.Euler(0, 0, 0);
+        _customInput.InputRot = new Vector3(0, _playerTransform.localEulerAngles.y, 0);
 
         Quaternion localRot = Quaternion.Euler(0, _customInput._mAxisRawX, 0f);
         _playerTransform.rotation *= localRot;

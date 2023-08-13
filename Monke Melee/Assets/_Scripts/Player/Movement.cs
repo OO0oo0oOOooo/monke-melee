@@ -11,8 +11,6 @@ public partial class Movement : MonoBehaviour
         _player = GetComponent<Player>();
     }
 
-    Vector3 right;
-    Vector3 forward;
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.X))
@@ -23,31 +21,34 @@ public partial class Movement : MonoBehaviour
         else
             _inputDir = _player.CustomInput.InputDirCamera;
 
-        right = Vector3.Cross(Normal, _player.PlayerTransform.forward);
-        forward = Vector3.Cross(right, Normal);
-
-        // Rotate player to look in movement direction
+        // Align to movement direction
         if(!_player.CustomInput.Mouse2Pending)
             if(_vel.magnitude > 0.1f)
                 _player.PlayerTransform.localRotation = Quaternion.Lerp(_player.PlayerTransform.localRotation,  Quaternion.LookRotation(_vel.normalized, _player.PlayerTransform.up), Time.deltaTime * 10f);
-
-        // Rotate Player Transform to align with surface
-        if(Normal != Vector3.zero)
-            _player.PlayerTransform.rotation = Quaternion.Lerp(_player.PlayerTransform.rotation, Quaternion.LookRotation(forward, Normal), Time.deltaTime * 20f);
-
-        // Hover player above ground
-        if(Grounded && _player.PlayerCollider.AdverageDistance < thresholdBot)
-            _player.PlayerTransform.position += Normal * 0.01f;
-
-        if(Grounded && _player.PlayerCollider.AdverageDistance > thresholdTop)
-            _player.PlayerTransform.position -= Normal * 0.01f;
 
         // Reset able to climb after landing
         if(!_ableToClimb && _player.PlayerCollider.AdverageDistance < thresholdBot)
             _ableToClimb = true;
 
+        _state =  GetMovementState();
+
+        switch (_state)
+        {
+            case MovementState.Ground:
+                UpdateGround();
+                break;
+            case MovementState.Air:
+                UpdateAir();
+                break;
+            // case MovementState.Fly:
+            //     UpdateFly();
+            //     break;
+            default:
+                break;
+        }
+
         // Set animator values
-        _player.Animator.SetFloat("Velocity", _currentSpeed);
+        _player.Animator.SetFloat("Velocity", _vel.magnitude);
     }
     
     private void FixedUpdate()
@@ -55,31 +56,24 @@ public partial class Movement : MonoBehaviour
         // Sync before changing
         _vel = _player.Rigidbody.velocity;
 
-        // Measure Speed
-        _currentSpeed = _player.Rigidbody.velocity.magnitude;
-
-        // ClampVel(_groundBaseLimit);
-
         if (JumpPending && Grounded)
-            Jump(_player.PlayerCamera.transform.forward);
-
+            Jump(_player.PlayerCamera.transform.forward, 2);
 
         switch (GetMovementState())
         {
             case MovementState.Ground:
-                Ground();
+                FixedGround();
                 break;
             case MovementState.Air:
-                Air();
+                FixedAir();
                 break;
             case MovementState.Fly:
-                Fly();
+                FixedFly();
                 break;
             default:
                 break;
         }
         
-        // Apply changes
         _player.Rigidbody.velocity = _vel;
     }
     #endregion
@@ -89,26 +83,57 @@ public partial class Movement : MonoBehaviour
         if(_flyToggle && _fly)
             return MovementState.Fly;
 
-        if(Grounded && _ableToClimb)
+        if(Grounded && _ableToClimb && _ableToJump)
             return MovementState.Ground;
         else
             return MovementState.Air;
     }
-
-    private void Ground()
+    
+    private void UpdateGround()
     {
+        Vector3 right = Vector3.Cross(Normal, _player.PlayerTransform.forward);
+        Vector3 forward = Vector3.Cross(right, Normal);
+
+        // Rotate Player Transform to align with surface
+        if(Normal != Vector3.zero)
+            _player.PlayerTransform.rotation = Quaternion.Lerp(_player.PlayerTransform.rotation, Quaternion.LookRotation(forward, Normal), Time.deltaTime * 20f);
+
+        // Set player height above ground
+        if(Grounded && _player.PlayerCollider.AdverageDistance < thresholdBot)
+            _player.PlayerTransform.position += Normal * 0.01f;
+
+        if(Grounded && _player.PlayerCollider.AdverageDistance > thresholdTop)
+            _player.PlayerTransform.position -= Normal * 0.01f;
+    }
+
+    private void UpdateAir()
+    {
+        
+    }
+
+    private void FixedGround()
+    {
+        _player.Animator.SetLayerWeight(1, 0);
+
+        // Grounded Ground Detection
+
         _inputDir = Vector3.Cross(Vector3.Cross(Normal, _inputDir), Normal).normalized;
 
         _vel = _inputDir * 10f;
         ApplyFriction(_friction);
     }
     
-    private void Air()
+    private void FixedAir()
     {
+        _player.Animator.SetLayerWeight(1, 1);
+
+        // Air Ground Detection
+        
+
         ApplyGravity();
     }
 
-    private void Fly()
+    private void FixedFly()
     {
         float y;
         if(JumpPending)
@@ -198,7 +223,7 @@ public partial class Movement : MonoBehaviour
     //     StartCoroutine(JumpTimer());
     // }
     
-    private void Jump(Vector3 dir, float multiplier = 1)
+    public void Jump(Vector3 dir, float multiplier = 1)
     {
         if (!_ableToJump)
             return;
@@ -257,20 +282,20 @@ public partial class Movement : MonoBehaviour
     #endregion
     #endregion
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(_player.PlayerTransform.position, Normal);
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.green;
+    //     Gizmos.DrawRay(_player.PlayerTransform.position, Normal);
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(_player.PlayerTransform.position, right);
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawRay(_player.PlayerTransform.position, right);
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(_player.PlayerTransform.position, forward);
+    //     Gizmos.color = Color.blue;
+    //     Gizmos.DrawRay(_player.PlayerTransform.position, forward);
 
 
-        Gizmos.color = Color.white;
-        Gizmos.DrawRay(_player.PlayerTransform.position, _player.PlayerTransform.up);
-        Gizmos.DrawRay(_player.PlayerTransform.position, _player.PlayerTransform.forward);
-    }
+    //     Gizmos.color = Color.white;
+    //     Gizmos.DrawRay(_player.PlayerTransform.position, _player.PlayerTransform.up);
+    //     Gizmos.DrawRay(_player.PlayerTransform.position, _player.PlayerTransform.forward);
+    // }
 }

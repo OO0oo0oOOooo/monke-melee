@@ -16,8 +16,8 @@ public class CustomInput : MonoBehaviour
     public float _mAxisRawX;
     public float _mAxisRawY;
 
-    public Vector3 _inputRot;
-    public Vector3 InputRot { get => _inputRot; }
+    public Vector3 InputRot;
+    public Vector3 InputRotUnclamped;
 
     private bool _mouse1Pending = false;
     public bool Mouse1Pending { get => _mouse1Pending; }
@@ -47,6 +47,7 @@ public class CustomInput : MonoBehaviour
     public Vector3 InputDirPlayer { get => _inputDirPlayer; }
 
     private Vector3 _inputDirModel;
+
     public Vector3 InputDirModel { get => _inputDirModel; }
 
 
@@ -97,17 +98,20 @@ public class CustomInput : MonoBehaviour
     
     private void MouseLook()
     {
-        _inputRot.y += Input.GetAxisRaw(_inputMouseX) * _mouseSensitivity;
-        _inputRot.x -= Input.GetAxisRaw(_inputMouseY) * _mouseSensitivity;
+        InputRot.y += Input.GetAxisRaw(_inputMouseX) * _mouseSensitivity;
+        InputRot.x -= Input.GetAxisRaw(_inputMouseY) * _mouseSensitivity;
+
+        InputRotUnclamped.y += Input.GetAxisRaw(_inputMouseX) * _mouseSensitivity;
+        InputRotUnclamped.x -= Input.GetAxisRaw(_inputMouseY) * _mouseSensitivity;
 
         _mAxisRawX = Input.GetAxisRaw(_inputMouseX) * _mouseSensitivity;
         _mAxisRawY = Input.GetAxisRaw(_inputMouseY) * _mouseSensitivity;
 
         // clamp
-        if (_inputRot.x > 90f)
-            _inputRot.x = 90f;
-        if (_inputRot.x < -90f)
-            _inputRot.x = -90f;
+        if (InputRot.x > 90f)
+            InputRot.x = 90f;
+        if (InputRot.x < -90f)
+            InputRot.x = -90f;
     }
 
     private void MouseInput()

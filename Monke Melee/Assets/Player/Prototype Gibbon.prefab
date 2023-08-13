@@ -1579,7 +1579,7 @@ GameObject:
   - component: {fileID: 8044243911717409596}
   - component: {fileID: -5511609570139695102}
   m_Layer: 3
-  m_Name: Prototype Player
+  m_Name: Prototype Gibbon
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

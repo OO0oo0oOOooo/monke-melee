@@ -12,6 +12,7 @@ public class Player : NetworkBehaviour
     public CustomInput CustomInput;
     public Movement Movement;
     public PlayerCollider PlayerCollider;
+    public ProceduralAnimation ProceduralAnimation;
 
     // Camera
     public Camera PlayerCamera;
@@ -24,9 +25,10 @@ public class Player : NetworkBehaviour
     {
         if(!IsOwner)
         {
+            Destroy(CustomInput);
             Destroy(Movement);
             Destroy(PlayerCollider);
-            Destroy(CustomInput);
+            // Destroy(ProceduralAnimation);
             Destroy(PlayerCamera.gameObject);
             Destroy(CameraRigTransform.gameObject);
             return;
