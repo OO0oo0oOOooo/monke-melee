@@ -1715,6 +1715,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   _raycastDistance: 1.5
+  _raycastStartOffset: 0
   IsGrounded: 0
   AdverageNormal: {x: 0, y: 0, z: 0}
   AdveragePoint: {x: 0, y: 0, z: 0}
@@ -1734,18 +1735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e90b32067bfb3843807072e235a84ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundAcceleration: 100
-  _groundBaseLimit: 12
-  _airAcceleration: 100
-  _airBaseLimit: 1
-  _gravity: 16
-  _friction: 6
-  _jumpHeight: 8
-  thresholdBot: 1.19
-  thresholdTop: 1.2
   _flyToggle: 1
-  _additiveJump: 1
-  _clampGroundSpeed: 0
 --- !u!114 &5155101178550278983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1759,8 +1749,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
-  _transform: {fileID: 0}
   _rigidbody: {fileID: 0}
+  _headTarget: {fileID: 0}
+  _amplitude: 0.1
+  _frequency: 5
 --- !u!114 &3073627810938080265
 MonoBehaviour:
   m_ObjectHideFlags: 0

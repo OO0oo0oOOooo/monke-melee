@@ -78,10 +78,10 @@ public class CylinderCollider : MonoBehaviour
             return false;
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-        _contactPoints.AddRange(col.contacts);
-    }
+    // void OnCollisionEnter(Collision col)
+    // {
+    //     _contactPoints.AddRange(col.contacts);
+    // }
  
     private void OnCollisionStay(Collision other)
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CustomInput : MonoBehaviour
 {
-    private Player _player;
+    private GibbonRefrences _gibbonRefrences;
     [SerializeField] private string _xAxisInput = "Horizontal";
     [SerializeField] private string _yAxisInput = "Vertical";
     [SerializeField] private string _inputMouseX = "Mouse X";
@@ -57,7 +57,7 @@ public class CustomInput : MonoBehaviour
 
     void Awake()
     {
-        _player = GetComponent<Player>();
+        _gibbonRefrences = GetComponent<GibbonRefrences>();
     }
 
     private void Update()
@@ -78,9 +78,9 @@ public class CustomInput : MonoBehaviour
         float zAxis = Input.GetAxis(_yAxisInput);
         _input = new Vector3(xAxis, 0, zAxis);
 
-        _inputDirCamera = _player.CameraTransform.rotation * _inputRaw;
-        _inputDirPlayer = _player.PlayerTransform.rotation * _inputRaw;
-        _inputDirModel = _player.ModelTransform.rotation * _inputRaw;
+        _inputDirCamera = _gibbonRefrences.CameraTransform.rotation * _inputRaw;
+        _inputDirPlayer = _gibbonRefrences.PlayerTransform.rotation * _inputRaw;
+        _inputDirModel = _gibbonRefrences.ModelTransform.rotation * _inputRaw;
 
         // Jump
         if (Input.GetButtonDown(_jumpButton))

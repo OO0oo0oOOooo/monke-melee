@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class ProceduralAnimation : MonoBehaviour
 {
-    [SerializeField] private Player _player;
-    [SerializeField] private Transform _transform;
+    private GibbonRefrences _ref;
     [SerializeField] private Rigidbody _rigidbody;
 
-    // [SerializeField] private Transform _headTarget;
+    [SerializeField] private Transform _headTarget;
     // [SerializeField] private Transform _hipTarget;
 
     // [SerializeField] private Transform _handTargetR;
@@ -36,16 +36,18 @@ public class ProceduralAnimation : MonoBehaviour
 
     private void Awake()
     {
-        _player = GetComponentInParent<Player>();
-        _transform = _player.PlayerTransform;
-        _rigidbody = _player.Rigidbody;
+        _ref = GetComponentInParent<GibbonRefrences>();
+        _rigidbody = _ref.Rigidbody;
     }
 
     private void Update()
     {
-        RotateTowardsVelocity();
-        AccelerationLean();
+        // RotateTowardsVelocity();
+        // AccelerationLean();
         // BounceGravity();
+
+        // LookAtTarget();
+
         
         // BalanceArms();
         // TwoPartSpringPendulum();
@@ -57,30 +59,32 @@ public class ProceduralAnimation : MonoBehaviour
             return;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_rigidbody.velocity.normalized, Vector3.up);
-        _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(projectedVelocity, Vector3.up), Time.deltaTime * 5f);
+        _ref.PlayerTransform.rotation = Quaternion.Lerp(_ref.PlayerTransform.rotation, Quaternion.LookRotation(projectedVelocity, Vector3.up), Time.deltaTime * 5f);
     }
 
     private float _tiltAmount = 1.2f;
     private void AccelerationLean()
     {
         // This works but is not what I want
-        float dotFoward = Vector3.Dot(_rigidbody.velocity, _transform.forward);
+        float dotFoward = Vector3.Dot(_rigidbody.velocity, _ref.PlayerTransform.forward);
 
         if (dotFoward > 0.25f)
         {
-            _player.ModelTransform.localRotation = Quaternion.Lerp(_player.ModelTransform.localRotation, Quaternion.Euler(_tiltAmount * dotFoward, 0, 0), Time.deltaTime * 5f);
+            _ref.ModelTransform.localRotation = Quaternion.Lerp(_ref.ModelTransform.localRotation, Quaternion.Euler(_tiltAmount * dotFoward, 0, 0), Time.deltaTime * 5f);
         }
         else if(dotFoward < -0.25f )
         {
-            _player.ModelTransform.localRotation = Quaternion.Lerp(_player.ModelTransform.localRotation, Quaternion.Euler(-_tiltAmount * dotFoward, 0, 0), Time.deltaTime * 5f);
+            _ref.ModelTransform.localRotation = Quaternion.Lerp(_ref.ModelTransform.localRotation, Quaternion.Euler(-_tiltAmount * dotFoward, 0, 0), Time.deltaTime * 5f);
         }
         else
-            _player.ModelTransform.localRotation = Quaternion.Lerp(_player.ModelTransform.localRotation, Quaternion.identity, Time.deltaTime * 5f);
+            _ref.ModelTransform.localRotation = Quaternion.Lerp(_ref.ModelTransform.localRotation, Quaternion.identity, Time.deltaTime * 5f);
     }
 
+    [SerializeField] private float _amplitude = 0.1f;
+    [SerializeField] private float _frequency = 5f;
     private void BounceGravity()
     {
-        
+        _ref.ModelTransform.localPosition = new Vector3(0, Mathf.Sin(Time.time * _frequency) * _amplitude, 0);
     }
 
     private void BalanceArms()
@@ -91,5 +95,19 @@ public class ProceduralAnimation : MonoBehaviour
     private void TwoPartSpringPendulum()
     {
         throw new NotImplementedException();
+    }
+
+    private void LookAtTarget()
+    {
+        // Look at next swing point
+        // Look at Movement Direction
+        // Look at Landing point
+
+        // I could use multiple targets and switch between whatever one i want to look at.
+
+
+        // Set Constraint Weights
+
+        // _headTarget.
     }
 }

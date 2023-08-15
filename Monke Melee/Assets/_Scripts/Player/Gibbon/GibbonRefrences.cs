@@ -1,25 +1,26 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class Player : NetworkBehaviour
+public class GibbonRefrences : NetworkBehaviour
 {
-    // Player
+    [Header("Components")]
     public Transform PlayerTransform;
     public Transform ModelTransform;
     public Rigidbody Rigidbody;
     public Animator Animator;
 
+    [Header("Scripts")]
     public CustomInput CustomInput;
-    public Movement Movement;
-    public PlayerCollider PlayerCollider;
+    public GibbonMovement Movement;
+    public SimpleCollider SimpleCollider;
     public ProceduralAnimation ProceduralAnimation;
 
-    // Camera
+    [Header("Camera")]
     public Camera PlayerCamera;
     public Transform CameraTransform;
     public Transform CameraRigTransform;
-
     public ThirdPersonCamera ThirdPersonCamera;
+
 
     public override void OnNetworkSpawn()
     {
@@ -27,7 +28,7 @@ public class Player : NetworkBehaviour
         {
             Destroy(CustomInput);
             Destroy(Movement);
-            Destroy(PlayerCollider);
+            Destroy(SimpleCollider);
             // Destroy(ProceduralAnimation);
             Destroy(PlayerCamera.gameObject);
             Destroy(CameraRigTransform.gameObject);

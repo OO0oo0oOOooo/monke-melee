@@ -5,11 +5,11 @@ using UnityEngine;
 public partial class Movement
 {
     [Header("Acceleration")]
-    [SerializeField] private readonly float _groundAcceleration = 100f;
-    [SerializeField] private readonly float _groundBaseLimit = 12f;
+    // [SerializeField] private readonly float _groundAcceleration = 100f;
+    // [SerializeField] private readonly float _groundBaseLimit = 12f;
 
-    [SerializeField] private readonly float _airAcceleration = 100f;
-    [SerializeField] private readonly float _airBaseLimit = 1f;
+    // [SerializeField] private readonly float _airAcceleration = 100f;
+    // [SerializeField] private readonly float _airBaseLimit = 1f;
 
     // [SerializeField] private float _duckAcceleration = 6f;
     // [SerializeField] private float _duckBaseLimit = 6f;
@@ -31,8 +31,8 @@ public partial class Movement
     [Header("Movement Toggles")]
     [SerializeField] private bool _flyToggle = true;
 
-    [SerializeField] private readonly bool _additiveJump = true;
-    [SerializeField] private readonly bool _clampGroundSpeed = false;
+    // [SerializeField] private readonly bool _additiveJump = true;
+    // [SerializeField] private readonly bool _clampGroundSpeed = false;
     // [SerializeField] private bool _disableBunnyHopping = false;
 
 
@@ -72,6 +72,6 @@ public partial class Movement
 
     // Boolean Properties
     private bool JumpPending => _player.CustomInput.JumpPending;
-    private bool Ducking => _player.CustomInput.DuckingPending;
+    // private bool Ducking => _player.CustomInput.DuckingPending;
     #endregion
 }

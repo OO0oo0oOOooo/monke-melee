@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class SimpleCamera : MonoBehaviour
 {
-    private Transform _transform;
-    private Transform _playerTransform;
+    [SerializeField] private Transform _transform;
+    [SerializeField] private Transform _playerTransform;
 
-    private Camera _cam;
-    private CustomInput _customInput;
+    [SerializeField] private Camera _cam;
+    [SerializeField] private CustomInput _customInput;
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class SimpleCamera : MonoBehaviour
 
     private void FirstPersonCamera()
     {
-        _transform.rotation = Quaternion.Euler(_customInput.InputRot.x, 0, 0f);
+        _transform.localRotation = Quaternion.Euler(_customInput.InputRot.x, 0, 0f);
         _playerTransform.rotation = Quaternion.Euler(0f, _customInput.InputRot.y, 0f);
     }
 }

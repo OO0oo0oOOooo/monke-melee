@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProceduralWalk : MonoBehaviour
 {
-    private Player _player;
+    private GibbonRefrences _ref;
 
     [SerializeField] private Transform _footTargetR;
     [SerializeField] private Transform _footTargetL;
@@ -26,14 +24,14 @@ public class ProceduralWalk : MonoBehaviour
 
     private void Awake()
     {
-        _player = GetComponentInParent<Player>();
+        _ref = GetComponentInParent<GibbonRefrences>();
     }
 
     private void Update()
     {
         // Update the angle based on the speed
-        // angle -= _player.Rigidbody.velocity.magnitude * _stepSpeed * Time.deltaTime;
-        angle -= _stepSpeed * Time.deltaTime;
+        angle -= _ref.Rigidbody.velocity.magnitude * _stepSpeed * Time.deltaTime;
+        // angle -= _stepSpeed * Time.deltaTime;
         float x = _stepLength * Mathf.Cos(angle);
         float y = _stepHeight * Mathf.Sin(angle);
 

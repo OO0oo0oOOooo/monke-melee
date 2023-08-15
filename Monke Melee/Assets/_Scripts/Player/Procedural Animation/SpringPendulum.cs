@@ -6,13 +6,6 @@ public class SpringPendulum : MonoBehaviour
     public GameObject Mass1;
     public GameObject Mass2;
 
-    // [SerializeField] private Player _player;
-
-    private void Awake()
-    {
-        // _player = GetComponent<Player>();
-    }
-
     void Update()
     {
         Vector3 forwardM1 = Vector3.Cross(Mass1.transform.right, (Pivot.transform.position - Mass1.transform.position).normalized);

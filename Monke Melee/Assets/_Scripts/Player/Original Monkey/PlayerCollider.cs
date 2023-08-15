@@ -7,6 +7,7 @@ public class PlayerCollider : MonoBehaviour
 
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private float _raycastDistance = 1.5f;
+    [SerializeField] private Vector3 _raycastStartOffset = Vector3.zero;
 
     public bool IsGrounded;
     public Vector3 AdverageNormal;
@@ -60,7 +61,7 @@ public class PlayerCollider : MonoBehaviour
                 Vector3 point = new Vector3(x, 0, z);
                 point = _player.PlayerTransform.rotation * point;
 
-                Ray ray = new Ray(_player.PlayerTransform.position + point, point + -_player.PlayerTransform.up);
+                Ray ray = new Ray((_player.ModelTransform.position + _raycastStartOffset) + point, point + -_player.ModelTransform.up);
                 Debug.DrawRay(ray.origin, ray.direction * _raycastDistance, Color.red);
                 if (Physics.Raycast(ray, out RaycastHit hitInfo, 1.5f, _layerMask))
                 {
