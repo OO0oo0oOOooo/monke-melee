@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))] 
 public partial class GibbonMovement : MonoBehaviour
 {
     #region Unity Functions

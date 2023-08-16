@@ -14,7 +14,6 @@ public partial class GibbonMovement
     // [SerializeField] private float _duckAcceleration = 6f;
     // [SerializeField] private float _duckBaseLimit = 6f;
 
-    
     [Header("Forces")]
     [SerializeField] private float _gravity = 16f;
     [SerializeField] private float _friction = 6f;
@@ -31,14 +30,12 @@ public partial class GibbonMovement
     [SerializeField] private readonly bool _clampGroundSpeed = false;
     // [SerializeField] private bool _disableBunnyHopping = false;
 
-
     #region Global Variables
     private GibbonRefrences _ref;
 
     MovementState _state = MovementState.Air;
     public MovementState State { get => _state; }
     
-
     [SerializeField] private bool Grounded => _ref.SimpleCollider.IsGrounded;
     [SerializeField] private Vector3 Normal => _ref.SimpleCollider.ContactNormal;
 

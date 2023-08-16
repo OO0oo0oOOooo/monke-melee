@@ -27992,7 +27992,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 0}
-  _headTarget: {fileID: 0}
+  _handWalkConstraintR: {fileID: 0}
+  _handWalkConstraintL: {fileID: 0}
+  _footWalkConstraintR: {fileID: 0}
+  _footWalkConstraintL: {fileID: 0}
+  _handWalkTargetR: {fileID: 0}
+  _handWalkTargetL: {fileID: 0}
+  _footWalkTargetR: {fileID: 0}
+  _footWalkTargetL: {fileID: 0}
+  _handSwingConstraintR: {fileID: 0}
+  _handSwingConstraintL: {fileID: 0}
+  _footSwingConstraintR: {fileID: 0}
+  _footSwingConstraintL: {fileID: 0}
+  _handSwingTargetR: {fileID: 0}
+  _handSwingTargetL: {fileID: 0}
+  _footSwingTargetR: {fileID: 0}
+  _footSwingTargetL: {fileID: 0}
   _amplitude: 0.1
   _frequency: 5
 --- !u!114 &8004071299261427248
