@@ -2551,9 +2551,14 @@ MonoBehaviour:
   _armR: {fileID: 4119114406235546922}
   _legL: {fileID: 1624017167561581275}
   _legR: {fileID: 2659427460354621536}
-  UpForce: 5
-  ForwardForce: 1
-  AwayForce: 4
+  ArmUpForce: 1
+  ArmForwardForce: 1
+  ArmAwayForce: 1
+  ArmAwayForce2: 10
+  LegUpForce: -17
+  LegForwardForce: 0
+  LegAwayForce: 0
+  LegAwayForce2: 0
 --- !u!114 &2868967654407959097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4657,7 +4662,7 @@ GameObject:
   - component: {fileID: 6503356852697859712}
   m_Layer: 3
   m_Name: Gibbon Prototype
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

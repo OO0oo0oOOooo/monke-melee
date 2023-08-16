@@ -14,6 +14,7 @@ public class SillyArmForce : MonoBehaviour
     public float ArmUpForce = 1;
     public float ArmForwardForce = 1;
     public float ArmAwayForce = 1;
+    public float ArmAwayForce2 = 1;
 
     [Header("Leg")]
     public float LegUpForce = -1;
@@ -36,7 +37,15 @@ public class SillyArmForce : MonoBehaviour
         _armR.AddForce(transform.forward * ArmForwardForce * _armR.mass);
         _armR.AddForce((_armR.position - _armL.position) * ArmAwayForce * _armR.mass);
 
-        // Add Velocity
+        if(_ref.GibbonSwing.JointL != null)
+        {
+            _armR.AddForce((_armR.position - _ref.GibbonSwing.JointL.connectedAnchor) * ArmAwayForce2 * _armR.mass);
+        }
+
+        if(_ref.GibbonSwing.JointR != null)
+        {
+            _armL.AddForce((_armL.position - _ref.GibbonSwing.JointR.connectedAnchor) * ArmAwayForce2 * _armL.mass);
+        }
 
 
         _legL.AddForce(Vector3.up * LegUpForce * _legL.mass);
