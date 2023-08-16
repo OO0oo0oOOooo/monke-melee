@@ -6,6 +6,7 @@ public class SimpleCollider : MonoBehaviour
 {
     public bool IsGrounded;
     public Vector3 ContactNormal;
+    public LayerMask LayerMask;
 
     [SerializeField] private float _slopeLimit = 45f;
     private void OnCollisionStay(Collision other)

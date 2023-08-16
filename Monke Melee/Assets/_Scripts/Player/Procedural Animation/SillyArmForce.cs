@@ -1,24 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SillyArmForce : MonoBehaviour
 {
-    public Rigidbody ArmL;
-    public Rigidbody ArmR;
+    private GibbonRefrences _ref;
 
-    public float UpForce = 1;
-    public float ForwardForce = 1;
-    public float AwayForce = 1;
+    [SerializeField] private Rigidbody _armL;
+    [SerializeField] private Rigidbody _armR;
+
+    [SerializeField] private Rigidbody _legL;
+    [SerializeField] private Rigidbody _legR;
+
+    [Header("Arm")]
+    public float ArmUpForce = 1;
+    public float ArmForwardForce = 1;
+    public float ArmAwayForce = 1;
+
+    [Header("Leg")]
+    public float LegUpForce = -1;
+    public float LegForwardForce = 0;
+    public float LegAwayForce = 0;
+    public float LegAwayForce2 = 0;
+
+    private void Awake()
+    {
+        _ref = GetComponentInParent<GibbonRefrences>();
+    }
 
     void FixedUpdate()
     {
-        ArmL.AddForce(Vector3.up * UpForce * ArmL.mass);
-        ArmL.AddForce(transform.forward * ForwardForce * ArmL.mass);
-        ArmL.AddForce((ArmL.position - ArmR.position) * AwayForce * ArmL.mass);
+        _armL.AddForce(Vector3.up * ArmUpForce * _armL.mass);
+        _armL.AddForce(transform.forward * ArmForwardForce * _armL.mass);
+        _armL.AddForce((_armL.position - _armR.position) * ArmAwayForce * _armL.mass);
 
-        ArmR.AddForce(Vector3.up * UpForce * ArmR.mass);
-        ArmR.AddForce(transform.forward * ForwardForce * ArmR.mass);
-        ArmR.AddForce((ArmR.position - ArmL.position) * AwayForce * ArmR.mass);
+        _armR.AddForce(Vector3.up * ArmUpForce * _armR.mass);
+        _armR.AddForce(transform.forward * ArmForwardForce * _armR.mass);
+        _armR.AddForce((_armR.position - _armL.position) * ArmAwayForce * _armR.mass);
+
+        // Add Velocity
+
+
+        _legL.AddForce(Vector3.up * LegUpForce * _legL.mass);
+        _legL.AddForce(transform.forward * LegForwardForce * _legL.mass);
+        _legL.AddForce((_legL.position - _legR.position) * LegAwayForce * _legL.mass);
+
+        _legR.AddForce(Vector3.up * LegUpForce * _legR.mass);
+        _legR.AddForce(transform.forward * LegForwardForce * _legR.mass);
+        _legR.AddForce((_legR.position - _legL.position) * LegAwayForce * _legR.mass);
+
+        if(_ref.GibbonSwing.JointL != null)
+        {
+            _legL.AddForce((_legL.position - _ref.GibbonSwing.JointL.connectedAnchor) * LegAwayForce2 * _legL.mass);
+            _legR.AddForce((_legR.position - _ref.GibbonSwing.JointL.connectedAnchor) * LegAwayForce2 * _legR.mass);
+        }
+
+        if(_ref.GibbonSwing.JointR != null)
+        {
+            _legL.AddForce((_legL.position - _ref.GibbonSwing.JointR.connectedAnchor) * LegAwayForce2 * _legL.mass);
+            _legR.AddForce((_legR.position - _ref.GibbonSwing.JointR.connectedAnchor) * LegAwayForce2 * _legR.mass);
+        }
     }
 }

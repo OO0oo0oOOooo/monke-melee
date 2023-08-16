@@ -11,37 +11,21 @@ public class ProceduralAnimation : MonoBehaviour
     // [SerializeField] private Transform _chestTarget;
     // [SerializeField] private Transform _hipTarget;
 
-    #region Walk Parameters
-    [Header("Walk Constraints")]
-    [SerializeField] private TwoBoneIKConstraint _handWalkConstraintR;
-    [SerializeField] private TwoBoneIKConstraint _handWalkConstraintL;
+    [Header("Two Bone IK Constraints")]
 
+    [Header("Walk Constraints")]
     [SerializeField] private TwoBoneIKConstraint _footWalkConstraintR;
     [SerializeField] private TwoBoneIKConstraint _footWalkConstraintL;
+    
+    [Header("Physics Constraints")]
+    [SerializeField] private TwoBoneIKConstraint _handPhysicsConstraintR;
+    [SerializeField] private TwoBoneIKConstraint _handPhysicsConstraintL;
+    [SerializeField] private TwoBoneIKConstraint _footPhysicsConstraintR;
+    [SerializeField] private TwoBoneIKConstraint _footPhysicsConstraintL;
 
-    [Header("Walk Targets")]
-    [SerializeField] private Transform _handWalkTargetR;
-    [SerializeField] private Transform _handWalkTargetL;
-
-    [SerializeField] private Transform _footWalkTargetR;
-    [SerializeField] private Transform _footWalkTargetL;
-    #endregion
-
-    #region Swing Parameters
     [Header("Swing Constraints")]
     [SerializeField] private TwoBoneIKConstraint _handSwingConstraintR;
     [SerializeField] private TwoBoneIKConstraint _handSwingConstraintL;
-
-    [SerializeField] private TwoBoneIKConstraint _footSwingConstraintR;
-    [SerializeField] private TwoBoneIKConstraint _footSwingConstraintL;
-
-    [Header("Swing Targets")]
-    [SerializeField] private Transform _handSwingTargetR;
-    [SerializeField] private Transform _handSwingTargetL;
-
-    [SerializeField] private Transform _footSwingTargetR;
-    [SerializeField] private Transform _footSwingTargetL;
-    #endregion
     
     #region Unity Functions
     private void Awake()
@@ -61,11 +45,11 @@ public class ProceduralAnimation : MonoBehaviour
                 break;
 
             case MovementState.Swing:
+                SetSwingWeights();
                 SwingAnimation();
                 break;
             
             case MovementState.Air:
-                SetAirWeights();
                 AirAnimation();
                 break;
 
@@ -76,30 +60,52 @@ public class ProceduralAnimation : MonoBehaviour
     #endregion
 
     #region Weight Helper Functions
-    public void SetWalkWeights()
+    private void SetWalkWeights()
     {
-        // Set the active arms Swing IK Constraint weight to 0.
-        // Set the active arms walk IK Constraint weight to 1.
+        _footPhysicsConstraintL.weight = 0;
+        _footPhysicsConstraintR.weight = 0;
 
-        // Set the feet Swing IK Constraint weight to 0.
-        // Set the feet Walk IK Constraint weight to 1.
+        _footWalkConstraintL.weight = 1;
+        _footWalkConstraintR.weight = 1;
     }
 
-    public void SetSwingWeights(int index)
+    private void SetSwingWeights()
     {
-        // Both arms can be active at the same time so i only need to the arm that is passed.
+        _footWalkConstraintL.weight = 0;
+        _footWalkConstraintR.weight = 0;
 
-        // Set the active arms Walk IK constraint weight to 0.
-        // Set the active arms Swing IK constraint weight to 1.
-
-        // Set both feet Walk IK constraints weight to 0.
-        // Set both feet Swing IK constraints weight to 1.
+        _footPhysicsConstraintL.weight = 1;
+        _footPhysicsConstraintR.weight = 1;
     }
 
-    public void SetAirWeights()
+    public void EnableSwingWeights(int index)
     {
-        // Air weights are the same as walk weights
-        SetWalkWeights();
+        if(index == 0)
+        {
+            _handPhysicsConstraintL.weight = 0;
+            _handSwingConstraintL.weight = 1;
+        }
+
+        if(index == 1)
+        {
+            _handPhysicsConstraintR.weight = 0;
+            _handSwingConstraintR.weight = 1;
+        }
+    }
+
+    public void DisableSwingWeights(int index)
+    {
+        if(index == 0)
+        {
+            _handSwingConstraintL.weight = 0;
+            _handPhysicsConstraintL.weight = 1;
+        }
+
+        if(index == 1)
+        {
+            _handSwingConstraintR.weight = 0;
+            _handPhysicsConstraintR.weight = 1;
+        }
     }
     #endregion
 

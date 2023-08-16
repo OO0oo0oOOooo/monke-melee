@@ -5,17 +5,16 @@ public class GibbonSwing : MonoBehaviour
 {
     private GibbonRefrences _ref;
 
-    [Header("Swing")]
-    private SpringJoint _jointL;
-    private SpringJoint _jointR;
-
-    [SerializeField] private LayerMask _swingLayerMask;
-    [SerializeField] private Vector3 _swingPivot;
-
     private bool _swingingL;
     private bool _swingingR;
     public bool SwingingL { get { return _swingingL; } }
     public bool SwingingR { get { return _swingingR; } }
+
+    [Header("Joint Parameters")]
+    private SpringJoint _jointL;
+    private SpringJoint _jointR;
+    public SpringJoint JointL { get { return _jointL; } }
+    public SpringJoint JointR { get { return _jointR; } }
 
     [SerializeField] private Vector3 _achorOffsetL = new Vector3(-0.1f, 1.1f, 0);
     [SerializeField] private Vector3 _achorOffsetR = new Vector3(0.1f, 1.1f, 0);
@@ -27,15 +26,9 @@ public class GibbonSwing : MonoBehaviour
     [SerializeField] private float _damper = 7;
     [SerializeField] private float _massScale = 4.5f;
 
-    [Header("IK")]
-    public TwoBoneIKConstraint LSillyArm;
-    public TwoBoneIKConstraint RSillyArm;
-
-    public TwoBoneIKConstraint LSwingArm;
-    public TwoBoneIKConstraint RSwingArm;
-
-    public Transform LSwingTarget;
-    public Transform RSwingTarget;
+    [Header("Swing IK")]
+    [SerializeField] private Transform _swingTargetL;
+    [SerializeField] private Transform _swingTargetR;
 
     [SerializeField] private Vector3 _offsetRotationL = Vector3.zero;
     [SerializeField] private Vector3 _offsetRotationR = Vector3.zero;
@@ -70,40 +63,24 @@ public class GibbonSwing : MonoBehaviour
         if(_swingingR && armIndex == 1)
             return;
 
-        // if(Physics.SphereCast(_ref.PlayerCamera.transform.position, 0.25f, _ref.PlayerCamera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _swingLayerMask))
-        if(Physics.Raycast(_ref.Camera.transform.position, _ref.Camera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _swingLayerMask))
+        if(Physics.Raycast(_ref.Camera.transform.position, _ref.Camera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _ref.SimpleCollider.LayerMask))
         {
-            _swingPivot = hit.point;
-            // float distance;
+            // _maxSwingDistance = Vector3.Distance(hit.point, _ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetL));
+            // _maxSwingDistance = Vector3.Distance(hit.point, _ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetR));
 
-            if(armIndex == 0)
-            {
-                // _maxSwingDistance = Vector3.Distance(hit.point, _ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetL));
-
-                LSwingTarget.position = hit.point;
-                LSillyArm.weight = 0;
-                LSwingArm.weight = 1;
-            }
-
-            if(armIndex == 1)
-            {
-                // _maxSwingDistance = Vector3.Distance(hit.point, _ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetR));
-
-                RSillyArm.weight = 0;
-                RSwingArm.weight = 1;
-            }
-            SetupJoint(armIndex);
-
+            _ref.ProceduralAnimation.EnableSwingWeights(armIndex);
+            
+            SetupJoint(armIndex, hit.point);
         }
     }
 
     private void EndSwing(int armIndex)
     {
+        _ref.ProceduralAnimation.DisableSwingWeights(armIndex);
+
         if(armIndex == 0)
         {
             _swingingL = false;
-            LSillyArm.weight = 1;
-            LSwingArm.weight = 0;
 
             if(_jointL != null)
                 Destroy(_jointL);
@@ -112,15 +89,13 @@ public class GibbonSwing : MonoBehaviour
         if(armIndex == 1)
         {
             _swingingR = false;
-            RSillyArm.weight = 1;
-            RSwingArm.weight = 0;
 
             if(_jointR != null)
                 Destroy(_jointR);
         }
     }
 
-    private void SetupJoint(int index)
+    private void SetupJoint(int index, Vector3 pivot)
     {
         if(index == 0)
         {
@@ -131,7 +106,7 @@ public class GibbonSwing : MonoBehaviour
 
             _jointL = gameObject.AddComponent<SpringJoint>();
             _jointL.autoConfigureConnectedAnchor = false;
-            _jointL.connectedAnchor = _swingPivot;
+            _jointL.connectedAnchor = pivot;
 
             _jointL.anchor = _achorOffsetL;
 
@@ -153,7 +128,7 @@ public class GibbonSwing : MonoBehaviour
             
             _jointR = gameObject.AddComponent<SpringJoint>();
             _jointR.autoConfigureConnectedAnchor = false;
-            _jointR.connectedAnchor = _swingPivot;
+            _jointR.connectedAnchor = pivot;
 
             _jointR.anchor = _achorOffsetR;
 
@@ -167,21 +142,20 @@ public class GibbonSwing : MonoBehaviour
         }
     }
 
+    // This should be in procedural animation
     private void UpdateIKTargets()
     {
         if(_jointL != null)
         {
-            LSwingTarget.position = _jointL.connectedAnchor;
-            LSwingTarget.rotation = _ref.PlayerTransform.rotation * Quaternion.Euler(_offsetRotationL);
+            _swingTargetL.position = _jointL.connectedAnchor;
+            _swingTargetL.rotation = _ref.PlayerTransform.rotation * Quaternion.Euler(_offsetRotationL);
         }
 
         if(_jointR != null)
         {
-            RSwingTarget.position = _jointR.connectedAnchor;
-            RSwingTarget.rotation = _ref.PlayerTransform.rotation * Quaternion.Euler(_offsetRotationR);
+            _swingTargetR.position = _jointR.connectedAnchor;
+            _swingTargetR.rotation = _ref.PlayerTransform.rotation * Quaternion.Euler(_offsetRotationR);
         }
-
-        // Scroll wheel to change swing distance
     }
 
     private void OnDrawGizmos()
@@ -190,8 +164,7 @@ public class GibbonSwing : MonoBehaviour
             return;
 
         Gizmos.color = Color.white;
-        // if(Physics.SphereCast(_ref.PlayerCamera.transform.position, 0.25f, _ref.PlayerCamera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _swingLayerMask))
-        if(Physics.Raycast(_ref.Camera.transform.position, _ref.Camera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _swingLayerMask))
+        if(Physics.Raycast(_ref.Camera.transform.position, _ref.Camera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _ref.SimpleCollider.LayerMask))
             Gizmos.DrawSphere(hit.point, 0.1f);
 
         if(_swingingL)
