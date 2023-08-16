@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 [RequireComponent(typeof(Rigidbody))]
 public partial class GibbonMovement : MonoBehaviour
@@ -16,17 +17,19 @@ public partial class GibbonMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.X))
             _fly = !_fly;
 
-        if( Input.GetMouseButtonDown(0) )// || Input.GetMouseButtonDown(1) )
+        if( Input.GetMouseButton(0) )
             StartSwing(0);
 
-        if( Input.GetMouseButtonUp(0) )// || Input.GetMouseButtonUp(1) )
-            EndSwing();
+        if( Input.GetMouseButton(1) )
+            StartSwing(1);
 
-        // Switch between input types. This needs to be improved, it doesnt feel good.
-        if(_ref.CustomInput.Mouse2Pending)
-            _inputDir = _ref.CustomInput.InputDirPlayer;
-        else
-            _inputDir = _ref.CustomInput.InputDirCamera;
+        if( Input.GetMouseButtonUp(0) )
+            EndSwing(0);
+
+        if( Input.GetMouseButtonUp(1) )
+            EndSwing(1);
+
+        _inputDir = _ref.CustomInput.InputDirPlayer;
 
         // Reset able to climb after landing
         // if(!_ableToClimb && _player.PlayerCollider.AdverageDistance < thresholdBot)
@@ -90,7 +93,7 @@ public partial class GibbonMovement : MonoBehaviour
         if(_flyToggle && _fly)
             return MovementState.Fly;
 
-        if(_swinging)
+        if(_swingingL || _swingingR && !Grounded)
             return MovementState.Swing;
 
         if(Grounded) // && _ableToClimb && _ableToJump)
@@ -125,7 +128,20 @@ public partial class GibbonMovement : MonoBehaviour
 
     private void UpdateSwing()
     {
-        Debug.DrawLine(_ref.PlayerTransform.position, _swingPivot, Color.magenta);
+        if(_jointL != null)
+        {
+            LSwingTarget.position = _jointL.connectedAnchor;
+            LSwingTarget.rotation = _ref.PlayerTransform.rotation * Quaternion.Euler(_offsetRotationL);
+        }
+
+        if(_jointR != null)
+        {
+            RSwingTarget.position = _jointR.connectedAnchor;
+            RSwingTarget.rotation = _ref.PlayerTransform.rotation * Quaternion.Euler(_offsetRotationR);
+        }
+
+        // Scroll wheel to change swing distance
+
     }
 
     private void FixedGround()
@@ -143,7 +159,8 @@ public partial class GibbonMovement : MonoBehaviour
     {
         // Air Ground/Branch Detection
         // Swing Point Detection
-
+        // AirAccelerate();
+        SwingAccelerate();
         ApplyGravity();
     }
     
@@ -190,20 +207,30 @@ public partial class GibbonMovement : MonoBehaviour
         Accelerate(_inputDir, speedMag, _airBaseLimit, _airAcceleration);
     }
 
+    private void AirAccelerate2()
+    {
+        Vector3 hVel = _vel;
+        hVel.y = 0;
+
+        float speedMag = Vector3.Dot(hVel, _inputDir);
+
+
+        _vel += _inputDir * _airBaseLimit * Time.deltaTime;
+    }
     
     private void SwingAccelerate()
     {
         _vel += _inputDir * _swingSpeed * Time.deltaTime;
     }
 
-    private void Accelerate(Vector3 direction, float magnitude, float accelLimit, float accelerationType)
+    private void Accelerate(Vector3 direction, float magnitude, float accelLimit, float acceleration)
     {
         float addSpeed = accelLimit - magnitude;
 
         if (addSpeed <= 0)
             return;
 
-        float accelSpeed = accelerationType * Time.deltaTime;
+        float accelSpeed = acceleration * Time.deltaTime;
         
         if (accelSpeed > addSpeed)
             accelSpeed = addSpeed;
@@ -234,56 +261,141 @@ public partial class GibbonMovement : MonoBehaviour
     
     #region Swing
     [Header("Swing")]
-    private SpringJoint _joint;
+    private SpringJoint _jointL;
+    private SpringJoint _jointR;
     [SerializeField] private LayerMask _swingLayerMask;
     [SerializeField] private Vector3 _swingPivot;
-    private bool _swinging;
-    [SerializeField] private float _swingSpeed = 10;
+    private bool _swingingL;
+    private bool _swingingR;
 
+    [SerializeField] private Vector3 _achorOffsetL = new Vector3(-0.1f, 1.1f, 0);
+    [SerializeField] private Vector3 _achorOffsetR = new Vector3(0.1f, 1.1f, 0);
+    [SerializeField] private float _maxRaycastDistance = 5;
     [SerializeField] private float _minSwingDistance = 0;
-    [SerializeField] private float _maxSwingDistance = 5;
+    [SerializeField] private float _maxSwingDistance;
     [SerializeField] private float _spring = 4.5f;
     [SerializeField] private float _damper = 7;
     [SerializeField] private float _massScale = 4.5f;
+    [SerializeField] private float _swingSpeed = 10;
 
+
+    public TwoBoneIKConstraint LSillyArm;
+    public TwoBoneIKConstraint RSillyArm;
+
+    public TwoBoneIKConstraint LSwingArm;
+    public TwoBoneIKConstraint RSwingArm;
+
+    public Transform LSwingTarget;
+    public Transform RSwingTarget;
+
+    [SerializeField] private Vector3 _offsetRotationL = Vector3.zero;
+    [SerializeField] private Vector3 _offsetRotationR = Vector3.zero;
 
     private void StartSwing(int armIndex)
     {
-        Debug.DrawRay(_ref.PlayerCamera.transform.position, _ref.PlayerCamera.transform.forward * 5, Color.red, 0.1f);
-        if(Physics.Raycast(_ref.PlayerCamera.transform.position, _ref.PlayerCamera.transform.forward, out RaycastHit hit, 5, _swingLayerMask))
+        if(_swingingL && armIndex == 0)
+            return;
+
+        if(_swingingR && armIndex == 1)
+            return;
+
+        // if(Physics.SphereCast(_ref.PlayerCamera.transform.position, 0.25f, _ref.PlayerCamera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _swingLayerMask))
+        if(Physics.Raycast(_ref.PlayerCamera.transform.position, _ref.PlayerCamera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _swingLayerMask))
         {
-            _swinging = true;
-            // _maxSwingDistance = hit.distance + 1;
-            _maxSwingDistance = Vector3.Distance(hit.point, _ref.PlayerTransform.position);
-
             _swingPivot = hit.point;
-            _joint = gameObject.AddComponent<SpringJoint>();
-            _joint.autoConfigureConnectedAnchor = false;
-            _joint.connectedAnchor = _swingPivot;
+            // float distance;
 
-            _joint.spring = _spring;
-            _joint.damper = _damper;
+            if(armIndex == 0)
+            {
+                // _maxSwingDistance = Vector3.Distance(hit.point, _ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetL));
 
-            _joint.minDistance = _minSwingDistance;
-            _joint.maxDistance = _maxSwingDistance;
+                LSwingTarget.position = hit.point;
+                LSillyArm.weight = 0;
+                LSwingArm.weight = 1;
+            }
 
-            _joint.massScale = _massScale;
-            
-            // Set state to swinging and use this in fixed update
-            // SwingAccelerate();
+            if(armIndex == 1)
+            {
+                // _maxSwingDistance = Vector3.Distance(hit.point, _ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetR));
+
+                RSillyArm.weight = 0;
+                RSwingArm.weight = 1;
+            }
+            SetupJoint(armIndex);
+
         }
     }
 
-    private void EndSwing()
+    private void EndSwing(int armIndex)
     {
-        if(!_swinging)
-            Debug.Log("EndSwing called when _swinging is already false.");
+        if(armIndex == 0)
+        {
+            _swingingL = false;
+            LSillyArm.weight = 1;
+            LSwingArm.weight = 0;
 
-        _swinging = false;
+            if(_jointL != null)
+                Destroy(_jointL);
+        }
 
-        if(_joint != null)
-            Destroy(_joint);
+        if(armIndex == 1)
+        {
+            _swingingR = false;
+            RSillyArm.weight = 1;
+            RSwingArm.weight = 0;
+
+            if(_jointR != null)
+                Destroy(_jointR);
+        }
     }
+
+    private void SetupJoint(int index)
+    {
+        if(index == 0)
+        {
+            if(_jointL != null)
+                Destroy(_jointL);
+
+            _swingingL = true;
+
+            _jointL = gameObject.AddComponent<SpringJoint>();
+            _jointL.autoConfigureConnectedAnchor = false;
+            _jointL.connectedAnchor = _swingPivot;
+
+            _jointL.anchor = _achorOffsetL;
+
+            _jointL.spring = _spring;
+            _jointL.damper = _damper;
+
+            _jointL.minDistance = _minSwingDistance;
+            _jointL.maxDistance = _maxSwingDistance;
+
+            _jointL.massScale = _massScale;
+        }
+
+        if(index == 1)
+        {
+            if(_jointR != null)
+                Destroy(_jointR);
+
+            _swingingR = true;
+            
+            _jointR = gameObject.AddComponent<SpringJoint>();
+            _jointR.autoConfigureConnectedAnchor = false;
+            _jointR.connectedAnchor = _swingPivot;
+
+            _jointR.anchor = _achorOffsetR;
+
+            _jointR.spring = _spring;
+            _jointR.damper = _damper;
+
+            _jointR.minDistance = _minSwingDistance;
+            _jointR.maxDistance = _maxSwingDistance;
+
+            _jointR.massScale = _massScale;
+        }
+    }
+
     #endregion
 
     #region Jump
@@ -363,21 +475,64 @@ public partial class GibbonMovement : MonoBehaviour
     #endregion
 
     #region Debug
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.color = Color.green;
-    //     Gizmos.DrawRay(_player.PlayerTransform.position, Normal);
+    private void OnDrawGizmos()
+    {
+        // If we are in play mode
+        if(!Application.isPlaying)
+            return;
 
-    //     Gizmos.color = Color.red;
-    //     Gizmos.DrawRay(_player.PlayerTransform.position, right);
+        Gizmos.color = Color.white;
+        // if(Physics.SphereCast(_ref.PlayerCamera.transform.position, 0.25f, _ref.PlayerCamera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _swingLayerMask))
+        if(Physics.Raycast(_ref.PlayerCamera.transform.position, _ref.PlayerCamera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _swingLayerMask))
+            Gizmos.DrawSphere(hit.point, 0.1f);
 
-    //     Gizmos.color = Color.blue;
-    //     Gizmos.DrawRay(_player.PlayerTransform.position, forward);
+        if(_swingingL)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(_ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetL), _jointL.connectedAnchor);
+            Gizmos.DrawWireSphere(_jointL.connectedAnchor, 0.1f);
+            Gizmos.DrawWireSphere(_ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetL), 0.1f);
+        }
+
+        if(_swingingR)
+        {
+            Gizmos.color = Color.red;
+            
+            // Get joint.anchor world space
+            // Vector3 anchor = 
+
+            Gizmos.DrawLine(_ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetR), _jointR.connectedAnchor);
+            Gizmos.DrawWireSphere(_jointR.connectedAnchor, 0.1f);
+            Gizmos.DrawWireSphere(_ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetR), 0.1f);
+        }
+        
+        // if(Input.GetMouseButton(0))
+        // {
+        //     Gizmos.color = Color.blue;
+        //     Gizmos.DrawRay(_ref.PlayerCamera.transform.position, _ref.PlayerCamera.transform.forward * 5);
+        //     Gizmos.DrawWireSphere(_ref.PlayerCamera.transform.position + (_ref.PlayerCamera.transform.forward * 5), 0.25f);
+        // }
+
+        // if(Input.GetMouseButton(1))
+        // {
+        //     Gizmos.color = Color.red;
+        //     Gizmos.DrawRay(_ref.PlayerCamera.transform.position, _ref.PlayerCamera.transform.forward * 5);
+        //     Gizmos.DrawWireSphere(_ref.PlayerCamera.transform.position + (_ref.PlayerCamera.transform.forward * 5), 0.25f);
+        // }
+        
+        //     Gizmos.color = Color.green;
+        //     Gizmos.DrawRay(_player.PlayerTransform.position, Normal);
+
+        //     Gizmos.color = Color.red;
+        //     Gizmos.DrawRay(_player.PlayerTransform.position, right);
+
+        //     Gizmos.color = Color.blue;
+        //     Gizmos.DrawRay(_player.PlayerTransform.position, forward);
 
 
-    //     Gizmos.color = Color.white;
-    //     Gizmos.DrawRay(_player.PlayerTransform.position, _player.PlayerTransform.up);
-    //     Gizmos.DrawRay(_player.PlayerTransform.position, _player.PlayerTransform.forward);
-    // }
+        //     Gizmos.color = Color.white;
+        //     Gizmos.DrawRay(_player.PlayerTransform.position, _player.PlayerTransform.up);
+        //     Gizmos.DrawRay(_player.PlayerTransform.position, _player.PlayerTransform.forward);
+    }
     #endregion
 }

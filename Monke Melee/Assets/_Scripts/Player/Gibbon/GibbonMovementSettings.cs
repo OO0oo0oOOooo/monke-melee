@@ -5,20 +5,20 @@ using UnityEngine;
 public partial class GibbonMovement
 {
     [Header("Acceleration")]
-    [SerializeField] private readonly float _groundAcceleration = 100f;
-    [SerializeField] private readonly float _groundBaseLimit = 12f;
+    [SerializeField] private float _groundAcceleration = 100f;
+    [SerializeField] private float _groundBaseLimit = 12f;
 
-    [SerializeField] private readonly float _airAcceleration = 100f;
-    [SerializeField] private readonly float _airBaseLimit = 1f;
+    [SerializeField] private float _airAcceleration = 100f;
+    [SerializeField] private float _airBaseLimit = 1f;
 
     // [SerializeField] private float _duckAcceleration = 6f;
     // [SerializeField] private float _duckBaseLimit = 6f;
 
     
     [Header("Forces")]
-    [SerializeField] private readonly float _gravity = 16f;
-    [SerializeField] private readonly float _friction = 6f;
-    [SerializeField] private readonly float _jumpHeight = 6f;
+    [SerializeField] private float _gravity = 16f;
+    [SerializeField] private float _friction = 6f;
+    [SerializeField] private float _jumpHeight = 6f;
 
     // [Header("Collider")]
     // [SerializeField] private float _duckColliderHeight = 0.6f;
@@ -36,15 +36,8 @@ public partial class GibbonMovement
     private GibbonRefrences _ref;
 
     MovementState _state = MovementState.Air;
-    public enum MovementState
-    {
-        Ground,
-        Air,
-        Climb,
-        Swing,
-        Fly,
-        Ragdoll
-    }
+    public MovementState State { get => _state; }
+    
 
     [SerializeField] private bool Grounded => _ref.SimpleCollider.IsGrounded;
     [SerializeField] private Vector3 Normal => _ref.SimpleCollider.ContactNormal;
@@ -72,4 +65,13 @@ public partial class GibbonMovement
     private bool JumpPending => _ref.CustomInput.JumpPending;
     private bool Ducking => _ref.CustomInput.DuckingPending;
     #endregion
+}
+public enum MovementState
+{
+    Ground,
+    Air,
+    Climb,
+    Swing,
+    Fly,
+    Ragdoll
 }

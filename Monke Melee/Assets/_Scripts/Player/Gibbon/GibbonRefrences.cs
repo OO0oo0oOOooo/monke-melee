@@ -19,7 +19,7 @@ public class GibbonRefrences : NetworkBehaviour
     public Camera PlayerCamera;
     public Transform CameraTransform;
     public Transform CameraRigTransform;
-    public ThirdPersonCamera ThirdPersonCamera;
+    public SimpleCamera SimpleCamera;
 
 
     public override void OnNetworkSpawn()

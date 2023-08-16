@@ -22,6 +22,7 @@ public class ProceduralWalk : MonoBehaviour
 
     [SerializeField] private float _distanceToGround = 0;
 
+
     private void Awake()
     {
         _ref = GetComponentInParent<GibbonRefrences>();
@@ -29,7 +30,28 @@ public class ProceduralWalk : MonoBehaviour
 
     private void Update()
     {
-        // Update the angle based on the speed
+        if(_ref.Movement.State == MovementState.Ground)
+            WalkAnimation();
+    }
+
+    private void WalkAnimation()
+    {
+        // Set the IK Constraint Weights
+
+        // Feet Walk IK Constraint Weight = 1
+        // Feet Swing IK Constraint Weight = 0
+
+        // Swing Arm IK Constraint Weight = 0
+        // Silly Arm IK Constraint Weight = 1
+
+
+        // Crouch, Gallop
+
+        // TODO:
+        // Lerp the ellipse scale velocity
+        // The ellipse will have a min and max size.
+
+        // Walk logic
         angle -= _ref.Rigidbody.velocity.magnitude * _stepSpeed * Time.deltaTime;
         // angle -= _stepSpeed * Time.deltaTime;
         float x = _stepLength * Mathf.Cos(angle);
@@ -38,6 +60,7 @@ public class ProceduralWalk : MonoBehaviour
         _footTargetR.localPosition = _pivotOffset + new Vector3(_footSpacing, y, x);
         _footTargetL.localPosition = _pivotOffset + new Vector3(-_footSpacing, -y, -x);
 
+        // Foot placement.
         RaycastHit hitR;
         RaycastHit hitL;
 
@@ -64,23 +87,23 @@ public class ProceduralWalk : MonoBehaviour
     }
 
     // float angleGizmos = 0;
-    private void OnDrawGizmos()
-    {
-        Vector3 pivot = transform.position + _pivotOffset;
-        for (int i = 0; i < 360; i++)
-        {
-            float x = _stepLength * Mathf.Cos(i * Mathf.PI / 180);
-            float y = _stepHeight * Mathf.Sin(i * Mathf.PI / 180);
+    // private void OnDrawGizmos()
+    // {
+    //     Vector3 pivot = transform.position + _pivotOffset;
+    //     for (int i = 0; i < 360; i++)
+    //     {
+    //         float x = _stepLength * Mathf.Cos(i * Mathf.PI / 180);
+    //         float y = _stepHeight * Mathf.Sin(i * Mathf.PI / 180);
 
-            Gizmos.DrawSphere(pivot + new Vector3(0, y, x), 0.01f);
-        }
+    //         Gizmos.DrawSphere(pivot + new Vector3(0, y, x), 0.01f);
+    //     }
 
-        // angleGizmos -= _stepSpeed * Time.deltaTime;
-        // float x = _stepLength * Mathf.Cos(angleGizmos);
-        // float y = _stepHeight * Mathf.Sin(angleGizmos);
+    //     // angleGizmos -= _stepSpeed * Time.deltaTime;
+    //     // float x = _stepLength * Mathf.Cos(angleGizmos);
+    //     // float y = _stepHeight * Mathf.Sin(angleGizmos);
 
-        // Gizmos.color = Color.white;
-        // Gizmos.DrawSphere(transform.position + new Vector3(_footSpacing, y, x), 0.1f);
-        // Gizmos.DrawSphere(transform.position + new Vector3(-_footSpacing, -y, -x), 0.1f);
-    }
+    //     // Gizmos.color = Color.white;
+    //     // Gizmos.DrawSphere(transform.position + new Vector3(_footSpacing, y, x), 0.1f);
+    //     // Gizmos.DrawSphere(transform.position + new Vector3(-_footSpacing, -y, -x), 0.1f);
+    // }
 }

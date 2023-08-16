@@ -1,39 +1,50 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
+using UnityEngine.Animations.Rigging;
 
 public class ProceduralAnimation : MonoBehaviour
 {
     private GibbonRefrences _ref;
     [SerializeField] private Rigidbody _rigidbody;
 
-    [SerializeField] private Transform _headTarget;
+    // [SerializeField] private Transform _headTarget;
+    // [SerializeField] private Transform _chestTarget;
     // [SerializeField] private Transform _hipTarget;
 
-    // [SerializeField] private Transform _handTargetR;
-    // [SerializeField] private Transform _handTargetL;
+    #region Walk Parameters
+    [Header("Walk Constraints")]
+    [SerializeField] private TwoBoneIKConstraint _handWalkConstraintR;
+    [SerializeField] private TwoBoneIKConstraint _handWalkConstraintL;
 
-    // [SerializeField] private Transform _footTargetR;
-    // [SerializeField] private Transform _footTargetL;
+    [SerializeField] private TwoBoneIKConstraint _footWalkConstraintR;
+    [SerializeField] private TwoBoneIKConstraint _footWalkConstraintL;
 
-    // [Header("")]
-    // [SerializeField] private LayerMask _layerMask;
-    // [SerializeField] private Vector3 _pivotOffset;
+    [Header("Walk Targets")]
+    [SerializeField] private Transform _handWalkTargetR;
+    [SerializeField] private Transform _handWalkTargetL;
 
+    [SerializeField] private Transform _footWalkTargetR;
+    [SerializeField] private Transform _footWalkTargetL;
+    #endregion
 
-    // private float angle = 0.0f;
-    // [SerializeField] private float _stepSpeed = 1f;
+    #region Swing Parameters
+    [Header("Swing Constraints")]
+    [SerializeField] private TwoBoneIKConstraint _handSwingConstraintR;
+    [SerializeField] private TwoBoneIKConstraint _handSwingConstraintL;
 
-    // [SerializeField] private float _stepHeight = 0.5f;
-    // [SerializeField] private float _stepLength = 0.5f;
+    [SerializeField] private TwoBoneIKConstraint _footSwingConstraintR;
+    [SerializeField] private TwoBoneIKConstraint _footSwingConstraintL;
 
-    // [SerializeField] private float _footSpacing = 0.1f;
+    [Header("Swing Targets")]
+    [SerializeField] private Transform _handSwingTargetR;
+    [SerializeField] private Transform _handSwingTargetL;
 
-
-    // [SerializeField] private float _distanceToGround = 0;
-
+    [SerializeField] private Transform _footSwingTargetR;
+    [SerializeField] private Transform _footSwingTargetL;
+    #endregion
+    
+    #region Unity Functions
     private void Awake()
     {
         _ref = GetComponentInParent<GibbonRefrences>();
@@ -42,19 +53,62 @@ public class ProceduralAnimation : MonoBehaviour
 
     private void Update()
     {
-        // RotateTowardsVelocity();
-        // AccelerationLean();
-        // BounceGravity();
+        switch (_ref.Movement.State)
+        {
+            case MovementState.Ground:
+                SetWalkWeights();
+                // AccelerationLean();
+                // BounceGravity();
+                break;
 
-        // LookAtTarget();
+            case MovementState.Swing:
+                SwingAnimation();
+                break;
+            
+            case MovementState.Air:
+                SetAirWeights();
+                AirAnimation();
+                break;
 
-        
-        // BalanceArms();
-        // TwoPartSpringPendulum();
+            default:
+                break;
+        }
+    }
+    #endregion
+
+    #region Weight Helper Functions
+    public void SetWalkWeights()
+    {
+        // Set the active arms Swing IK Constraint weight to 0.
+        // Set the active arms walk IK Constraint weight to 1.
+
+        // Set the feet Swing IK Constraint weight to 0.
+        // Set the feet Walk IK Constraint weight to 1.
     }
 
+    public void SetSwingWeights(int index)
+    {
+        // Both arms can be active at the same time so i only need to the arm that is passed.
+
+        // Set the active arms Walk IK constraint weight to 0.
+        // Set the active arms Swing IK constraint weight to 1.
+
+        // Set both feet Walk IK constraints weight to 0.
+        // Set both feet Swing IK constraints weight to 1.
+    }
+
+    public void SetAirWeights()
+    {
+        // Air weights are the same as walk weights
+        SetWalkWeights();
+    }
+    #endregion
+
+    #region Procedural Walk Animations
     private void RotateTowardsVelocity()
     {
+        // This is for third person camera but could be used for swing animation.
+
         if(_rigidbody.velocity.magnitude < 0.2f)
             return;
 
@@ -86,28 +140,40 @@ public class ProceduralAnimation : MonoBehaviour
     {
         _ref.ModelTransform.localPosition = new Vector3(0, Mathf.Sin(Time.time * _frequency) * _amplitude, 0);
     }
-
+    
     private void BalanceArms()
     {
         throw new NotImplementedException();
     }
-
-    private void TwoPartSpringPendulum()
+    
+    private void SillyArms()
     {
         throw new NotImplementedException();
     }
+    #endregion
 
-    private void LookAtTarget()
+    #region Procedural Swing Animations
+    private void SwingAnimation()
     {
-        // Look at next swing point
-        // Look at Movement Direction
-        // Look at Landing point
+        // Rotate the player so the up direction is always facing the pivot point.
+        // Rotate chest so the swinging shoulder is closer to the pivot point.
 
-        // I could use multiple targets and switch between whatever one i want to look at.
+        // Simulate arm swing
+        // Push unused arm away from pivot point.
 
+        // Simulate feet swing
+        // Push feet away from pivot point.
+        // Feet up and feet down.
 
-        // Set Constraint Weights
-
-        // _headTarget.
+        // Lead with unused arm and foot.
     }
+    #endregion
+
+    #region Procedural Air Animations
+    private void AirAnimation()
+    {
+        // Predict landing position and rotate body so feet are facing the landing position.
+        // Look toward the landing position.
+    }
+    #endregion
 }

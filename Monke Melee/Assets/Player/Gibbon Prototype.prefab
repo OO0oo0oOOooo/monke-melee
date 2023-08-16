@@ -559,7 +559,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7198204176079877608}
   - {fileID: 4658466192166557178}
   - {fileID: 5323109974420380176}
   - {fileID: 6769658018286928133}
@@ -578,7 +577,7 @@ GameObject:
   - component: {fileID: 6657634835229067394}
   - component: {fileID: 5660910441111970197}
   m_Layer: 3
-  m_Name: Hand R
+  m_Name: Silly Hand R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -759,7 +758,7 @@ GameObject:
   - component: {fileID: 3511008068580052153}
   - component: {fileID: 7438099973401075435}
   m_Layer: 3
-  m_Name: Hand L
+  m_Name: Silly Hand L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1492,7 +1491,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3086120189944949800}
   - {fileID: 1482265714691247659}
+  - {fileID: 848278238035710403}
   - {fileID: 5070008188540564096}
   m_Father: {fileID: 5126027868131866739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1525,7 +1526,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 247517257562970198}
   - {fileID: 6463027998372281657}
+  - {fileID: 3063676151157050531}
   - {fileID: 3828350489387290661}
   m_Father: {fileID: 5126027868131866739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2291,12 +2294,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3959638189674864505}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.746, z: 1.6499996}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5126027868131866739}
+  m_Father: {fileID: 4696996937619253607}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4061326443585499545
 GameObject:
@@ -2392,6 +2395,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6769658018286928133}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4141824171028676308
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3086120189944949800}
+  m_Layer: 3
+  m_Name: IK Hand R Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3086120189944949800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4141824171028676308}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.25658718, y: -0.11029778, z: -0.95756644, w: 0.07116166}
+  m_LocalPosition: {x: 0.39896202, y: 0.48990467, z: -0.0011348724}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5323109974420380176}
+  m_LocalEulerAnglesHint: {x: -14.341, y: 389.41, z: 184.711}
 --- !u!1 &4219369120369873121
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,6 +2521,22 @@ MonoBehaviour:
       size: 0.1
       position: {x: -0.05, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 90}
+    m_Visible: 1
+  - m_Transform: {fileID: 848278238035710403}
+    m_Style:
+      shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
+      color: {r: 0, g: 1, b: 0.69761467, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
+  - m_Transform: {fileID: 3063676151157050531}
+    m_Style:
+      shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
+      color: {r: 0, g: 1, b: 0.69803923, a: 0.5019608}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
 --- !u!1 &4394630323883200558
 GameObject:
@@ -2748,7 +2798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1482265714691247659}
   m_Layer: 3
-  m_Name: IK Hand R Target
+  m_Name: IK Hand R Sillyarm Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2906,7 +2956,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6463027998372281657}
   m_Layer: 3
-  m_Name: IK Hand L Target
+  m_Name: IK Hand L Sillyarm Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3296,6 +3346,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9149457041821516113}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5861687543532911927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3063676151157050531}
+  m_Layer: 3
+  m_Name: IK Hand L Swing Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3063676151157050531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5861687543532911927}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.42261827, z: 0, w: 0.9063079}
+  m_LocalPosition: {x: -0.2, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6769658018286928133}
+  m_LocalEulerAnglesHint: {x: -180, y: 130, z: -180}
 --- !u!1 &5862341602958430184
 GameObject:
   m_ObjectHideFlags: 0
@@ -3382,7 +3463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4696996937619253607
 Transform:
   m_ObjectHideFlags: 0
@@ -3391,13 +3472,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5940279170509474716}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11992053, y: -0, z: -0, w: 0.99278355}
-  m_LocalPosition: {x: 0, y: 1.363, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.363, z: 0.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7198204176079877608}
   m_Father: {fileID: 2728852577056046812}
-  m_LocalEulerAnglesHint: {x: 13.775, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &6350965888252399285
 Camera:
   m_ObjectHideFlags: 0
@@ -3429,9 +3511,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.06
   far clip plane: 1000
-  field of view: 80
+  field of view: 100
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -3516,7 +3598,7 @@ MonoBehaviour:
   _transform: {fileID: 0}
   _playerTransform: {fileID: 0}
   _cam: {fileID: 0}
-  _customInput: {fileID: 0}
+  _customInput: {fileID: 30462182132642637}
 --- !u!1 &6126655301023298414
 GameObject:
   m_ObjectHideFlags: 0
@@ -3741,7 +3823,9 @@ Transform:
   - {fileID: 421315658683033842}
   - {fileID: 5785234953218985477}
   - {fileID: 6657634835229067394}
+  - {fileID: 2875524132547862774}
   - {fileID: 3511008068580052153}
+  - {fileID: 3259551603147681472}
   - {fileID: 2315831345772181233}
   - {fileID: 1379523596382835900}
   m_Father: {fileID: 5704191082494686826}
@@ -3960,37 +4044,6 @@ Transform:
   - {fileID: 276772066215859001}
   m_Father: {fileID: 7901999879221688005}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6897539768230117177
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6895809040984948025}
-  m_Layer: 3
-  m_Name: Camera Rig
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &6895809040984948025
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6897539768230117177}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.363, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2728852577056046812}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6936621098444922716
 GameObject:
   m_ObjectHideFlags: 0
@@ -4023,6 +4076,62 @@ Transform:
   - {fileID: 1073508799608249583}
   m_Father: {fileID: 3386109680234703548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6944768583533109066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2875524132547862774}
+  - component: {fileID: 8764985784886468240}
+  m_Layer: 3
+  m_Name: Swing Hand R
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2875524132547862774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6944768583533109066}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7217720848241822307}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8764985784886468240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6944768583533109066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 0
+  m_Data:
+    m_Root: {fileID: 4106572057635292335}
+    m_Mid: {fileID: 233697504169843768}
+    m_Tip: {fileID: 7901999879221688005}
+    m_Target: {fileID: 848278238035710403}
+    m_Hint: {fileID: 5070008188540564096}
+    m_TargetPositionWeight: 1
+    m_TargetRotationWeight: 1
+    m_HintWeight: 0
+    m_MaintainTargetPositionOffset: 0
+    m_MaintainTargetRotationOffset: 0
 --- !u!1 &7057542378507030614
 GameObject:
   m_ObjectHideFlags: 0
@@ -4383,10 +4492,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6895809040984948025}
+  - {fileID: 4696996937619253607}
   - {fileID: 5349471309284096079}
   - {fileID: 6432285994737701706}
-  - {fileID: 4696996937619253607}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &5260470263680218152
@@ -4421,7 +4529,7 @@ Rigidbody:
   m_GameObject: {fileID: 7817740946283735247}
   serializedVersion: 4
   m_Mass: 8
-  m_Drag: 0
+  m_Drag: 0.1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -4461,8 +4569,8 @@ MonoBehaviour:
   ProceduralAnimation: {fileID: 1663195385949824542}
   PlayerCamera: {fileID: 6350965888252399285}
   CameraTransform: {fileID: 4696996937619253607}
-  CameraRigTransform: {fileID: 6895809040984948025}
-  ThirdPersonCamera: {fileID: 0}
+  CameraRigTransform: {fileID: 4696996937619253607}
+  SimpleCamera: {fileID: 5805894947151720748}
 --- !u!114 &30462182132642637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4500,7 +4608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsGrounded: 0
   ContactNormal: {x: 0, y: 0, z: 0}
-  _slopeLimit: 45
+  _slopeLimit: 70
 --- !u!114 &8433410783708410942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4517,12 +4625,30 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   _swingPivot: {x: 0, y: 0, z: 0}
-  _swingSpeed: 10
-  _minSwingDistance: 0
-  _maxSwingDistance: 5
+  _achorOffsetL: {x: -0.23, y: 1.1, z: -0.08}
+  _achorOffsetR: {x: 0.23, y: 1.1, z: -0.08}
+  _maxRaycastDistance: 3
+  _minSwingDistance: 1
+  _maxSwingDistance: 2
   _spring: 10000
-  _damper: 7
-  _massScale: 4.5
+  _damper: 2000
+  _massScale: 1
+  _swingSpeed: 10
+  LSillyArm: {fileID: 7438099973401075435}
+  RSillyArm: {fileID: 5660910441111970197}
+  LSwingArm: {fileID: 3636547643955313606}
+  RSwingArm: {fileID: 8764985784886468240}
+  LSwingTarget: {fileID: 3063676151157050531}
+  RSwingTarget: {fileID: 848278238035710403}
+  _offsetRotationL: {x: -180, y: -70, z: -180}
+  _offsetRotationR: {x: -180, y: 70, z: -180}
+  _groundAcceleration: 100
+  _groundBaseLimit: 6
+  _airAcceleration: 100
+  _airBaseLimit: 1
+  _gravity: 16
+  _friction: 6
+  _jumpHeight: 6
   _flyToggle: 1
 --- !u!114 &5920529650389300098
 MonoBehaviour:
@@ -4586,6 +4712,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7851220314808500411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 247517257562970198}
+  m_Layer: 3
+  m_Name: IK Hand L Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &247517257562970198
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7851220314808500411}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.24666554, y: -0.13100377, z: -0.9601736, w: 0.0077974927}
+  m_LocalPosition: {x: -0.40122223, y: 0.48991907, z: -0.00541687}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6769658018286928133}
+  m_LocalEulerAnglesHint: {x: -14.341, y: -389.41, z: 184.711}
 --- !u!1 &7960923875025705889
 GameObject:
   m_ObjectHideFlags: 0
@@ -4712,6 +4869,62 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2205770866910012957}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8156425812377890639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3259551603147681472}
+  - component: {fileID: 3636547643955313606}
+  m_Layer: 3
+  m_Name: Swing Hand L
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3259551603147681472
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8156425812377890639}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7217720848241822307}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3636547643955313606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8156425812377890639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 0
+  m_Data:
+    m_Root: {fileID: 1980598231775697653}
+    m_Mid: {fileID: 7744060199535318951}
+    m_Tip: {fileID: 9219631779366267806}
+    m_Target: {fileID: 3063676151157050531}
+    m_Hint: {fileID: 3828350489387290661}
+    m_TargetPositionWeight: 1
+    m_TargetRotationWeight: 1
+    m_HintWeight: 0
+    m_MaintainTargetPositionOffset: 0
+    m_MaintainTargetRotationOffset: 0
 --- !u!1 &8371482683263276161
 GameObject:
   m_ObjectHideFlags: 0
@@ -4744,6 +4957,37 @@ Transform:
   - {fileID: 6624291608624793905}
   m_Father: {fileID: 2506939813545047142}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8758076092633675788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 848278238035710403}
+  m_Layer: 3
+  m_Name: IK Hand R Swing Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &848278238035710403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8758076092633675788}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9396927, z: 0, w: 0.3420201}
+  m_LocalPosition: {x: 0.2, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5323109974420380176}
+  m_LocalEulerAnglesHint: {x: -180, y: 40, z: -180}
 --- !u!1 &9005152002809235587
 GameObject:
   m_ObjectHideFlags: 0
