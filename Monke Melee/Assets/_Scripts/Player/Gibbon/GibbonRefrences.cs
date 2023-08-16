@@ -12,15 +12,16 @@ public class GibbonRefrences : NetworkBehaviour
     [Header("Scripts")]
     public CustomInput CustomInput;
     public GibbonMovement Movement;
+    public GibbonSwing GibbonSwing;
     public SimpleCollider SimpleCollider;
     public ProceduralAnimation ProceduralAnimation;
-
+    public ProceduralWalk ProceduralWalk;
+    
     [Header("Camera")]
-    public Camera PlayerCamera;
+    public Camera Camera;
     public Transform CameraTransform;
     public Transform CameraRigTransform;
     public SimpleCamera SimpleCamera;
-
 
     public override void OnNetworkSpawn()
     {
@@ -29,12 +30,15 @@ public class GibbonRefrences : NetworkBehaviour
             Destroy(CustomInput);
             Destroy(Movement);
             Destroy(SimpleCollider);
+            Destroy(GibbonSwing);
             // Destroy(ProceduralAnimation);
-            Destroy(PlayerCamera.gameObject);
+            // Destroy(ProceduralWalk);
+            
+            Destroy(Camera.gameObject);
             Destroy(CameraRigTransform.gameObject);
             return;
         }
 
-        PlayerCamera.gameObject.SetActive(true);
+        Camera.gameObject.SetActive(true);
     }
 }

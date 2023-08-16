@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 
-[Serializable]
 public partial class GibbonMovement
 {
     [Header("Acceleration")]
@@ -10,6 +8,8 @@ public partial class GibbonMovement
 
     [SerializeField] private float _airAcceleration = 100f;
     [SerializeField] private float _airBaseLimit = 1f;
+
+    [SerializeField] private float _swingAcceleration = 10f;
 
     // [SerializeField] private float _duckAcceleration = 6f;
     // [SerializeField] private float _duckBaseLimit = 6f;

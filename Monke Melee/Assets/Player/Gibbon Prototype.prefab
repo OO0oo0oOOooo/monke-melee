@@ -2070,11 +2070,10 @@ GameObject:
   - component: {fileID: 5349471309284096079}
   - component: {fileID: 2401055028995986617}
   - component: {fileID: 7207378040468927641}
+  - component: {fileID: 1663195385949824542}
   - component: {fileID: 75631068977377205}
-  - component: {fileID: 4479749356407210461}
   - component: {fileID: 2411014449315249325}
   - component: {fileID: 2542759214355503710}
-  - component: {fileID: 1663195385949824542}
   m_Layer: 3
   m_Name: Monke Model
   m_TagString: Untagged
@@ -2138,6 +2137,37 @@ MonoBehaviour:
   - m_Rig: {fileID: 4283318129882646239}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &1663195385949824542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3798462440297293124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 885d90abe9129004f9231f64052f1d2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 2711160434467877140}
+  _handWalkConstraintR: {fileID: 0}
+  _handWalkConstraintL: {fileID: 0}
+  _footWalkConstraintR: {fileID: 0}
+  _footWalkConstraintL: {fileID: 0}
+  _handWalkTargetR: {fileID: 0}
+  _handWalkTargetL: {fileID: 0}
+  _footWalkTargetR: {fileID: 0}
+  _footWalkTargetL: {fileID: 0}
+  _handSwingConstraintR: {fileID: 0}
+  _handSwingConstraintL: {fileID: 0}
+  _footSwingConstraintR: {fileID: 0}
+  _footSwingConstraintL: {fileID: 0}
+  _handSwingTargetR: {fileID: 0}
+  _handSwingTargetL: {fileID: 0}
+  _footSwingTargetR: {fileID: 0}
+  _footSwingTargetL: {fileID: 0}
+  _amplitude: 0.001
+  _frequency: 5
 --- !u!114 &75631068977377205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2161,30 +2191,6 @@ MonoBehaviour:
   _stepLength: 0.35
   _footSpacing: 0.14
   _distanceToGround: 0.05
---- !u!114 &4479749356407210461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3798462440297293124}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3a492d98e2e9d544b68d3901b14bcf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HandTarget: {fileID: 6432285994737701706}
-  ShoulderTarget: {fileID: 3571523585409305057}
-  HipTarget: {fileID: 8769019912882385165}
-  HandIKR: {fileID: 0}
-  HandIKL: {fileID: 0}
-  Hand: {fileID: 0}
-  Chest: {fileID: 0}
-  Hip: {fileID: 0}
-  _hipPositionOffset: {x: 0, y: 0, z: 0}
-  _chestPositionOffset: {x: 0, y: 0, z: 0.002859708}
-  _hipRotationOffset: {x: -47.481, y: 0, z: 0}
-  _chestRotationOffset: {x: 23.951, y: 0, z: 0}
 --- !u!114 &2411014449315249325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2222,22 +2228,6 @@ MonoBehaviour:
   OffsetPositionArmR: {x: 0, y: 0.25, z: 0}
   OffsetRotationArmL: {x: 0, y: 0, z: 0}
   OffsetRotationArmR: {x: 0, y: 0, z: 0}
---- !u!114 &1663195385949824542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3798462440297293124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 885d90abe9129004f9231f64052f1d2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 2711160434467877140}
-  _headTarget: {fileID: 7198204176079877608}
-  _amplitude: 0.001
-  _frequency: 5
 --- !u!1 &3827563487437282197
 GameObject:
   m_ObjectHideFlags: 0
@@ -3595,9 +3585,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5a7a071ff5a5846985e2e640eb562c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transform: {fileID: 0}
-  _playerTransform: {fileID: 0}
-  _cam: {fileID: 0}
+  _transform: {fileID: 4696996937619253607}
+  _playerTransform: {fileID: 2728852577056046812}
+  _cam: {fileID: 6350965888252399285}
   _customInput: {fileID: 30462182132642637}
 --- !u!1 &6126655301023298414
 GameObject:
@@ -4469,6 +4459,7 @@ GameObject:
   - component: {fileID: 30462182132642637}
   - component: {fileID: 8972279508021872792}
   - component: {fileID: 8433410783708410942}
+  - component: {fileID: 8297135857251345593}
   - component: {fileID: 5920529650389300098}
   - component: {fileID: 6290951746040314406}
   - component: {fileID: 6503356852697859712}
@@ -4565,9 +4556,11 @@ MonoBehaviour:
   Animator: {fileID: 2401055028995986617}
   CustomInput: {fileID: 30462182132642637}
   Movement: {fileID: 8433410783708410942}
+  GibbonSwing: {fileID: 8297135857251345593}
   SimpleCollider: {fileID: 8972279508021872792}
   ProceduralAnimation: {fileID: 1663195385949824542}
-  PlayerCamera: {fileID: 6350965888252399285}
+  ProceduralWalk: {fileID: 75631068977377205}
+  Camera: {fileID: 6350965888252399285}
   CameraTransform: {fileID: 4696996937619253607}
   CameraRigTransform: {fileID: 4696996937619253607}
   SimpleCamera: {fileID: 5805894947151720748}
@@ -4621,19 +4614,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea32cc508a398442a407421a4416b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _groundAcceleration: 50
+  _groundBaseLimit: 10
+  _airAcceleration: 10
+  _airBaseLimit: 1
+  _swingAcceleration: 10
+  _gravity: 16
+  _friction: 6
+  _jumpHeight: 6
+  _flyToggle: 1
+--- !u!114 &8297135857251345593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7817740946283735247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099e632d1aa78224d993d59fce321dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _swingLayerMask:
     serializedVersion: 2
     m_Bits: 1
   _swingPivot: {x: 0, y: 0, z: 0}
-  _achorOffsetL: {x: -0.23, y: 1.1, z: -0.08}
-  _achorOffsetR: {x: 0.23, y: 1.1, z: -0.08}
+  _achorOffsetL: {x: -0.23, y: 1.1, z: -0.09}
+  _achorOffsetR: {x: 0.23, y: 1.1, z: -0.09}
   _maxRaycastDistance: 3
   _minSwingDistance: 1
   _maxSwingDistance: 2
   _spring: 10000
-  _damper: 2000
+  _damper: 5000
   _massScale: 1
-  _swingSpeed: 10
   LSillyArm: {fileID: 7438099973401075435}
   RSillyArm: {fileID: 5660910441111970197}
   LSwingArm: {fileID: 3636547643955313606}
@@ -4642,14 +4655,6 @@ MonoBehaviour:
   RSwingTarget: {fileID: 848278238035710403}
   _offsetRotationL: {x: -180, y: -70, z: -180}
   _offsetRotationR: {x: -180, y: 70, z: -180}
-  _groundAcceleration: 100
-  _groundBaseLimit: 6
-  _airAcceleration: 100
-  _airBaseLimit: 1
-  _gravity: 16
-  _friction: 6
-  _jumpHeight: 6
-  _flyToggle: 1
 --- !u!114 &5920529650389300098
 MonoBehaviour:
   m_ObjectHideFlags: 0
