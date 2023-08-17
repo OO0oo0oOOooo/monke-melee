@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class BouncyMushroom : MonoBehaviour
 {
@@ -26,10 +27,16 @@ public class BouncyMushroom : MonoBehaviour
         {
             rb.AddForce(transform.up * _strength * rb.mass);
 
-            transform.DOScale(_scaleMax, 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
-            {
-                transform.DOScale(_startScale, 0.1f).SetEase(Ease.OutCirc);
-            });
+            BounceEffect();
         }
+    }
+
+    [ContextMenu("Bounce Effect")]
+    private void BounceEffect()
+    {
+        transform.DOScale(_scaleMax, 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
+        {
+            transform.DOScale(_startScale, 0.1f).SetEase(Ease.OutCirc);
+        });
     }
 }
