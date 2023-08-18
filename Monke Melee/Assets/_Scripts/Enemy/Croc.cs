@@ -8,8 +8,8 @@ public class Croc : MonoBehaviour
 
     [SerializeField] private Transform _target;
 
-    [SerializeField] private Rigidbody _rb;
-    private bool _ableToJump;
+    private Rigidbody _rb;
+    [SerializeField] private bool _ableToJump = true;
 
     private void Awake()
     {
@@ -23,9 +23,15 @@ public class Croc : MonoBehaviour
         
         if(Vector3.Distance(_target.position, transform.position) < _firstRange)
         {
-            _rb.AddForce((_target.position - transform.position) * _jumpHeight, ForceMode.Impulse);
+            _rb.AddForce((_target.position - transform.position) * _jumpHeight * _rb.mass);
             StartCoroutine(JumpTimer());
         }
+    }
+
+    [ContextMenu("AddForce")]
+    public void AddForce()
+    {
+        _rb.AddForce((_target.position - transform.position) * _jumpHeight * _rb.mass);
     }
 
     void OnTriggerEnter(Collider other)
