@@ -34,9 +34,15 @@ public class BouncyMushroom : MonoBehaviour
     [ContextMenu("Bounce Effect")]
     private void BounceEffect()
     {
+        PlaySound();
         transform.DOScale(_scaleMax, 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
         {
             transform.DOScale(_startScale, 0.1f).SetEase(Ease.OutCirc);
         });
+    }
+
+    private void PlaySound()
+    {
+        AudioSystem.Instance.PlayGameClip((int)GameAudioEnums.Bounce, 0);
     }
 }
