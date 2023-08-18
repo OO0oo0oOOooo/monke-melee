@@ -33,53 +33,42 @@ public class AudioSystem : MonoBehaviour
         }
     }
 
-    public void PlayMusicClip(int array, int index, float vol = 1)
+    public void PlayMusicClipOneShot(int array, int index, float vol = 1)
     {
         AudioClip clip = _musicClips.clipArrays[array].clips[index];
         _musicSource.PlayOneShot(clip);
     }
 
-    public void PlayMenuClip(int array, int index, float vol = 1)
+    public void PlayMenuClipOneShot(int array, int index, float vol = 1)
     {
         AudioClip clip = _menuClips.clipArrays[array].clips[index];
         _menuSource.PlayOneShot(clip);
     }
 
-    public void PlayGameClip(int array, int index, float vol = 1)
+    public void PlayGameClipOneShot(int array, int index, float vol = 1)
     {
         AudioClip clip = _gameClips.clipArrays[array].clips[index];
         _gameSource.PlayOneShot(clip, vol);
     }
 
-    public void PlayRandomClipAtPoint(int array, Vector3 pos, float vol = 1)
+    public void PlayClipAtPoint(int array, int index, Vector3 pos, float vol = 1, float pitch = 1)
+    {
+        AudioClip clip = _gameClips.clipArrays[array].clips[index];
+
+        PlayOneShotAtPoint(clip, pos, vol, pitch);
+    }
+
+    public void PlayRandomClipAtPoint(int array, Vector3 pos, float vol = 1, float pitch = 1)
     {
         int i = Random.Range(0, _gameClips.clipArrays[array].clips.Length);
         AudioClip clip = _gameClips.clipArrays[array].clips[i];
 
-        PlayClipAtPoint(clip, pos, vol);
+        PlayOneShotAtPoint(clip, pos, vol, pitch);
     }
 
-    public void PlayRandomClipAtPointStatic(int array, Vector3 pos, float vol = 1)
-    {
-        int i = Random.Range(0, _gameClips.clipArrays[array].clips.Length);
-        AudioClip clip = _gameClips.clipArrays[array].clips[i];
-
-        AudioSource.PlayClipAtPoint(clip, pos, vol);
-    }
-
-    private void PlayClipAtPoint(AudioClip clip, Vector3 position, float volume)
-    {
-        GameObject audioObject = new GameObject("AudioObject");
-        audioObject.transform.position = position;
-
-        AudioSource audioSource = audioObject.AddComponent<AudioSource>();
-        audioSource.outputAudioMixerGroup = _mixerGroup;
-        audioSource.PlayOneShot(clip, volume);
-
-        Destroy(audioObject, clip.length);
-    }
-
+    // This parents a clip to a transform
     private Dictionary<int, AudioSource> _audioSources = new Dictionary<int, AudioSource>();
+
     public int GenerateId()
     {
         int id = _audioSources.Count;
@@ -118,5 +107,38 @@ public class AudioSystem : MonoBehaviour
             Destroy(audioSource.gameObject);
             _audioSources.Remove(id);
         }
+    }
+
+    // This is affected by the mixer
+    private void PlayOneShotAtPoint(AudioClip clip, Vector3 position, float volume = 1, float pitch = 1)
+    {
+        GameObject audioObject = new GameObject("AudioObject");
+        audioObject.transform.position = position;
+
+        AudioSource audioSource = audioObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = _mixerGroup;
+        audioSource.volume = volume;
+        audioSource.pitch = pitch;
+
+        audioSource.PlayOneShot(clip, volume);
+
+        Destroy(audioObject, clip.length);
+    }
+
+    // This uses unitys static method, which is not affected by the mixer
+    public void PlayClipAtPointStatic(int array, int index, Vector3 pos, float vol = 1)
+    {
+        AudioClip clip = _gameClips.clipArrays[array].clips[index];
+
+        AudioSource.PlayClipAtPoint(clip, pos, vol);
+    }
+
+    // This uses unitys static method, which is not affected by the mixer
+    public void PlayRandomClipAtPointStatic(int array, Vector3 pos, float vol = 1)
+    {
+        int i = Random.Range(0, _gameClips.clipArrays[array].clips.Length);
+        AudioClip clip = _gameClips.clipArrays[array].clips[i];
+
+        AudioSource.PlayClipAtPoint(clip, pos, vol);
     }
 }

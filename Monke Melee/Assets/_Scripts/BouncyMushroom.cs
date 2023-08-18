@@ -43,6 +43,6 @@ public class BouncyMushroom : MonoBehaviour
 
     private void PlaySound()
     {
-        AudioSystem.Instance.PlayGameClip((int)GameAudioEnums.Bounce, 0);
+        AudioSystem.Instance.PlayRandomClipAtPoint((int)GameAudioEnums.Bounce, transform.position, 1);
     }
 }
