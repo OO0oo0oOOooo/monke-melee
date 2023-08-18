@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -71,7 +72,9 @@ public class GibbonSwing : MonoBehaviour
             _ref.ProceduralAnimation.EnableSwingWeights(armIndex);
             
             SetupJoint(armIndex, hit.point);
+            PlaySound(hit.point);
         }
+
     }
 
     private void EndSwing(int armIndex)
@@ -182,5 +185,10 @@ public class GibbonSwing : MonoBehaviour
             Gizmos.DrawWireSphere(_jointR.connectedAnchor, 0.1f);
             Gizmos.DrawWireSphere(_ref.PlayerTransform.position + (_ref.PlayerTransform.rotation * _achorOffsetR), 0.1f);
         }
+    }
+
+    private void PlaySound(Vector3 pos)
+    {
+        AudioSystem.Instance.PlayRandomClipAtPoint((int)GameAudioEnums.Step, pos, 5);
     }
 }

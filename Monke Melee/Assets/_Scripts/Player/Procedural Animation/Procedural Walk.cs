@@ -1,5 +1,4 @@
 using System;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class ProceduralWalk : MonoBehaviour
@@ -10,6 +9,7 @@ public class ProceduralWalk : MonoBehaviour
     [SerializeField] private Transform _footTargetL;
 
     [SerializeField] private Vector3 _ellipseOffset;
+    [SerializeField] private Vector3 _rot;
 
     [SerializeField] private float _stepSpeed = 1f;
     [SerializeField] private float _stepHeight = 0.5f;
@@ -42,29 +42,23 @@ public class ProceduralWalk : MonoBehaviour
 
     private void WalkAnimation()
     {
-        // Set the IK Constraint Weights
-
-        // Feet Walk IK Constraint Weight = 1
-        // Feet Swing IK Constraint Weight = 0
-
-        // Swing Arm IK Constraint Weight = 0
-        // Silly Arm IK Constraint Weight = 1
-
         // Crouch, Gallop
 
         // TODO:
         // Lerp the ellipse scale velocity
         // The ellipse will have a min and max size.
 
-        FootSteppies();
+        FootSteppies2();
         FootIKSurface();
         FootSounds();
     }
 
     private void FootSteppies()
     {
-        float dotX = Vector3.Dot(_ref.Rigidbody.velocity, transform.right);// * transform.right;
-        float dotZ = Vector3.Dot(_ref.Rigidbody.velocity, transform.forward);// * transform.forward;
+        float dotX = Vector3.Dot(_ref.Rigidbody.velocity, transform.right); // * transform.right;
+        float dotZ = Vector3.Dot(_ref.Rigidbody.velocity, transform.forward); // * transform.forward;
+
+        float magY = _ref.Rigidbody.velocity.magnitude;
 
         Debug.DrawRay(transform.position, _ref.Rigidbody.velocity.normalized, Color.white);
         Debug.DrawRay(transform.position, transform.forward * 1, Color.blue);
@@ -73,19 +67,59 @@ public class ProceduralWalk : MonoBehaviour
         float stepTime = _stepSpeed * Time.deltaTime;
 
         angleX -= dotX * stepTime;
-        angleY -= _ref.Rigidbody.velocity.magnitude * stepTime;
+        angleY -= magY * stepTime;
         angleZ -= dotZ * stepTime;
 
         angleX %= 360;
         angleY %= 360;
         angleZ %= 360;
 
-        float x = _stepLength * Mathf.Cos(angleX);
-        float y = _stepHeight * Mathf.Sin(angleY);
-        float z = _stepLength * Mathf.Cos(angleZ);
+        // Remap dotX 0-1
+        // Remap dotY 0-1
+        // Remap dotZ 0-1
+
+        dotX = Mathf.Clamp(dotX, -1, 1);
+        magY = Mathf.Clamp(magY, -1, 1);
+        dotZ = Mathf.Clamp(dotZ, -1, 1);
+
+        float x = (_stepLength * dotX) * Mathf.Cos(angleX);
+        float y = (_stepHeight * magY) * Mathf.Sin(angleY);
+        float z = (_stepLength * dotZ) * Mathf.Cos(angleZ);
 
         _footTargetR.localPosition = _ellipseOffset + new Vector3(x, y, z); // + new Vector3(_footSpacing, 0, 0)
         _footTargetL.localPosition = _ellipseOffset + new Vector3(-x, -y, -z); // + new Vector3(-_footSpacing, 0, 0)
+    }
+
+    private void FootSteppies2()
+    {
+
+        Vector3 projectedVel = Vector3.ProjectOnPlane(_ref.Rigidbody.velocity.normalized, transform.up).normalized;
+        Quaternion rot = Quaternion.LookRotation(projectedVel, transform.up);
+
+        Debug.DrawRay(transform.position, _ref.Rigidbody.velocity.normalized, Color.white);
+        Debug.DrawRay(transform.position, projectedVel, Color.magenta);
+
+        float dotX = Vector3.Dot(_ref.Rigidbody.velocity.normalized, transform.right); // * transform.right;
+        float dotZ = Vector3.Dot(_ref.Rigidbody.velocity.normalized, transform.forward); // * transform.forward;
+        float magY = _ref.Rigidbody.velocity.magnitude;
+
+        float stepTime = _stepSpeed * Time.deltaTime;
+
+        angleY -= magY * stepTime;
+        angleY %= 360;
+        magY = Mathf.Clamp(magY, -1, 1);
+
+        float y = (_stepHeight * magY) * Mathf.Sin(angleY);
+        float z = (_stepLength * magY) * Mathf.Cos(angleY);
+
+        // _footTargetR.position = _ellipseOffset + transform.rotation * (rot * new Vector3(_footSpacing, y, z));
+        // _footTargetL.position = _ellipseOffset + transform.rotation * (rot * new Vector3(-_footSpacing, -y, -z));
+
+        _footTargetR.position = transform.position + (rot * new Vector3(0, y, z));
+        _footTargetL.position = transform.position + (rot * new Vector3(0, -y, -z));
+
+        // _footTargetR.localPosition = (rot * new Vector3(0, y, z));
+        // _footTargetL.localPosition = (rot * new Vector3(0, -y, -z));
     }
 
     private void FootIKSurface()
