@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Menu
   m_EditorClassIdentifier: 
   clipArrays:
-  - clips: []
+  - clips:
+    - {fileID: 8300000, guid: 949e1f931ce6c71419ad48ebd9b5a395, type: 3}

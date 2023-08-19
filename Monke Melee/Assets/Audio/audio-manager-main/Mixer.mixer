@@ -43,7 +43,15 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: 3cb15806ea203ee4ebc259ac93bf96ef
+    name: GameVolume
+  - guid: abc2f7008e7644149abedfd2694156a9
+    name: MasterVolume
+  - guid: c743af08bf2351842a61e300047723d1
+    name: MenuVolume
+  - guid: 7d98f5a01dff288459dd2e97e15b8ad4
+    name: MusicVolume
   m_AudioMixerGroupViews:
   - guids:
     - 5d045ad0b3276824f9403ce6f782c93a
@@ -99,7 +107,7 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 6166e25157b88db43a7023822b48838a
   m_FloatValues:
-    abc2f7008e7644149abedfd2694156a9: 0.04171297
+    abc2f7008e7644149abedfd2694156a9: 0
   m_TransitionOverrides: {}
 --- !u!243 &2402418599955374015
 AudioMixerGroupController:
@@ -120,6 +128,20 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &5603478331266597345
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 7d1338e1f13c8344aa0908738600dfef
+  m_EffectName: Receive
+  m_MixLevel: c3e7ff2ea529a164d9d4249114c8632c
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &5676946538634304721
 AudioMixerGroupController:
   m_ObjectHideFlags: 0

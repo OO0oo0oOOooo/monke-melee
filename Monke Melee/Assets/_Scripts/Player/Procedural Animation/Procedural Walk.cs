@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class ProceduralWalk : MonoBehaviour
@@ -48,7 +47,7 @@ public class ProceduralWalk : MonoBehaviour
         // Lerp the ellipse scale velocity
         // The ellipse will have a min and max size.
 
-        FootSteppies2();
+        FootSteppies();
         FootIKSurface();
         FootSounds();
     }
@@ -92,8 +91,11 @@ public class ProceduralWalk : MonoBehaviour
 
     private void FootSteppies2()
     {
+        Vector3 projectedVel = Vector3.forward;
 
-        Vector3 projectedVel = Vector3.ProjectOnPlane(_ref.Rigidbody.velocity.normalized, transform.up).normalized;
+        if(_ref.Rigidbody.velocity.magnitude > 0.1f)
+            projectedVel = Vector3.ProjectOnPlane(_ref.Rigidbody.velocity.normalized, transform.up).normalized;
+
         Quaternion rot = Quaternion.LookRotation(projectedVel, transform.up);
 
         Debug.DrawRay(transform.position, _ref.Rigidbody.velocity.normalized, Color.white);
@@ -115,8 +117,8 @@ public class ProceduralWalk : MonoBehaviour
         // _footTargetR.position = _ellipseOffset + transform.rotation * (rot * new Vector3(_footSpacing, y, z));
         // _footTargetL.position = _ellipseOffset + transform.rotation * (rot * new Vector3(-_footSpacing, -y, -z));
 
-        _footTargetR.position = transform.position + (rot * new Vector3(0, y, z));
-        _footTargetL.position = transform.position + (rot * new Vector3(0, -y, -z));
+        _footTargetR.position = (transform.position + _ellipseOffset) + (rot * new Vector3(0, y, z));
+        _footTargetL.position = (transform.position + _ellipseOffset) + (rot * new Vector3(0, -y, -z));
 
         // _footTargetR.localPosition = (rot * new Vector3(0, y, z));
         // _footTargetL.localPosition = (rot * new Vector3(0, -y, -z));
