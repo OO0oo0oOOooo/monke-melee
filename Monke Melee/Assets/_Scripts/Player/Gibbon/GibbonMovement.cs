@@ -75,11 +75,10 @@ public partial class GibbonMovement : MonoBehaviour
         if(_flyToggle && _fly)
             return MovementState.Fly;
 
-        if(_ref.GibbonSwing.SwingingL || _ref.GibbonSwing.SwingingR)
-            return MovementState.Swing;
-
         if(Grounded)
             return MovementState.Ground;
+        else if(_ref.GibbonSwing.SwingingL || _ref.GibbonSwing.SwingingR)
+            return MovementState.Swing;
         else
             return MovementState.Air;
     }
