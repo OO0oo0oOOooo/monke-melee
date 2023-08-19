@@ -87,6 +87,10 @@ public class ProceduralWalk : MonoBehaviour
 
         _footTargetR.localPosition = _ellipseOffset + new Vector3(x, y, z); // + new Vector3(_footSpacing, 0, 0)
         _footTargetL.localPosition = _ellipseOffset + new Vector3(-x, -y, -z); // + new Vector3(-_footSpacing, 0, 0)
+
+        // _footTargetR.position = transform.position + (transform.rotation * new Vector3(x, y, z)); // + new Vector3(_footSpacing, 0, 0)
+        // _footTargetL.position = transform.position + (transform.rotation * new Vector3(-x, -y, -z)); // + new Vector3(-_footSpacing, 0, 0)
+
     }
 
     private void FootSteppies2()
@@ -101,8 +105,8 @@ public class ProceduralWalk : MonoBehaviour
         Debug.DrawRay(transform.position, _ref.Rigidbody.velocity.normalized, Color.white);
         Debug.DrawRay(transform.position, projectedVel, Color.magenta);
 
-        float dotX = Vector3.Dot(_ref.Rigidbody.velocity.normalized, transform.right); // * transform.right;
-        float dotZ = Vector3.Dot(_ref.Rigidbody.velocity.normalized, transform.forward); // * transform.forward;
+        float dotX = Vector3.Dot(projectedVel, transform.right); // * transform.right;
+        float dotZ = Vector3.Dot(projectedVel, transform.forward); // * transform.forward;
         float magY = _ref.Rigidbody.velocity.magnitude;
 
         float stepTime = _stepSpeed * Time.deltaTime;
@@ -117,8 +121,8 @@ public class ProceduralWalk : MonoBehaviour
         // _footTargetR.position = _ellipseOffset + transform.rotation * (rot * new Vector3(_footSpacing, y, z));
         // _footTargetL.position = _ellipseOffset + transform.rotation * (rot * new Vector3(-_footSpacing, -y, -z));
 
-        _footTargetR.position = (transform.position + _ellipseOffset) + (rot * new Vector3(0, y, z));
-        _footTargetL.position = (transform.position + _ellipseOffset) + (rot * new Vector3(0, -y, -z));
+        _footTargetR.position = transform.position + (rot * new Vector3(_footSpacing, y, z));
+        _footTargetL.position = transform.position + (rot * new Vector3(-_footSpacing, -y, -z));
 
         // _footTargetR.localPosition = (rot * new Vector3(0, y, z));
         // _footTargetL.localPosition = (rot * new Vector3(0, -y, -z));
@@ -173,7 +177,7 @@ public class ProceduralWalk : MonoBehaviour
 
     private void PlaySound(Vector3 pos)
     {
-        AudioSystem.Instance.PlayRandomClipAtPoint((int)GameAudioEnums.Step, pos, 3);
+        AudioSystem.Instance.PlayRandomClipAtPoint((int)GameAudioEnums.Step, pos, 2);
     }
 
     private void OnDrawGizmos()

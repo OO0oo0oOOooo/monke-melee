@@ -6,6 +6,8 @@ public class GibbonSwing : MonoBehaviour
 {
     private GibbonRefrences _ref;
 
+    [SerializeField] private GameObject _grabHighlight;
+
     private bool _swingingL;
     private bool _swingingR;
     public bool SwingingL { get { return _swingingL; } }
@@ -54,6 +56,14 @@ public class GibbonSwing : MonoBehaviour
             EndSwing(1);
 
         UpdateIKTargets();
+
+        if(Physics.Raycast(_ref.Camera.transform.position, _ref.Camera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _ref.SimpleCollider.LayerMask))
+        {
+            _grabHighlight.transform.position = hit.point;
+            _grabHighlight.SetActive(true);
+        }
+        else
+            _grabHighlight.SetActive(false);
     }
 
     private void StartSwing(int armIndex)
@@ -166,9 +176,9 @@ public class GibbonSwing : MonoBehaviour
         if(!Application.isPlaying)
             return;
 
-        Gizmos.color = Color.white;
-        if(Physics.Raycast(_ref.Camera.transform.position, _ref.Camera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _ref.SimpleCollider.LayerMask))
-            Gizmos.DrawSphere(hit.point, 0.1f);
+        // Gizmos.color = Color.white;
+        // if(Physics.Raycast(_ref.Camera.transform.position, _ref.Camera.transform.forward, out RaycastHit hit, _maxRaycastDistance, _ref.SimpleCollider.LayerMask))
+        //     Gizmos.DrawSphere(hit.point, 0.1f);
 
         if(_swingingL)
         {
