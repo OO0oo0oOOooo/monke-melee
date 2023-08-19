@@ -47,7 +47,7 @@ public class ProceduralWalk : MonoBehaviour
         // Lerp the ellipse scale velocity
         // The ellipse will have a min and max size.
 
-        FootSteppies();
+        FootSteppies2();
         FootIKSurface();
         FootSounds();
     }

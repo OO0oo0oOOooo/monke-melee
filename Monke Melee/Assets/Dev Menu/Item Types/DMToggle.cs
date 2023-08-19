@@ -17,9 +17,14 @@ public class DMToggle : MonoBehaviour, IMenuItem
     [SerializeField] private DevMenuManager _devMenuManager;
     [SerializeField] private int _parentMenuIndex;
 
+    public bool _isOn = false;
+
     public void ExecuteCommand()
     {
-        print("Toggle Command");
+        _isOn = !_isOn;
+        
+        _icon.gameObject.SetActive(_isOn);
+        gameObject.GetComponent<IDMToggle>().EnterCommand(_isOn);
     }
 
     public void LeftCommand()
