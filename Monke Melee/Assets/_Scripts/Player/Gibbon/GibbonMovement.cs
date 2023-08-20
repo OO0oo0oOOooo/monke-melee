@@ -63,7 +63,8 @@ public partial class GibbonMovement : MonoBehaviour
         }
         
         _ref.Rigidbody.velocity = _vel;
-
+        
+        _ref.CustomInput._jumpPending = false;
         _ref.SimpleCollider.IsGrounded = false;
         _ref.SimpleCollider.ContactNormal = Vector3.zero;
     }
