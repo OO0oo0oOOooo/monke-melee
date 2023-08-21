@@ -60,8 +60,7 @@ public class Croc : MonoBehaviour
 
     void Update()
     {
-        if(Vector3.Distance(_transform.position, _destination) > 1)
-            _targetDir = (_destination - _transform.position).normalized;
+        _targetDir = (_destination - _transform.position).normalized;
 
         switch (GetBehaviourState())
         {
@@ -106,7 +105,18 @@ public class Croc : MonoBehaviour
 
         // if(_targetDistance < _jumpRange && _ableToJump)
         //     JumpAttack();
+        Vector3 right = Vector3.Cross(_collision.AdvNormal, _transform.forward);
+        Vector3 forward = Vector3.Cross(right, _collision.AdvNormal);
 
+        if(Vector3.Dot(_transform.up, Vector3.up) < 0.5f)
+        {
+            _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(_transform.up, Vector3.up), Time.deltaTime * 5f);
+        }
+        else
+        {
+        }
+        _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(forward, _collision.AdvNormal), Time.deltaTime * 5f);
+        
         switch (GetMoveState())
         {
             case CrocMove.Ground:
@@ -151,7 +161,9 @@ public class Croc : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(_targetDir, _collision.AdvNormal);
         _transform.rotation = Quaternion.Lerp(_transform.rotation, targetRot, Time.deltaTime * 5f);
 
-        GroundAccelerate();
+        if(Vector3.Distance(_transform.position, _destination) > 1)
+            GroundAccelerate();
+        
         ApplyFriction(8);
     }
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CrocCollision : MonoBehaviour
@@ -11,8 +12,8 @@ public class CrocCollision : MonoBehaviour
     [SerializeField] private float _slopeLimit = 45f;
 
     public LayerMask LayerMask;
-    [SerializeField] private Vector3[] _raycastOrigins;
-    [SerializeField] private float _raycastDistance = 1f;
+
+    [SerializeField] private RaySettings[] _ray;
 
     public bool DebugGizmos = false;
 
@@ -35,12 +36,12 @@ public class CrocCollision : MonoBehaviour
         Vector3 advPoint = Vector3.zero;
         int hitCount = 0;
 
-        for (int i = 0; i < _raycastOrigins.Length; i++)
+        for (int i = 0; i < _ray.Length; i++)
         {
-            Vector3 dir = -_transform.up;
-            Vector3 origin = _transform.position + (_transform.rotation * _raycastOrigins[i]);
+            Vector3 origin = _transform.position + (_transform.rotation * _ray[i].Origin);
+            Vector3 dir = _transform.rotation * _ray[i].Direction;
 
-            if (Physics.Raycast(origin, dir, out RaycastHit hit, _raycastDistance, LayerMask))
+            if (Physics.Raycast(origin, dir, out RaycastHit hit, _ray[i].Distance, LayerMask))
             {
                 advNormal += hit.normal;
                 IsGrounded = true;
@@ -63,13 +64,22 @@ public class CrocCollision : MonoBehaviour
     private void OnDrawGizmos()
     {
         if(!DebugGizmos) return;
+        if(_ray.Length == 0) return;
 
         Gizmos.color = Color.red;
-        for (int i = 0; i < _raycastOrigins.Length; i++)
+        for (int i = 0; i < _ray.Length; i++)
         {
-            Vector3 dir = -transform.up;
-            Vector3 origin = transform.position + (transform.rotation * _raycastOrigins[i]);
-            Gizmos.DrawRay(origin, dir * _raycastDistance);
+            Vector3 origin = transform.position + (transform.rotation * _ray[i].Origin);
+            Vector3 dir = transform.rotation * _ray[i].Direction;
+            Gizmos.DrawRay(origin, dir * _ray[i].Distance);
         }
     }
+}
+
+[Serializable]
+public struct RaySettings
+{
+    public Vector3 Origin;
+    public Vector3 Direction;
+    public float Distance;
 }
