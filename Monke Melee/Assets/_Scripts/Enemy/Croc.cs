@@ -3,49 +3,238 @@ using UnityEngine;
 
 public class Croc : MonoBehaviour
 {
-    [SerializeField] private float _jumpHeight = 10;
-    [SerializeField] private float _firstRange = 25;
+    private Rigidbody _rb;
+    private CrocCollision _collision;
+    private Transform _transform;
 
     [SerializeField] private Transform _target;
 
-    private Rigidbody _rb;
-    [SerializeField] private bool _ableToJump = true;
+    [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private float _jumpHeight = 50;
+
+    [SerializeField] private float _groundBaseLimit = 10;
+    [SerializeField] private float _groundAcceleration = 20;
+    [SerializeField] private bool _clampGroundSpeed = false;
+
+    [SerializeField] private float _trackRange = 25;
+    [SerializeField] private float _jumpRange = 10;
+
+    private bool _ableToJump = true;
+    private Vector3 _vel;
+    private Vector3 _destination;
+    private Vector3 _targetDir;
+    private float _targetDistance;
+
+    // private CrocBehaviour _behaviourState = CrocBehaviour.Idle;
+    public enum CrocBehaviour
+    {
+        Idle,   // float and sunbathe
+        Wander, // Wander around
+
+        Search, // Search for player
+        Hunt,   // Hide under water and wait for player to get close
+        Chase,  // get that ****** and eat him
+
+        Eat     // bring player to water and death roll/eat
+    }
+
+    // private CrocMove _moveState = CrocMove.Ground;
+    public enum CrocMove
+    {
+        Ground, 
+        Air,    
+        Swim    // Boosted jump strength, death roll, bring food to water
+    }
 
     private void Awake()
     {
+        _transform = transform;
         _rb = GetComponent<Rigidbody>();
+        _collision = GetComponent<CrocCollision>();
+    }
+
+    private void Start()
+    {
+        _destination = _transform.position;
     }
 
     void Update()
     {
-        if(_target == null || !_ableToJump)
-            return;
+        if(Vector3.Distance(_transform.position, _destination) > 1)
+            _targetDir = (_destination - _transform.position).normalized;
+
+        switch (GetBehaviourState())
+        {
+            case CrocBehaviour.Idle:
+                Idle();
+                break;
+            case CrocBehaviour.Chase:
+                Chase();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void Idle()
+    {
+        // Do crocadile things like float and sunbathe
+    }
+
+    private void Chase()
+    {
+        // Get distance to target
+        // If target leaves range then set target to null
+        // If target is in range then set targetDir
+
+        _targetDistance = Vector3.Distance(_target.position, _transform.position);
         
-        if(Vector3.Distance(_target.position, transform.position) < _firstRange)
+        if(_targetDistance > _trackRange)
+            _target = null;
+
+        // Raycast toward target and check if we have line of sight. If not then set target to null
+        if(_targetDistance < _trackRange)
         {
-            _rb.AddForce((_target.position - transform.position) * _jumpHeight * _rb.mass);
-            StartCoroutine(JumpTimer());
+            _destination = _target.position;
         }
+
     }
 
-    [ContextMenu("AddForce")]
-    public void AddForce()
+    void FixedUpdate()
     {
-        _rb.AddForce((_target.position - transform.position) * _jumpHeight * _rb.mass);
-    }
+        _vel = _rb.velocity;
 
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.CompareTag("Player"))
+        // if(_targetDistance < _jumpRange && _ableToJump)
+        //     JumpAttack();
+
+        switch (GetMoveState())
         {
-            _target = other.gameObject.transform;
+            case CrocMove.Ground:
+                GroundMovement();
+                break;
+            case CrocMove.Air:
+                AirMovement();
+                break;
+            case CrocMove.Swim:
+                SwimMovement();
+                break;
+            default:
+                break;
         }
+
+        _rb.velocity = _vel;
     }
 
+    private CrocMove GetMoveState()
+    {
+        // check if gater is in water
+        // return GaterMove.Swim;
+
+        if(_collision.IsGrounded)
+            return CrocMove.Ground;
+        else
+            return CrocMove.Air;
+    }
+
+    private CrocBehaviour GetBehaviourState()
+    {
+        if(_target == null)
+            return CrocBehaviour.Idle;
+        else
+            return CrocBehaviour.Chase;
+    }
+
+    private void GroundMovement()
+    {
+        _targetDir = Vector3.Cross(Vector3.Cross(_collision.AdvNormal, _targetDir), _collision.AdvNormal).normalized;
+
+        Quaternion targetRot = Quaternion.LookRotation(_targetDir, _collision.AdvNormal);
+        _transform.rotation = Quaternion.Lerp(_transform.rotation, targetRot, Time.deltaTime * 5f);
+
+        GroundAccelerate();
+        ApplyFriction(8);
+    }
+
+    private void AirMovement()
+    {
+        ApplyGravity();
+        // _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(_vel.normalized, Vector3.up), Time.deltaTime * 5f);
+    }
+
+    private void SwimMovement()
+    {
+        _vel += _moveSpeed * Time.deltaTime * _targetDir;
+    }
+
+    private void ApplyGravity()
+    {
+        _vel.y -= 16 * Time.deltaTime;
+    }
+
+    private void JumpAttack()
+    {
+        _rb.AddForce(_jumpHeight * _rb.mass * _targetDir);
+        StartCoroutine(JumpTimer());
+    }
     private IEnumerator JumpTimer()
     {
         _ableToJump = false;
         yield return new WaitForSeconds(5f);
         _ableToJump = true;
+    }
+
+    private void GroundAccelerate()
+    {
+        float speedMag = Vector3.Dot(_vel, _targetDir);
+        Accelerate(_targetDir, speedMag, _groundBaseLimit, _groundAcceleration);
+
+        if (_clampGroundSpeed)
+            ClampVel(_groundBaseLimit);
+    }
+    
+    private void SwimAccelerate()
+    {
+
+    }
+
+    private void ApplyFriction(float friction)
+    {
+        _vel *= Mathf.Clamp01(1 - Time.deltaTime * friction);
+    }
+    
+    private void ClampVel(float limit)
+    {
+        if (_vel.magnitude > limit)
+            _vel = _vel.normalized * limit;
+    }
+
+    private void Accelerate(Vector3 direction, float magnitude, float accelLimit, float acceleration)
+    {
+        float addSpeed = accelLimit - magnitude;
+
+        if (addSpeed <= 0)
+            return;
+
+        float accelSpeed = acceleration * Time.deltaTime;
+        
+        if (accelSpeed > addSpeed)
+            accelSpeed = addSpeed;
+
+        _vel += accelSpeed * direction;
+    }
+
+
+    void OnTriggerStay(Collider other)
+    {
+        // Check which trigger is triggering this
+        
+        // Check line of sight for all players within range
+        // Set Destination to closest player.
+        // If no line of sight move to last known position.
+
+        if(other.CompareTag("Player"))
+        {
+            _target = other.gameObject.transform;
+        }
     }
 }

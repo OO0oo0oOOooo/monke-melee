@@ -4564,7 +4564,7 @@ MonoBehaviour:
   ContactNormal: {x: 0, y: 0, z: 0}
   LayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   _slopeLimit: 70
 --- !u!114 &8433410783708410942
 MonoBehaviour:
@@ -5095,6 +5095,7 @@ MonoBehaviour:
   _footSpacing: 0.14
   _distanceToGround: 0.05
   _debugEllipse: 0
+  angle: 0
 --- !u!114 &377202578112527478
 MonoBehaviour:
   m_ObjectHideFlags: 0
