@@ -1,7 +1,5 @@
-using System;
-using Unity.Mathematics;
 using UnityEngine;
-public class ProceduralWalk : MonoBehaviour
+public class ProceduralWalkEllipse : MonoBehaviour
 {
     private GibbonRefrences _ref;
     private Transform _transform;

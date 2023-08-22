@@ -15,7 +15,7 @@ public class GibbonRefrences : NetworkBehaviour
     public GibbonSwing GibbonSwing;
     public SimpleCollider SimpleCollider;
     public ProceduralAnimation ProceduralAnimation;
-    public ProceduralWalk ProceduralWalk;
+    public ProceduralWalkEllipse ProceduralWalk;
     
     [Header("Camera")]
     public Camera Camera;

@@ -60,6 +60,7 @@ public class Croc : MonoBehaviour
 
     void Update()
     {
+        _destination.y = 0;
         _targetDir = (_destination - _transform.position).normalized;
 
         switch (GetBehaviourState())
@@ -108,13 +109,11 @@ public class Croc : MonoBehaviour
         Vector3 right = Vector3.Cross(_collision.AdvNormal, _transform.forward);
         Vector3 forward = Vector3.Cross(right, _collision.AdvNormal);
 
-        if(Vector3.Dot(_transform.up, Vector3.up) < 0.5f)
-        {
-            _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(_transform.up, Vector3.up), Time.deltaTime * 5f);
-        }
-        else
-        {
-        }
+        // if(Vector3.Dot(_transform.up, Vector3.up) < 0.5f)
+        // {
+        //     _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(_transform.up, Vector3.up), Time.deltaTime * 5f);
+        // }
+
         _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(forward, _collision.AdvNormal), Time.deltaTime * 5f);
         
         switch (GetMoveState())
