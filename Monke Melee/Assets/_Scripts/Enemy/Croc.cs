@@ -6,8 +6,9 @@ public class Croc : MonoBehaviour
     private Rigidbody _rb;
     private CrocCollision _collision;
     private Transform _transform;
+    private CrocTargetFinder _targetFinder;
 
-    [SerializeField] private Transform _target;
+    // [SerializeField] private Transform _target;
 
     [SerializeField] private float _moveSpeed = 10f;
     [SerializeField] private float _jumpHeight = 50;
@@ -51,6 +52,7 @@ public class Croc : MonoBehaviour
         _transform = transform;
         _rb = GetComponent<Rigidbody>();
         _collision = GetComponent<CrocCollision>();
+        _targetFinder = GetComponent<CrocTargetFinder>();
     }
 
     private void Start()
@@ -60,8 +62,9 @@ public class Croc : MonoBehaviour
 
     void Update()
     {
-        _destination.y = 0;
+        // _destination.y = _transform.position.y;
         _targetDir = (_destination - _transform.position).normalized;
+        // _targetDir.y = _transform.position.y;
 
         switch (GetBehaviourState())
         {
@@ -87,15 +90,15 @@ public class Croc : MonoBehaviour
         // If target leaves range then set target to null
         // If target is in range then set targetDir
 
-        _targetDistance = Vector3.Distance(_target.position, _transform.position);
+        _targetDistance = Vector3.Distance(_targetFinder.Target.position, _transform.position);
         
         if(_targetDistance > _trackRange)
-            _target = null;
+            _targetFinder.Target = null;
 
         // Raycast toward target and check if we have line of sight. If not then set target to null
         if(_targetDistance < _trackRange)
         {
-            _destination = _target.position;
+            _destination = _targetFinder.Target.position;
         }
 
     }
@@ -147,7 +150,7 @@ public class Croc : MonoBehaviour
 
     private CrocBehaviour GetBehaviourState()
     {
-        if(_target == null)
+        if(_targetFinder.Target == null)
             return CrocBehaviour.Idle;
         else
             return CrocBehaviour.Chase;
@@ -243,9 +246,9 @@ public class Croc : MonoBehaviour
         // Set Destination to closest player.
         // If no line of sight move to last known position.
 
-        if(other.CompareTag("Player"))
-        {
-            _target = other.gameObject.transform;
-        }
+        // if(other.CompareTag("Player"))
+        // {
+        //     _target = other.gameObject.transform;
+        // }
     }
 }

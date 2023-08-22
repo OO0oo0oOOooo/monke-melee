@@ -22,6 +22,10 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
     private bool _canPlaySoundL;
     private bool _canPlaySoundR;
 
+    // If other arm is moving then this arm cant move
+    // Cubic lerp between current position and target position
+    
+
     private void Awake()
     {
         _transform = transform;
