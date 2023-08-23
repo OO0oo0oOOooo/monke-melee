@@ -109,13 +109,9 @@ public class Croc : MonoBehaviour
 
         // if(_targetDistance < _jumpRange && _ableToJump)
         //     JumpAttack();
+
         Vector3 right = Vector3.Cross(_collision.AdvNormal, _transform.forward);
         Vector3 forward = Vector3.Cross(right, _collision.AdvNormal);
-
-        // if(Vector3.Dot(_transform.up, Vector3.up) < 0.5f)
-        // {
-        //     _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(_transform.up, Vector3.up), Time.deltaTime * 5f);
-        // }
 
         _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(forward, _collision.AdvNormal), Time.deltaTime * 5f);
         
@@ -240,15 +236,6 @@ public class Croc : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        // Check which trigger is triggering this
-        
-        // Check line of sight for all players within range
-        // Set Destination to closest player.
-        // If no line of sight move to last known position.
-
-        // if(other.CompareTag("Player"))
-        // {
-        //     _target = other.gameObject.transform;
-        // }
+        // If the trigger is the bite hitbox then grab the player
     }
 }

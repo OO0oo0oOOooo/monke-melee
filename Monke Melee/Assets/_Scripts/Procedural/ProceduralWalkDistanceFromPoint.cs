@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ProceduralWalkDistanceFromPoint : MonoBehaviour
@@ -24,7 +25,8 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
 
     // If other arm is moving then this arm cant move
     // Cubic lerp between current position and target position
-    
+
+    public bool Moving;
 
     private void Awake()
     {
@@ -73,6 +75,61 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
             // _footTargetR.rotation = Quaternion.FromToRotation(transform.up, hitR.normal) * Quaternion.Euler(90,0,0) * transform.rotation;
         }
     }
+
+    // IEnumerator MoveFoot()
+    // {
+    //     Moving = true;
+
+    //     Vector3 startPoint = _footPositionR;
+    //     // Quaternion startRot = transform.rotation;
+
+    //     Vector3 newFootPosition = hitR.point;
+    //     newFootPosition.y += _distanceToGround;
+
+    //     // Quaternion endRot = homeTransform.rotation;
+
+    //     // Directional vector from the foot to the home position
+    //     Vector3 towardHome = (_footPositionR - newFootPosition);
+
+    //     // Total distnace to overshoot by   
+    //     // float overshootDistance = wantStepAtDistance * stepOvershootFraction;
+    //     // Vector3 overshootVector = towardHome * overshootDistance;
+        
+    //     // Since we don't ground the point in this simplified implementation,
+    //     // we restrict the overshoot vector to be level with the ground
+    //     // by projecting it on the world XZ plane.
+    //     // overshootVector = Vector3.ProjectOnPlane(overshootVector, Vector3.up);
+
+    //     // Apply the overshoot
+    //     Vector3 endPoint = hitR.point;
+
+    //     // We want to pass through the center point
+    //     Vector3 centerPoint = (startPoint + endPoint) / 2;
+    //     // But also lift off, so we move it up by half the step distance (arbitrarily)
+    //     centerPoint += homeTransform.up * Vector3.Distance(startPoint, endPoint) / 2f;
+
+    //     float timeElapsed = 0;
+    //     do
+    //     {
+    //         timeElapsed += Time.deltaTime;
+    //         float normalizedTime = timeElapsed / moveDuration;
+
+    //         // Quadratic bezier curve
+    //         transform.position =
+    //         Vector3.Lerp(
+    //             Vector3.Lerp(startPoint, centerPoint, normalizedTime),
+    //             Vector3.Lerp(centerPoint, endPoint, normalizedTime),
+    //             normalizedTime
+    //         );
+
+    //         transform.rotation = Quaternion.Slerp(startRot, endRot, normalizedTime);
+
+    //         yield return null;
+    //     }
+    //     while (timeElapsed < moveDuration);
+
+    //     Moving = false;
+    // }
 
     private void FootSounds()
     {
