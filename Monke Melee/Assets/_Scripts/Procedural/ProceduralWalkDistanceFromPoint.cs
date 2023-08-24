@@ -8,25 +8,23 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
 
     [SerializeField] private Transform _footTargetR;
     [SerializeField] private Transform _footTargetL;
+    // private Vector3 _footPositionR;
+    // private Vector3 _footPositionL;
 
-    [SerializeField] private float _distanceToGround = 0;
+    [SerializeField] private FootStepper _footStepperR;
+    [SerializeField] private FootStepper _footStepperL;
+
     [SerializeField] private Vector3 _raycastOffset = Vector3.zero;
     [SerializeField] private float _footSpacing = 0.25f;
-    [SerializeField] private float _wantMoveDistance = 0.5f;
 
-    private Vector3 _footPositionR;
-    private Vector3 _footPositionL;
+    [SerializeField] private float _distanceToGround = 0;
+    [SerializeField] private float _wantMoveDistance = 0.5f;
 
     RaycastHit hitR;
     RaycastHit hitL;
 
     private bool _canPlaySoundL;
     private bool _canPlaySoundR;
-
-    // If other arm is moving then this arm cant move
-    // Cubic lerp between current position and target position
-
-    public bool Moving;
 
     private void Awake()
     {
@@ -35,12 +33,43 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
 
     private void Update()
     {
-        _footTargetR.position = _footPositionR;
-        _footTargetL.position = _footPositionL;
-
         FootIKSurface();
         FootSounds();
     }
+
+    // private void FootIKSurface()
+    // {
+    //     Ray rayR = new Ray(_transform.position + (_transform.rotation * _raycastOffset) + (_transform.right * _footSpacing), -transform.up);
+    //     Ray rayL = new Ray(_transform.position + (_transform.rotation * _raycastOffset) + (-_transform.right * _footSpacing), -transform.up);
+
+    //     Debug.DrawRay(rayR.origin, rayR.direction, Color.red);
+    //     Debug.DrawRay(rayL.origin, rayL.direction, Color.red);
+    //     if(Physics.Raycast(rayL, out hitL, _distanceToGround + 1f, _layerMask))
+    //     {
+    //         if(Vector3.Distance(hitL.point, _footTargetL.position) > _wantMoveDistance)
+    //         {
+    //             Vector3 footPosition = hitL.point;
+    //             footPosition.y += _distanceToGround;
+
+    //             _footPositionL = footPosition;
+    //         }
+            
+    //         // _footTargetL.rotation = Quaternion.FromToRotation(transform.up, hitL.normal) * Quaternion.Euler(90,0,0) * transform.rotation;
+    //     }
+
+    //     if(Physics.Raycast(rayR, out hitR, _distanceToGround + 1f, _layerMask))
+    //     {
+    //         if(Vector3.Distance(hitR.point, _footTargetR.position) > _wantMoveDistance)
+    //         {
+    //             Vector3 footPosition = hitR.point;
+    //             footPosition.y += _distanceToGround;
+
+    //             _footPositionR = footPosition;
+    //         }
+
+    //         // _footTargetR.rotation = Quaternion.FromToRotation(transform.up, hitR.normal) * Quaternion.Euler(90,0,0) * transform.rotation;
+    //     }
+    // }
 
     private void FootIKSurface()
     {
@@ -51,82 +80,65 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
         Debug.DrawRay(rayL.origin, rayL.direction, Color.red);
         if(Physics.Raycast(rayL, out hitL, _distanceToGround + 1f, _layerMask))
         {
-            if(Vector3.Distance(hitL.point, _footTargetL.position) > _wantMoveDistance)
+            if(Vector3.Distance(hitL.point, _footTargetL.position) > _wantMoveDistance && !_footStepperR.Moving)
             {
-                Vector3 footPosition = hitL.point;
-                footPosition.y += _distanceToGround;
-
-                _footPositionL = footPosition;
+                StartCoroutine(_footStepperL.Step(hitL, _wantMoveDistance, _distanceToGround));
             }
-            
-            // _footTargetL.rotation = Quaternion.FromToRotation(transform.up, hitL.normal) * Quaternion.Euler(90,0,0) * transform.rotation;
         }
 
         if(Physics.Raycast(rayR, out hitR, _distanceToGround + 1f, _layerMask))
         {
-            if(Vector3.Distance(hitR.point, _footTargetR.position) > _wantMoveDistance)
+            if(Vector3.Distance(hitR.point, _footTargetR.position) > _wantMoveDistance && !_footStepperL.Moving)
             {
-                Vector3 footPosition = hitR.point;
-                footPosition.y += _distanceToGround;
-
-                _footPositionR = footPosition;
+                StartCoroutine(_footStepperR.Step(hitR, _wantMoveDistance, _distanceToGround));
             }
-
-            // _footTargetR.rotation = Quaternion.FromToRotation(transform.up, hitR.normal) * Quaternion.Euler(90,0,0) * transform.rotation;
         }
     }
 
-    // IEnumerator MoveFoot()
+    // IEnumerator MoveFoot(Vector3 hitPoint)
     // {
     //     Moving = true;
 
     //     Vector3 startPoint = _footPositionR;
     //     // Quaternion startRot = transform.rotation;
 
-    //     Vector3 newFootPosition = hitR.point;
+    //     Vector3 newFootPosition = hitPoint;
     //     newFootPosition.y += _distanceToGround;
 
-    //     // Quaternion endRot = homeTransform.rotation;
-
-    //     // Directional vector from the foot to the home position
     //     Vector3 towardHome = (_footPositionR - newFootPosition);
 
-    //     // Total distnace to overshoot by   
-    //     // float overshootDistance = wantStepAtDistance * stepOvershootFraction;
-    //     // Vector3 overshootVector = towardHome * overshootDistance;
+    //     float overshootDistance = _wantMoveDistance * _stepOvershootFraction;
+    //     Vector3 overshootVector = towardHome * overshootDistance;
         
-    //     // Since we don't ground the point in this simplified implementation,
-    //     // we restrict the overshoot vector to be level with the ground
-    //     // by projecting it on the world XZ plane.
-    //     // overshootVector = Vector3.ProjectOnPlane(overshootVector, Vector3.up);
+    //     overshootVector = Vector3.ProjectOnPlane(overshootVector, Vector3.up);
 
-    //     // Apply the overshoot
-    //     Vector3 endPoint = hitR.point;
+    //     Vector3 endPoint = hitPoint + overshootVector;
+    //     // Quaternion endRot = homeTransform.rotation;
 
     //     // We want to pass through the center point
     //     Vector3 centerPoint = (startPoint + endPoint) / 2;
     //     // But also lift off, so we move it up by half the step distance (arbitrarily)
-    //     centerPoint += homeTransform.up * Vector3.Distance(startPoint, endPoint) / 2f;
+    //     centerPoint += _transform.up * Vector3.Distance(startPoint, endPoint) / 2f;
 
     //     float timeElapsed = 0;
     //     do
     //     {
     //         timeElapsed += Time.deltaTime;
-    //         float normalizedTime = timeElapsed / moveDuration;
+    //         float normalizedTime = timeElapsed / _moveDuration;
 
     //         // Quadratic bezier curve
-    //         transform.position =
+    //         _footPositionR =
     //         Vector3.Lerp(
     //             Vector3.Lerp(startPoint, centerPoint, normalizedTime),
     //             Vector3.Lerp(centerPoint, endPoint, normalizedTime),
     //             normalizedTime
     //         );
 
-    //         transform.rotation = Quaternion.Slerp(startRot, endRot, normalizedTime);
+    //         // transform.rotation = Quaternion.Slerp(startRot, endRot, normalizedTime);
 
     //         yield return null;
     //     }
-    //     while (timeElapsed < moveDuration);
+    //     while (timeElapsed < _moveDuration);
 
     //     Moving = false;
     // }

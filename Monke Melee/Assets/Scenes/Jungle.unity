@@ -2102,7 +2102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 140872037}
   - component: {fileID: 140872038}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Target Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23768,7 +23768,7 @@ GameObject:
   - component: {fileID: 1660975547}
   - component: {fileID: 1660975546}
   - component: {fileID: 1660975545}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Bite Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24285,7 +24285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e52ce83064a7864faaa76cdfea88681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
+  Target: {fileID: 129588811}
 --- !u!1 &1689965141
 GameObject:
   m_ObjectHideFlags: 0
@@ -31545,12 +31545,14 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 1
-  _footTargetR: {fileID: 521530948}
-  _footTargetL: {fileID: 567303838}
+  _footTargetR: {fileID: 567303838}
+  _footTargetL: {fileID: 521530948}
+  _footStepperR: {fileID: 0}
+  _footStepperL: {fileID: 0}
+  _raycastOffset: {x: 0, y: 0, z: 0.5}
+  _footSpacing: 0.9
   _distanceToGround: 0
-  _raycastOffset: {x: 0, y: 0, z: 0.75}
-  _footSpacing: -0.9
-  _wantMoveDistance: 1
+  _wantMoveDistance: 0.75
 --- !u!114 &4274073599909805225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31566,12 +31568,14 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 1
-  _footTargetR: {fileID: 327282205}
-  _footTargetL: {fileID: 951626671}
+  _footTargetR: {fileID: 951626671}
+  _footTargetL: {fileID: 327282205}
+  _footStepperR: {fileID: 0}
+  _footStepperL: {fileID: 0}
+  _raycastOffset: {x: 0, y: 0, z: -2}
+  _footSpacing: 0.9
   _distanceToGround: 0
-  _raycastOffset: {x: 0, y: 0, z: -1.5}
-  _footSpacing: -0.9
-  _wantMoveDistance: 1
+  _wantMoveDistance: 0.75
 --- !u!114 &4274073599909805226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31586,6 +31590,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetFinder: {fileID: 0}
   _headBone: {fileID: 6343565288600566205}
+  headMaxTurnAngle: 45
+  headTrackingSpeed: 10
 --- !u!4 &4346590614467863729
 Transform:
   m_ObjectHideFlags: 0

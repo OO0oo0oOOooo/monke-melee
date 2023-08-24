@@ -21,13 +21,13 @@ public class LookAtTarget : MonoBehaviour
         if (_targetFinder.Target != null)
         {
             Vector3 direction = (_targetFinder.Target.position - transform.position).normalized;
-            direction = _transform.InverseTransformDirection(direction);
+            // direction = _transform.InverseTransformDirection(direction);
 
             direction = Vector3.RotateTowards(_transform.forward, direction, Mathf.Deg2Rad * headMaxTurnAngle, 0);
 
             Quaternion targetRotation = Quaternion.LookRotation(direction, _transform.up) * Quaternion.Euler(90, 0, 0);
 
-            _headBone.localRotation = Quaternion.Slerp( _headBone.rotation, targetRotation, 1 - Mathf.Exp(-headTrackingSpeed * Time.deltaTime));
+            _headBone.rotation = Quaternion.Slerp( _headBone.rotation, targetRotation, 1 - Mathf.Exp(-headTrackingSpeed * Time.deltaTime));
         }
     }
 }
