@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class CrocCollision : MonoBehaviour
+public class RaycastGround : MonoBehaviour
 {
     private Transform _transform;
 
@@ -24,13 +24,13 @@ public class CrocCollision : MonoBehaviour
 
     private void Update()
     {
-        RaycastGround();
+        Raycast();
 
         if(Vector3.Angle(AdvNormal, Vector3.up) > _slopeLimit)
             IsGrounded = false;
     }
 
-    private void RaycastGround()
+    private void Raycast()
     {
         Vector3 advNormal = Vector3.zero;
         Vector3 advPoint = Vector3.zero;

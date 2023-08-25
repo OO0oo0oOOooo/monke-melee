@@ -18,6 +18,24 @@ public class FootStepper : MonoBehaviour
         _transform = transform;
     }
 
+    private void Start()
+    {
+        // Get _wantMoveDistance, _distanceToGround, and other constant variables from whatever script is controlling this foot
+    }
+
+    public void TryStep(RaycastHit hit, float _wantMoveDistance, float _distanceToGround)
+    {
+        if (Moving) return;
+
+        float distFromHome = Vector3.Distance(FootPosition, hit.point);
+
+        // If we are too far off in position or rotation
+        if (distFromHome > _wantMoveDistance)
+        {
+            StartCoroutine(Step(hit, _wantMoveDistance, _distanceToGround));
+        }
+    }
+
     public IEnumerator Step(RaycastHit hit, float _wantMoveDistance, float _distanceToGround)
     {
         Moving = true;

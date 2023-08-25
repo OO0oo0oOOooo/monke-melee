@@ -4,7 +4,7 @@ using UnityEngine;
 public class Croc : MonoBehaviour
 {
     private Rigidbody _rb;
-    private CrocCollision _collision;
+    private RaycastGround _groundCheck;
     private Transform _transform;
     private CrocTargetFinder _targetFinder;
 
@@ -51,7 +51,7 @@ public class Croc : MonoBehaviour
     {
         _transform = transform;
         _rb = GetComponent<Rigidbody>();
-        _collision = GetComponent<CrocCollision>();
+        _groundCheck = GetComponent<RaycastGround>();
         _targetFinder = GetComponent<CrocTargetFinder>();
     }
 
@@ -110,10 +110,10 @@ public class Croc : MonoBehaviour
         // if(_targetDistance < _jumpRange && _ableToJump)
         //     JumpAttack();
 
-        Vector3 right = Vector3.Cross(_collision.AdvNormal, _transform.forward);
-        Vector3 forward = Vector3.Cross(right, _collision.AdvNormal);
+        Vector3 right = Vector3.Cross(_groundCheck.AdvNormal, _transform.forward);
+        Vector3 forward = Vector3.Cross(right, _groundCheck.AdvNormal);
 
-        _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(forward, _collision.AdvNormal), Time.deltaTime * 5f);
+        _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(forward, _groundCheck.AdvNormal), Time.deltaTime * 5f);
         
         switch (GetMoveState())
         {
@@ -138,7 +138,7 @@ public class Croc : MonoBehaviour
         // check if gater is in water
         // return GaterMove.Swim;
 
-        if(_collision.IsGrounded)
+        if(_groundCheck.IsGrounded)
             return CrocMove.Ground;
         else
             return CrocMove.Air;
@@ -154,9 +154,9 @@ public class Croc : MonoBehaviour
 
     private void GroundMovement()
     {
-        _targetDir = Vector3.Cross(Vector3.Cross(_collision.AdvNormal, _targetDir), _collision.AdvNormal).normalized;
+        _targetDir = Vector3.Cross(Vector3.Cross(_groundCheck.AdvNormal, _targetDir), _groundCheck.AdvNormal).normalized;
 
-        Quaternion targetRot = Quaternion.LookRotation(_targetDir, _collision.AdvNormal);
+        Quaternion targetRot = Quaternion.LookRotation(_targetDir, _groundCheck.AdvNormal);
         _transform.rotation = Quaternion.Lerp(_transform.rotation, targetRot, Time.deltaTime * 5f);
 
         if(Vector3.Distance(_transform.position, _destination) > 1)
