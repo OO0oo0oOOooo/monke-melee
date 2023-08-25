@@ -5647,6 +5647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 327282205}
+  - component: {fileID: 327282206}
   m_Layer: 7
   m_Name: FootStepper Target BL
   m_TagString: Untagged
@@ -5669,6 +5670,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1685382574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &327282206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327282204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29006827e7b4b56439ad126c82d2404e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Moving: 0
+  _moveDuration: 0.1
+  _stepOvershootFraction: 1
 --- !u!1 &328965418
 GameObject:
   m_ObjectHideFlags: 0
@@ -7993,6 +8009,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 521530948}
+  - component: {fileID: 521530949}
   m_Layer: 7
   m_Name: FootStepper Target FL
   m_TagString: Untagged
@@ -8015,6 +8032,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1685382574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &521530949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521530947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29006827e7b4b56439ad126c82d2404e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Moving: 0
+  _moveDuration: 0.1
+  _stepOvershootFraction: 1
 --- !u!1 &523723314
 GameObject:
   m_ObjectHideFlags: 0
@@ -8677,6 +8709,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 567303838}
+  - component: {fileID: 567303839}
   m_Layer: 7
   m_Name: FootStepper Target FR
   m_TagString: Untagged
@@ -8699,6 +8732,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1685382574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &567303839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567303837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29006827e7b4b56439ad126c82d2404e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Moving: 0
+  _moveDuration: 0.1
+  _stepOvershootFraction: 1
 --- !u!1 &578202307
 GameObject:
   m_ObjectHideFlags: 0
@@ -14264,6 +14312,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 951626671}
+  - component: {fileID: 951626672}
   m_Layer: 7
   m_Name: FootStepper Target BR
   m_TagString: Untagged
@@ -14286,6 +14335,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1685382574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &951626672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951626670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29006827e7b4b56439ad126c82d2404e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Moving: 0
+  _moveDuration: 0.1
+  _stepOvershootFraction: 1
 --- !u!1 &954468137
 GameObject:
   m_ObjectHideFlags: 0
@@ -31547,8 +31611,8 @@ MonoBehaviour:
     m_Bits: 1
   _footTargetR: {fileID: 567303838}
   _footTargetL: {fileID: 521530948}
-  _footStepperR: {fileID: 0}
-  _footStepperL: {fileID: 0}
+  _footStepperR: {fileID: 567303839}
+  _footStepperL: {fileID: 521530949}
   _raycastOffset: {x: 0, y: 0, z: 0.5}
   _footSpacing: 0.9
   _distanceToGround: 0
@@ -31570,8 +31634,8 @@ MonoBehaviour:
     m_Bits: 1
   _footTargetR: {fileID: 951626671}
   _footTargetL: {fileID: 327282205}
-  _footStepperR: {fileID: 0}
-  _footStepperL: {fileID: 0}
+  _footStepperR: {fileID: 951626672}
+  _footStepperL: {fileID: 327282206}
   _raycastOffset: {x: 0, y: 0, z: -2}
   _footSpacing: 0.9
   _distanceToGround: 0

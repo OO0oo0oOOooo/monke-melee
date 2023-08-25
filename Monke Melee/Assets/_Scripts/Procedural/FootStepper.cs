@@ -5,10 +5,13 @@ public class FootStepper : MonoBehaviour
 {
     private Transform _transform;
 
+    public Vector3 FootPosition;
+
     public bool Moving;
 
     [SerializeField] private float _moveDuration = 0.1f;
     [SerializeField] private float _stepOvershootFraction = 1;
+
 
     private void Awake()
     {
@@ -20,12 +23,12 @@ public class FootStepper : MonoBehaviour
         Moving = true;
 
         Vector3 startPoint = _transform.position;
-        Quaternion startRot = transform.rotation;
+        // Quaternion startRot = transform.rotation;
 
         Vector3 newFootPosition = hit.point;
         newFootPosition.y += _distanceToGround;
 
-        Vector3 towardHome = (newFootPosition - _transform.position);
+        Vector3 towardHome = (newFootPosition - FootPosition);
 
         float overshootDistance = _wantMoveDistance * _stepOvershootFraction;
         Vector3 overshootVector = towardHome * overshootDistance;
@@ -47,7 +50,7 @@ public class FootStepper : MonoBehaviour
             float normalizedTime = timeElapsed / _moveDuration;
 
             // Quadratic bezier curve
-            _transform.position =
+            FootPosition =
             Vector3.Lerp(
                 Vector3.Lerp(startPoint, centerPoint, normalizedTime),
                 Vector3.Lerp(centerPoint, endPoint, normalizedTime),

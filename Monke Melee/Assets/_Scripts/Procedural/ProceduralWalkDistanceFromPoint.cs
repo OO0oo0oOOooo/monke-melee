@@ -5,14 +5,12 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
 {
     private Transform _transform;
     [SerializeField] private LayerMask _layerMask;
+    
+    [SerializeField] private FootStepper _footStepperR;
+    [SerializeField] private FootStepper _footStepperL;
 
     [SerializeField] private Transform _footTargetR;
     [SerializeField] private Transform _footTargetL;
-    // private Vector3 _footPositionR;
-    // private Vector3 _footPositionL;
-
-    [SerializeField] private FootStepper _footStepperR;
-    [SerializeField] private FootStepper _footStepperL;
 
     [SerializeField] private Vector3 _raycastOffset = Vector3.zero;
     [SerializeField] private float _footSpacing = 0.25f;
@@ -35,6 +33,9 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
     {
         FootIKSurface();
         FootSounds();
+
+        _footTargetR.position = _footStepperR.FootPosition;
+        _footTargetL.position = _footStepperL.FootPosition;
     }
 
     // private void FootIKSurface()
