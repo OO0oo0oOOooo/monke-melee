@@ -160,7 +160,7 @@ public class Croc : MonoBehaviour
         _transform.rotation = Quaternion.Lerp(_transform.rotation, targetRot, Time.deltaTime * 5f);
 
         if(Vector3.Distance(_transform.position, _destination) > 1)
-            GroundAccelerate();
+            // GroundAccelerate();
         
         ApplyFriction(8);
     }

@@ -9,10 +9,6 @@ public class FootStepper : MonoBehaviour
 
     public bool Moving;
 
-    [SerializeField] private float _moveDuration = 0.1f;
-    [SerializeField] private float _stepOvershootFraction = 1;
-
-
     private void Awake()
     {
         _transform = transform;
@@ -21,22 +17,28 @@ public class FootStepper : MonoBehaviour
     private void Start()
     {
         // Get _wantMoveDistance, _distanceToGround, and other constant variables from whatever script is controlling this foot
+        FootPosition = _transform.position;
     }
 
-    public void TryStep(RaycastHit hit, float _wantMoveDistance, float _distanceToGround)
+    private void Update()
+    {
+        _transform.position = FootPosition;
+    }
+
+    public void TryStep(RaycastHit hit, float _wantMoveDistance, float _distanceToGround, float _moveDuration, float _stepOvershootFraction)
     {
         if (Moving) return;
 
-        float distFromHome = Vector3.Distance(FootPosition, hit.point);
+        float dist = Vector3.Distance(FootPosition, hit.point);
 
         // If we are too far off in position or rotation
-        if (distFromHome > _wantMoveDistance)
+        if (dist > _wantMoveDistance)
         {
-            StartCoroutine(Step(hit, _wantMoveDistance, _distanceToGround));
+            StartCoroutine(Step(hit, _wantMoveDistance, _distanceToGround, _moveDuration, _stepOvershootFraction));
         }
     }
 
-    public IEnumerator Step(RaycastHit hit, float _wantMoveDistance, float _distanceToGround)
+    public IEnumerator Step(RaycastHit hit, float _wantMoveDistance, float _distanceToGround, float _moveDuration, float _stepOvershootFraction)
     {
         Moving = true;
 

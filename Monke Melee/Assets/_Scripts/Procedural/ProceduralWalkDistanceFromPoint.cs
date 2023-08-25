@@ -17,6 +17,8 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
 
     [SerializeField] private float _distanceToGround = 0;
     [SerializeField] private float _wantMoveDistance = 0.5f;
+    [SerializeField] private float _moveDuration = 0.1f;
+    [SerializeField] private float _stepOvershootFraction = 1;
 
     RaycastHit hitR;
     RaycastHit hitL;
@@ -83,7 +85,7 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
         {
             if(Vector3.Distance(hitL.point, _footTargetL.position) > _wantMoveDistance && !_footStepperR.Moving)
             {
-                StartCoroutine(_footStepperL.Step(hitL, _wantMoveDistance, _distanceToGround));
+                StartCoroutine(_footStepperL.Step(hitL, _wantMoveDistance, _distanceToGround, _moveDuration, _stepOvershootFraction));
             }
         }
 
@@ -91,7 +93,7 @@ public class ProceduralWalkDistanceFromPoint : MonoBehaviour
         {
             if(Vector3.Distance(hitR.point, _footTargetR.position) > _wantMoveDistance && !_footStepperL.Moving)
             {
-                StartCoroutine(_footStepperR.Step(hitR, _wantMoveDistance, _distanceToGround));
+                StartCoroutine(_footStepperR.Step(hitR, _wantMoveDistance, _distanceToGround, _moveDuration, _stepOvershootFraction));
             }
         }
     }

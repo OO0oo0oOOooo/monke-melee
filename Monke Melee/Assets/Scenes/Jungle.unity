@@ -5682,9 +5682,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29006827e7b4b56439ad126c82d2404e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FootPosition: {x: 0, y: 0, z: 0}
   Moving: 0
-  _moveDuration: 0.1
-  _stepOvershootFraction: 1
 --- !u!1 &328965418
 GameObject:
   m_ObjectHideFlags: 0
@@ -8044,9 +8043,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29006827e7b4b56439ad126c82d2404e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FootPosition: {x: 0, y: 0, z: 0}
   Moving: 0
-  _moveDuration: 0.1
-  _stepOvershootFraction: 1
 --- !u!1 &523723314
 GameObject:
   m_ObjectHideFlags: 0
@@ -8744,9 +8742,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29006827e7b4b56439ad126c82d2404e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FootPosition: {x: 0, y: 0, z: 0}
   Moving: 0
-  _moveDuration: 0.1
-  _stepOvershootFraction: 1
 --- !u!1 &578202307
 GameObject:
   m_ObjectHideFlags: 0
@@ -14347,9 +14344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29006827e7b4b56439ad126c82d2404e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FootPosition: {x: 0, y: 0, z: 0}
   Moving: 0
-  _moveDuration: 0.1
-  _stepOvershootFraction: 1
 --- !u!1 &954468137
 GameObject:
   m_ObjectHideFlags: 0
@@ -31473,8 +31469,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4274073599909805223}
   - component: {fileID: 4274073599909805226}
-  - component: {fileID: 4274073599909805224}
-  - component: {fileID: 4274073599909805225}
+  - component: {fileID: 4274073599909805227}
   m_Layer: 7
   m_Name: Crocodile_0.2
   m_TagString: Untagged
@@ -31594,52 +31589,6 @@ Transform:
   - {fileID: 5612917573809995952}
   m_Father: {fileID: 1685382574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4274073599909805224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3466469787437098525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca5e42f1069c884ea5c63d487b7c5fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  _footTargetR: {fileID: 567303838}
-  _footTargetL: {fileID: 521530948}
-  _footStepperR: {fileID: 567303839}
-  _footStepperL: {fileID: 521530949}
-  _raycastOffset: {x: 0, y: 0, z: 0.5}
-  _footSpacing: 0.9
-  _distanceToGround: 0
-  _wantMoveDistance: 0.75
---- !u!114 &4274073599909805225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3466469787437098525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca5e42f1069c884ea5c63d487b7c5fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  _footTargetR: {fileID: 951626671}
-  _footTargetL: {fileID: 327282205}
-  _footStepperR: {fileID: 951626672}
-  _footStepperL: {fileID: 327282206}
-  _raycastOffset: {x: 0, y: 0, z: -2}
-  _footSpacing: 0.9
-  _distanceToGround: 0
-  _wantMoveDistance: 0.75
 --- !u!114 &4274073599909805226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31656,6 +31605,37 @@ MonoBehaviour:
   _headBone: {fileID: 6343565288600566205}
   headMaxTurnAngle: 45
   headTrackingSpeed: 10
+--- !u!114 &4274073599909805227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3466469787437098525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dadadbe3b1096bf4c87055f524507386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  _footStepperFR: {fileID: 567303839}
+  _footStepperFL: {fileID: 521530949}
+  _footStepperBR: {fileID: 951626672}
+  _footStepperBL: {fileID: 327282206}
+  _footTargetFR: {fileID: 567303838}
+  _footTargetFL: {fileID: 521530948}
+  _footTargetBR: {fileID: 951626671}
+  _footTargetBL: {fileID: 327282205}
+  _frontRaycastOffset: {x: 0, y: 0, z: 0.5}
+  _backRaycastOffset: {x: 0, y: 0, z: -1.8}
+  _raycastDistance: 2
+  _footSpacing: 0.9
+  _distanceToGround: 0
+  _wantMoveDistance: 0.75
+  _moveDuration: 0.1
+  _stepOvershootFraction: 0.5
 --- !u!4 &4346590614467863729
 Transform:
   m_ObjectHideFlags: 0
