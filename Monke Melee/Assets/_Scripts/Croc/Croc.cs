@@ -160,7 +160,7 @@ public class Croc : MonoBehaviour
         _transform.rotation = Quaternion.Lerp(_transform.rotation, targetRot, Time.deltaTime * 5f);
 
         if(Vector3.Distance(_transform.position, _destination) > 1)
-            // GroundAccelerate();
+            GroundAccelerate();
         
         ApplyFriction(8);
     }
@@ -174,11 +174,6 @@ public class Croc : MonoBehaviour
     private void SwimMovement()
     {
         _vel += _moveSpeed * Time.deltaTime * _targetDir;
-    }
-
-    private void ApplyGravity()
-    {
-        _vel.y -= 16 * Time.deltaTime;
     }
 
     private void JumpAttack()
@@ -207,6 +202,11 @@ public class Croc : MonoBehaviour
 
     }
 
+    private void ApplyGravity()
+    {
+        _vel.y -= 16 * Time.deltaTime;
+    }
+
     private void ApplyFriction(float friction)
     {
         _vel *= Mathf.Clamp01(1 - Time.deltaTime * friction);
@@ -231,11 +231,5 @@ public class Croc : MonoBehaviour
             accelSpeed = addSpeed;
 
         _vel += accelSpeed * direction;
-    }
-
-
-    void OnTriggerStay(Collider other)
-    {
-        // If the trigger is the bite hitbox then grab the player
     }
 }

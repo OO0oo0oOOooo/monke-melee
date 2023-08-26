@@ -4,6 +4,7 @@ using UnityEngine;
 public class FootStepper : MonoBehaviour
 {
     private Transform _transform;
+    [SerializeField] private Vector3 _defaultPosition;
 
     public Vector3 FootPosition;
 
@@ -27,49 +28,47 @@ public class FootStepper : MonoBehaviour
 
     public void TryStep(RaycastHit hit, float _wantMoveDistance, float _distanceToGround, float _moveDuration, float _stepOvershootFraction)
     {
-        if (Moving) return;
+        if(Moving) return;
 
         float dist = Vector3.Distance(FootPosition, hit.point);
-
-        // If we are too far off in position or rotation
         if (dist > _wantMoveDistance)
-        {
             StartCoroutine(Step(hit, _wantMoveDistance, _distanceToGround, _moveDuration, _stepOvershootFraction));
-        }
     }
 
     public IEnumerator Step(RaycastHit hit, float _wantMoveDistance, float _distanceToGround, float _moveDuration, float _stepOvershootFraction)
     {
+        if (hit.collider == null)
+            yield break;
+
         Moving = true;
 
         Vector3 startPoint = _transform.position;
-        // Quaternion startRot = transform.rotation;
+        Quaternion startRot = _transform.rotation;
 
         Vector3 newFootPosition = hit.point;
         newFootPosition.y += _distanceToGround;
 
-        Vector3 towardHome = (newFootPosition - FootPosition);
-
+        // Overshoot
+        Vector3 towardTarget = (newFootPosition - FootPosition);
         float overshootDistance = _wantMoveDistance * _stepOvershootFraction;
-        Vector3 overshootVector = towardHome * overshootDistance;
-        
-        overshootVector = Vector3.ProjectOnPlane(overshootVector, Vector3.up);
+        Vector3 overshootVector = towardTarget * overshootDistance;
+        // overshootVector = Vector3.ProjectOnPlane(overshootVector, Vector3.up);
 
-        Vector3 endPoint = hit.point + overshootVector;
-
-        // Ground normal rotation
-        // Quaternion endRot = homeTransform.rotation;
+        Vector3 endPoint = newFootPosition + overshootVector;
+        Quaternion endRot = Quaternion.LookRotation(hit.normal, _transform.forward);
 
         Vector3 centerPoint = (startPoint + endPoint) / 2;
-        centerPoint += _transform.up * Vector3.Distance(startPoint, endPoint) / 2f;
+        float verticalDistance = Vector3.Distance(startPoint, endPoint) / 2;
+        verticalDistance = Mathf.Clamp(verticalDistance, 0, 0.25f);
+        centerPoint += _transform.up * verticalDistance;
 
+        // Interpolate over curve
         float timeElapsed = 0;
         do
         {
             timeElapsed += Time.deltaTime;
             float normalizedTime = timeElapsed / _moveDuration;
 
-            // Quadratic bezier curve
             FootPosition =
             Vector3.Lerp(
                 Vector3.Lerp(startPoint, centerPoint, normalizedTime),
@@ -77,7 +76,7 @@ public class FootStepper : MonoBehaviour
                 normalizedTime
             );
 
-            // transform.rotation = Quaternion.Slerp(startRot, endRot, normalizedTime);
+            transform.rotation = Quaternion.Slerp(startRot, endRot, normalizedTime);
 
             yield return null;
         }

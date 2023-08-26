@@ -54,20 +54,20 @@ public class CrocProceduralAnimation : MonoBehaviour
 
     private void FootRaycast()
     {
-        Ray rayFR = new Ray(_transform.position + (_transform.rotation * _frontRaycastOffset) + (_transform.right * _footSpacing), -transform.up * _raycastDistance);
-        Ray rayFL = new Ray(_transform.position + (_transform.rotation * _frontRaycastOffset) + (-_transform.right * _footSpacing), -transform.up * _raycastDistance);
-        Ray rayBR = new Ray(_transform.position + (_transform.rotation * _backRaycastOffset) + (_transform.right * _footSpacing), -transform.up * _raycastDistance);
-        Ray rayBL = new Ray(_transform.position + (_transform.rotation * _backRaycastOffset) + (-_transform.right * _footSpacing), -transform.up * _raycastDistance);
+        Ray rayFR = new Ray(_transform.position + (_transform.rotation * _frontRaycastOffset) + (_transform.right * _footSpacing), -transform.up);
+        Ray rayFL = new Ray(_transform.position + (_transform.rotation * _frontRaycastOffset) + (-_transform.right * _footSpacing), -transform.up);
+        Ray rayBR = new Ray(_transform.position + (_transform.rotation * _backRaycastOffset) + (_transform.right * _footSpacing), -transform.up);
+        Ray rayBL = new Ray(_transform.position + (_transform.rotation * _backRaycastOffset) + (-_transform.right * _footSpacing), -transform.up);
 
-        Physics.Raycast(rayFL, out hitFL, _distanceToGround + 1f, _layerMask);
-        Physics.Raycast(rayFR, out hitFR, _distanceToGround + 1f, _layerMask);
-        Physics.Raycast(rayBL, out hitBL, _distanceToGround + 1f, _layerMask);
-        Physics.Raycast(rayBR, out hitBR, _distanceToGround + 1f, _layerMask);
+        Physics.Raycast(rayFL, out hitFL, _distanceToGround + _raycastDistance, _layerMask);
+        Physics.Raycast(rayFR, out hitFR, _distanceToGround + _raycastDistance, _layerMask);
+        Physics.Raycast(rayBL, out hitBL, _distanceToGround + _raycastDistance, _layerMask);
+        Physics.Raycast(rayBR, out hitBR, _distanceToGround + _raycastDistance, _layerMask);
 
-        Debug.DrawRay(rayFR.origin, rayFR.direction, Color.red);
-        Debug.DrawRay(rayFL.origin, rayFL.direction, Color.red);
-        Debug.DrawRay(rayBR.origin, rayBR.direction, Color.red);
-        Debug.DrawRay(rayBL.origin, rayBL.direction, Color.red);
+        Debug.DrawRay(rayFR.origin, rayFR.direction * _raycastDistance, Color.red);
+        Debug.DrawRay(rayFL.origin, rayFL.direction * _raycastDistance, Color.red);
+        Debug.DrawRay(rayBR.origin, rayBR.direction * _raycastDistance, Color.red);
+        Debug.DrawRay(rayBL.origin, rayBL.direction * _raycastDistance, Color.red);
     }
 
     IEnumerator LegUpdateCoroutine()
@@ -81,7 +81,7 @@ public class CrocProceduralAnimation : MonoBehaviour
                 yield return null;
             }
             while(_footStepperFR.Moving || _footStepperBL.Moving);
-
+            
             do
             {
                 _footStepperFL.TryStep(hitFL, _wantMoveDistance, _distanceToGround, _moveDuration, _stepOvershootFraction);
