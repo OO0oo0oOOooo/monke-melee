@@ -31474,6 +31474,7 @@ GameObject:
   - component: {fileID: 4274073599909805223}
   - component: {fileID: 4274073599909805226}
   - component: {fileID: 4274073599909805227}
+  - component: {fileID: 4274073599909805228}
   m_Layer: 7
   m_Name: Crocodile_0.2
   m_TagString: Untagged
@@ -31640,6 +31641,26 @@ MonoBehaviour:
   _wantMoveDistance: 0.75
   _moveDuration: 0.1
   _stepOvershootFraction: 0.5
+--- !u!114 &4274073599909805228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3466469787437098525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a854d08faaa54845adadfa104c603c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spineBones:
+  - {fileID: 142463555081600491}
+  - {fileID: 7657273883621606415}
+  - {fileID: 6811152753899958875}
+  - {fileID: 1909728684527153140}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &4346590614467863729
 Transform:
   m_ObjectHideFlags: 0
