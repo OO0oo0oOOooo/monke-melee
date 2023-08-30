@@ -18,7 +18,7 @@ public class DevMenuManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.M))
+        if(Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.Escape))
             ToggleDevMenu();
 
         if(Input.GetKeyDown(KeyCode.UpArrow))
