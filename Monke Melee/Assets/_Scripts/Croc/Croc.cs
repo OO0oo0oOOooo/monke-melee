@@ -92,8 +92,8 @@ public class Croc : MonoBehaviour
 
         _targetDistance = Vector3.Distance(_targetFinder.Target.position, _transform.position);
         
-        if(_targetDistance > _trackRange)
-            _targetFinder.Target = null;
+        // if(_targetDistance > _trackRange)
+        //     _targetFinder.Target = null;
 
         // Raycast toward target and check if we have line of sight. If not then set target to null
         if(_targetDistance < _trackRange)
