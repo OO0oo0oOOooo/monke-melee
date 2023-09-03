@@ -8,8 +8,6 @@ public class Croc : MonoBehaviour
     private Transform _transform;
     private CrocTargetFinder _targetFinder;
 
-    // [SerializeField] private Transform _target;
-
     [SerializeField] private float _moveSpeed = 10f;
     [SerializeField] private float _jumpHeight = 50;
 
@@ -29,13 +27,9 @@ public class Croc : MonoBehaviour
     // private CrocBehaviour _behaviourState = CrocBehaviour.Idle;
     public enum CrocBehaviour
     {
-        Idle,   // float and sunbathe
+        Idle,   // float or sunbathe
         Wander, // Wander around
-
-        Search, // Search for player
-        Hunt,   // Hide under water and wait for player to get close
         Chase,  // get that ****** and eat him
-
         Eat     // bring player to water and death roll/eat
     }
 
@@ -71,6 +65,9 @@ public class Croc : MonoBehaviour
             case CrocBehaviour.Idle:
                 Idle();
                 break;
+            case CrocBehaviour.Wander:
+                Wander();
+                break;
             case CrocBehaviour.Chase:
                 Chase();
                 break;
@@ -82,6 +79,12 @@ public class Croc : MonoBehaviour
     private void Idle()
     {
         // Do crocadile things like float and sunbathe
+        _destination = _transform.position;
+    }
+
+    private void Wander()
+    {
+        // Get random destination every few seconds
     }
 
     private void Chase()
@@ -100,7 +103,6 @@ public class Croc : MonoBehaviour
         {
             _destination = _targetFinder.Target.position;
         }
-
     }
 
     void FixedUpdate()
