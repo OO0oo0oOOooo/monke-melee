@@ -24081,6 +24081,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1685382574}
   - component: {fileID: 1685382569}
+  - component: {fileID: 1685382581}
   - component: {fileID: 1685382576}
   - component: {fileID: 1685382570}
   - component: {fileID: 1685382580}
@@ -24138,7 +24139,6 @@ MonoBehaviour:
   _groundBaseLimit: 15
   _groundAcceleration: 80
   _clampGroundSpeed: 0
-  _trackRange: 25
   _jumpRange: 10
 --- !u!4 &1685382574
 Transform:
@@ -24295,6 +24295,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 129588811}
   TargetsInRange: []
+--- !u!114 &1685382581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685382568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f9e2d48eedff441bdc812a17b5e449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BehaviourState: 0
+  _trackRange: 25
+  Destination: {x: 0, y: 0, z: 0}
+  TargetDistance: 0
 --- !u!1 &1689965141
 GameObject:
   m_ObjectHideFlags: 0
