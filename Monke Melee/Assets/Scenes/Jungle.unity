@@ -16216,7 +16216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7473d11e9e7ff6849be94379eec8d919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 0}
+  _playerPrefab: {fileID: -6312775322836902980, guid: 57dfceec0bdd605409977a31d0732eef,
+    type: 3}
 --- !u!1 &1027499746
 GameObject:
   m_ObjectHideFlags: 0
@@ -16668,10 +16669,10 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1051853937}
-    PlayerPrefab: {fileID: 7817740946283735247, guid: 57dfceec0bdd605409977a31d0732eef,
-      type: 3}
+    PlayerPrefab: {fileID: 0}
     Prefabs:
-      NetworkPrefabsLists: []
+      NetworkPrefabsLists:
+      - {fileID: 0}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -24307,7 +24308,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f9e2d48eedff441bdc812a17b5e449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BehaviourState: 0
   _trackRange: 25
   Destination: {x: 0, y: 0, z: 0}
   TargetDistance: 0

@@ -12,13 +12,13 @@ public class PlayerSpawnSystem : NetworkBehaviour
     public static void AddSpawnPoint(Transform transform) => _spawnPoints.Add(transform);
     public static void RemoveSpawnPoint(Transform transform) => _spawnPoints.Remove(transform);
 
-    // public override void OnNetworkSpawn()
-    // {
-    //     ulong clientId = NetworkManager.Singleton.LocalClientId;
-    //     SpawnNetworkedPlayersServerRPC(clientId);
-    //     SpawnPlayerServerRpc(clientId);
-    //     EventManager.Instance.OnPlayerRespawn += RespawnPlayer;
-    // }
+    public override void OnNetworkSpawn()
+    {
+        ulong clientId = NetworkManager.Singleton.LocalClientId;
+        SpawnPlayerServerRpc(clientId);
+        // SpawnNetworkedPlayersServerRPC(clientId);
+        // EventManager.Instance.OnPlayerRespawn += RespawnPlayer;
+    }
 
     // public override void OnNetworkDespawn()
     // {
