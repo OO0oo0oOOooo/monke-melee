@@ -21,7 +21,6 @@ public class CrocMovement : MonoBehaviour
     private Vector3 _vel;
     private Vector3 _targetDir;
 
-    // private CrocMove _moveState = CrocMove.Ground;
     public enum CrocMove
     {
         Ground, 
@@ -66,9 +65,6 @@ public class CrocMovement : MonoBehaviour
 
     private CrocMove GetMoveState()
     {
-        // check if gater is in water
-        // return GaterMove.Swim;
-
         if(_groundCheck.IsGrounded)
             return CrocMove.Ground;
         else

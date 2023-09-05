@@ -5,7 +5,7 @@ public class CrocBehaviour : MonoBehaviour
     private CrocTargetFinder _targetFinder;
     private Transform _transform;
 
-    public Behaviour BehaviourState = Behaviour.Idle;
+    // public Behaviour BehaviourState = Behaviour.Idle;
     public enum Behaviour
     {
         Idle,   // float or sunbathe
