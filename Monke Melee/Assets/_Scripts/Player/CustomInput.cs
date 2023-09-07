@@ -58,8 +58,9 @@ public class CustomInput : MonoBehaviour
     private void Update()
     {
         MouseLook();
-        MouseInput();
 
+        
+        MouseInput();
         MovementInput();
     }
 
