@@ -50,11 +50,6 @@ public class CustomInput : MonoBehaviour
 
     public Vector3 InputDirModel { get => _inputDirModel; }
 
-
-    // Events
-    // public static event Action<bool> OnTabPressed;
-    // public static event Action<bool> OnEscPressed;
-
     void Awake()
     {
         _gibbonRefrences = GetComponent<GibbonRefrences>();

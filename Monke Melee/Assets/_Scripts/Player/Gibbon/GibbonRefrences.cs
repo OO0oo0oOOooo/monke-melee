@@ -3,6 +3,8 @@ using Unity.Netcode;
 
 public class GibbonRefrences : NetworkBehaviour
 {
+    public ulong ClientID { get; private set; }
+
     [Header("Components")]
     public Transform PlayerTransform;
     public Transform ModelTransform;
@@ -40,5 +42,7 @@ public class GibbonRefrences : NetworkBehaviour
         }
 
         Camera.gameObject.SetActive(true);
+
+        ClientID = NetworkObject.OwnerClientId;
     }
 }

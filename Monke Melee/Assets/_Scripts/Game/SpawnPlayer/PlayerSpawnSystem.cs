@@ -17,13 +17,13 @@ public class PlayerSpawnSystem : NetworkBehaviour
         ulong clientId = NetworkManager.Singleton.LocalClientId;
         SpawnPlayerServerRpc(clientId);
         // SpawnNetworkedPlayersServerRPC(clientId);
-        // EventManager.Instance.OnPlayerRespawn += RespawnPlayer;
+        EventManager.Instance.OnPlayerRespawn += RespawnPlayer;
     }
 
-    // public override void OnNetworkDespawn()
-    // {
-    //     EventManager.Instance.OnPlayerRespawn -= RespawnPlayer;
-    // }
+    public override void OnNetworkDespawn()
+    {
+        EventManager.Instance.OnPlayerRespawn -= RespawnPlayer;
+    }
 
     [ServerRpc(RequireOwnership = false)]
     private void SpawnPlayerServerRpc(ulong clientId)
