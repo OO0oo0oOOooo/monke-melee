@@ -5,7 +5,6 @@ using Unity.Netcode;
 public class PlayerSpawnSystem : NetworkBehaviour
 {
     [SerializeField] private GibbonRefrences _playerPrefab;
-    // [SerializeField] private ClientData _networkedPlayerPrefab;
 
     private static List<Transform> _spawnPoints = new List<Transform>();
 
@@ -16,7 +15,6 @@ public class PlayerSpawnSystem : NetworkBehaviour
     {
         ulong clientId = NetworkManager.Singleton.LocalClientId;
         SpawnPlayerServerRpc(clientId);
-        // SpawnNetworkedPlayersServerRPC(clientId);
         EventManager.Instance.OnPlayerRespawn += RespawnPlayer;
     }
 
@@ -29,18 +27,8 @@ public class PlayerSpawnSystem : NetworkBehaviour
     private void SpawnPlayerServerRpc(ulong clientId)
     {
         GibbonRefrences player = Instantiate(_playerPrefab, RandomSpawnPoint().position, RandomSpawnPoint().rotation);
-        // player.NetworkedPlayer = NetworkedRoom.Instance._playerList[clientId];
         player.NetworkObject.SpawnAsPlayerObject(clientId);
     }
-
-    // [ServerRpc(RequireOwnership = false)]
-    // private void SpawnNetworkedPlayersServerRPC(ulong clientId)
-    // {
-    //     // print("NETWORKED PLAYER: " + clientId);
-    //     ClientData newClient = Instantiate(_networkedPlayerPrefab);
-    //     // newClient.ClientId = clientId;
-    //     newClient.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-    // }
 
     private Transform RandomSpawnPoint()
     {
@@ -50,6 +38,9 @@ public class PlayerSpawnSystem : NetworkBehaviour
 
     private void RespawnPlayer(ulong clientId)
     {
+        // if(!IsServer) return;
+
+        NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.Despawn();
         SpawnPlayerServerRpc(clientId);
     }
 }

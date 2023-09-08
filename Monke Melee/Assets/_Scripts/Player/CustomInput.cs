@@ -50,18 +50,44 @@ public class CustomInput : MonoBehaviour
 
     public Vector3 InputDirModel { get => _inputDirModel; }
 
+    private bool _frozen = false;
+
     void Awake()
     {
         _gibbonRefrences = GetComponent<GibbonRefrences>();
+    }
+
+    void Start()
+    {
+        EventManager.Instance.OnPlayerDeath += OnPlayerDeath;
+    }
+
+    void OnDestroy()
+    {
+        EventManager.Instance.OnPlayerDeath -= OnPlayerDeath;
     }
 
     private void Update()
     {
         MouseLook();
 
-        
-        MouseInput();
-        MovementInput();
+        if(!_frozen)
+        {
+            MouseInput();
+            MovementInput();
+        }
+        else
+        {
+            AnyInput();
+        }
+    }
+
+    private void AnyInput()
+    {
+        if(Input.anyKeyDown)
+        {
+            EventManager.Instance.InvokePlayerRespawnEvent(_gibbonRefrences.ClientID);
+        }
     }
 
     private void MovementInput()
@@ -125,4 +151,10 @@ public class CustomInput : MonoBehaviour
         if(Input.GetMouseButtonUp(1))
             _mouse2Pending = false;
     }
+
+    private void OnPlayerDeath(ulong clientID)
+    {
+        _frozen = true;
+    }
+
 }

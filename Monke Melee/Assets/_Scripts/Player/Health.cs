@@ -15,7 +15,6 @@ public class Health : MonoBehaviour, IDamageable
     // Freeze Controls
     // Third person camera
     // Game over Text
-    // 3 seconds after death player can respawn with any input
 
     private void Awake()
     {
@@ -30,6 +29,6 @@ public class Health : MonoBehaviour, IDamageable
     [ContextMenu("Death")]
     private void Death()
     {
-        EventManager.Instance.OnPlayerDeathEvent(_gibbonRefrences.ClientID);
+        EventManager.Instance.InvokePlayerDeathEvent(_gibbonRefrences.ClientID);
     }
 }

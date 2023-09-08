@@ -16,8 +16,8 @@ public class EventManager : MonoBehaviour
     }
 
     public event Action<ulong> OnPlayerRespawn;
-    public void OnPlayerRespawnEvent(ulong clientId) => OnPlayerRespawn?.Invoke(clientId);
+    public void InvokePlayerRespawnEvent(ulong clientId) => OnPlayerRespawn?.Invoke(clientId);
 
     public event Action<ulong> OnPlayerDeath;
-    public void OnPlayerDeathEvent(ulong deathId) => OnPlayerDeath?.Invoke(deathId);
+    public void InvokePlayerDeathEvent(ulong deathId) => OnPlayerDeath?.Invoke(deathId);
 }

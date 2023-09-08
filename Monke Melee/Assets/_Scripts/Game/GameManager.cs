@@ -23,27 +23,11 @@ public class GameManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         DisableMenuCamera();
-
-        EventManager.Instance.OnPlayerDeath += OnPlayerDeath;
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        EventManager.Instance.OnPlayerDeath -= OnPlayerDeath;
     }
 
     public void DisableMenuCamera()
     {
         _cam.SetActive(false);
         _crosshair.SetActive(true);
-    }
-
-    private void OnPlayerDeath(ulong deathId)
-    {
-        if(!IsServer) return;
-
-        // Get NetworkObject from ClientID
-        NetworkManager.Singleton.ConnectedClients[deathId].PlayerObject.Despawn();
-        EventManager.Instance.OnPlayerRespawnEvent(deathId);
     }
 }
