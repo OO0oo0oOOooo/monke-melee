@@ -38,7 +38,7 @@ public class PlayerSpawnSystem : NetworkBehaviour
 
     private void RespawnPlayer(ulong clientId)
     {
-        // if(!IsServer) return;
+        if(!IsServer) return;
 
         NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.Despawn();
         SpawnPlayerServerRpc(clientId);

@@ -70,24 +70,10 @@ public class CustomInput : MonoBehaviour
     private void Update()
     {
         MouseLook();
-
-        if(!_frozen)
-        {
-            MouseInput();
-            MovementInput();
-        }
-        else
-        {
-            AnyInput();
-        }
-    }
-
-    private void AnyInput()
-    {
-        if(Input.anyKeyDown)
-        {
-            EventManager.Instance.InvokePlayerRespawnEvent(_gibbonRefrences.ClientID);
-        }
+        
+        if(_frozen) return;
+        MouseInput();
+        MovementInput();
     }
 
     private void MovementInput()

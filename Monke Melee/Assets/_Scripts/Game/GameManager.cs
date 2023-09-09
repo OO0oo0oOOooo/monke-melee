@@ -1,10 +1,10 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections;
 
 public class GameManager : NetworkBehaviour
 {
-    [SerializeField] private GameObject _cam;
-    [SerializeField] private GameObject _crosshair;
+    [SerializeField] private UIManager _uiManager;
 
     public static GameManager Instance { get; private set; }
     void Awake()
@@ -22,12 +22,28 @@ public class GameManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        DisableMenuCamera();
+        _uiManager.DisableMenuCamera();
+
+        EventManager.Instance.OnPlayerDeath += RespawnTimer;
     }
 
-    public void DisableMenuCamera()
+    public override void OnNetworkDespawn()
     {
-        _cam.SetActive(false);
-        _crosshair.SetActive(true);
+        EventManager.Instance.OnPlayerDeath -= RespawnTimer;
+    }
+
+    private void RespawnTimer(ulong clientId)
+    {
+        if (!IsServer) return;
+
+        StartCoroutine(RespawnPlayer(clientId));
+    }
+
+    IEnumerator RespawnPlayer(ulong clientId)
+    {
+        if (!IsServer) yield break;
+
+        yield return new WaitForSeconds(3f);
+        EventManager.Instance.InvokePlayerRespawnEvent(clientId);
     }
 }

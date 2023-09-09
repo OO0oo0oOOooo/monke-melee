@@ -24,6 +24,12 @@ public class CrocTargetFinder : MonoBehaviour
 
         for (int i = 0; i < TargetsInRange.Count; i++)
         {
+            if(TargetsInRange[closestTargetIndex] == null)
+            {
+                TargetsInRange.Remove(TargetsInRange[closestTargetIndex]);
+                return;
+            }
+
             float dist = Vector3.Distance(TargetsInRange[i].position, transform.position);
             if(dist < closestTargetDistance)
             {
@@ -31,6 +37,8 @@ public class CrocTargetFinder : MonoBehaviour
                 closestTargetDistance = dist;
             }
         }
+
+        
 
         Target = TargetsInRange[closestTargetIndex];
     }
