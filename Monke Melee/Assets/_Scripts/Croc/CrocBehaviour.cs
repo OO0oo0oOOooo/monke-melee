@@ -1,8 +1,11 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class CrocBehaviour : MonoBehaviour
 {
     private CrocTargetFinder _targetFinder;
+    private CrocAttack _attack;
     private Transform _transform;
 
     // public Behaviour BehaviourState = Behaviour.Idle;
@@ -14,15 +17,22 @@ public class CrocBehaviour : MonoBehaviour
         Eat     // bring player to water and death roll/eat
     }
 
+    private bool _ableToAttack = true;
+    private float _attackCooldown = 3;
+
     [SerializeField] private float _trackRange = 25;
+    [SerializeField] private float _jumpRange = 15;
+    [SerializeField] private float _biteRange = 2;
 
     public Vector3 Destination;
     public float TargetDistance;
+    public Vector3 TargetDir;
 
     void Awake()
     {
         _transform = transform;
         _targetFinder = GetComponent<CrocTargetFinder>();
+        _attack = GetComponent<CrocAttack>();
     }
 
     void Update()
@@ -41,6 +51,8 @@ public class CrocBehaviour : MonoBehaviour
             default:
                 break;
         }
+
+        TargetDir = Destination - _transform.position;
     }
 
     Behaviour GetBehaviourState()
@@ -78,6 +90,28 @@ public class CrocBehaviour : MonoBehaviour
         {
             Destination = _targetFinder.Target.position;
         }
+
+        SelectAttack();
+        
     }
     #endregion
+
+    private void SelectAttack()
+    {
+        if(!_ableToAttack) return;
+        if(_attack.DuringTackle) return;
+
+        // if(TargetDistance < _jumpRange)
+        // {
+        //     _attack.Tackle();
+        //     StartCoroutine(AttackCooldown());
+        // }
+    }
+
+    private IEnumerator AttackCooldown()
+    {
+        _ableToAttack = false;
+        yield return new WaitForSeconds(_attackCooldown);
+        _ableToAttack = true;
+    }
 }

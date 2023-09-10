@@ -9,17 +9,13 @@ public class CrocMovement : MonoBehaviour
     private CrocBehaviour _behaviour;
 
     [SerializeField] private float _moveSpeed = 10f;
-    [SerializeField] private float _jumpHeight = 50;
 
     [SerializeField] private float _groundBaseLimit = 10;
     [SerializeField] private float _groundAcceleration = 20;
     [SerializeField] private bool _clampGroundSpeed = false;
-
-    [SerializeField] private float _jumpRange = 10;
-
-    private bool _ableToJump = true;
     private Vector3 _vel;
     private Vector3 _targetDir;
+
 
     public enum CrocMove
     {
@@ -36,12 +32,16 @@ public class CrocMovement : MonoBehaviour
         _behaviour = GetComponent<CrocBehaviour>();
     }
 
+    void Update()
+    {
+        _targetDir = _behaviour.TargetDir;
+        _targetDir.y = _transform.position.y;
+        _targetDir.Normalize();
+    }
+
     void FixedUpdate()
     {
         _vel = _rb.velocity;
-
-        // if(_targetDistance < _jumpRange && _ableToJump)
-        //     JumpAttack();
 
         Vector3 right = Vector3.Cross(_groundCheck.AdvNormal, _transform.forward);
         Vector3 forward = Vector3.Cross(right, _groundCheck.AdvNormal);
@@ -128,18 +128,5 @@ public class CrocMovement : MonoBehaviour
             accelSpeed = addSpeed;
 
         _vel += accelSpeed * direction;
-    }
-
-    private void JumpAttack()
-    {
-        _rb.AddForce(_jumpHeight * _rb.mass * _targetDir);
-        StartCoroutine(JumpTimer());
-    }
-
-    private IEnumerator JumpTimer()
-    {
-        _ableToJump = false;
-        yield return new WaitForSeconds(5f);
-        _ableToJump = true;
     }
 }

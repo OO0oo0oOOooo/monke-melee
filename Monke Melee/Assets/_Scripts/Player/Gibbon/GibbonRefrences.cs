@@ -4,6 +4,7 @@ using Unity.Netcode;
 public class GibbonRefrences : NetworkBehaviour
 {
     public ulong ClientID { get; private set; }
+    public bool IsDead { get; private set;}
 
     [Header("Components")]
     public Transform PlayerTransform;
@@ -41,8 +42,25 @@ public class GibbonRefrences : NetworkBehaviour
             return;
         }
 
+        ClientID = NetworkObject.OwnerClientId;
         Camera.gameObject.SetActive(true);
 
-        ClientID = NetworkObject.OwnerClientId;
+        IsDead = false;
+        EventManager.Instance.OnPlayerDeath += MarkDead;
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if(!IsOwner) return;
+        
+        EventManager.Instance.OnPlayerDeath -= MarkDead;
+    }
+
+    public void MarkDead(ulong clientID)
+    {
+        if(clientID == ClientID)
+        {
+            IsDead = true;
+        }
     }
 }

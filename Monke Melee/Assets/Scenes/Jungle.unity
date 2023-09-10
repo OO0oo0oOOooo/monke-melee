@@ -24438,9 +24438,11 @@ GameObject:
   - component: {fileID: 1685382576}
   - component: {fileID: 1685382570}
   - component: {fileID: 1685382580}
+  - component: {fileID: 1685382583}
   - component: {fileID: 1685382577}
   - component: {fileID: 1685382579}
   - component: {fileID: 1685382578}
+  - component: {fileID: 1685382582}
   m_Layer: 7
   m_Name: Crocodillian
   m_TagString: Untagged
@@ -24488,11 +24490,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 20
-  _jumpHeight: 50
   _groundBaseLimit: 15
   _groundAcceleration: 80
   _clampGroundSpeed: 0
-  _jumpRange: 10
 --- !u!4 &1685382574
 Transform:
   m_ObjectHideFlags: 0
@@ -24663,6 +24663,40 @@ MonoBehaviour:
   _trackRange: 25
   Destination: {x: 0, y: 0, z: 0}
   TargetDistance: 0
+  TargetDir: {x: 0, y: 0, z: 0}
+--- !u!114 &1685382582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685382568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1723854742
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &1685382583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685382568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cb88bc2be818848b7ead242cd4fed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jumpHeight: 50
 --- !u!1 &1689965141
 GameObject:
   m_ObjectHideFlags: 0
