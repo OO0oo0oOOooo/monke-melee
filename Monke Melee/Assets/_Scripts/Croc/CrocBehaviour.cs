@@ -1,14 +1,15 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class CrocBehaviour : MonoBehaviour
 {
-    private CrocTargetFinder _targetFinder;
-    private CrocAttack _attack;
+    // Fields
     private Transform _transform;
+    private CrocRefrence _crocRefrence;
+    private bool _ableToAttack = true;
+    private float _attackCooldown = 3;
 
-    // public Behaviour BehaviourState = Behaviour.Idle;
+    // Enums
     public enum Behaviour
     {
         Idle,   // float or sunbathe
@@ -17,22 +18,20 @@ public class CrocBehaviour : MonoBehaviour
         Eat     // bring player to water and death roll/eat
     }
 
-    private bool _ableToAttack = true;
-    private float _attackCooldown = 3;
+    // Properties
+    public Vector3 Destination { get; set; }
+    public float TargetDistance { get; set; }
+    public Vector3 TargetDir { get; set; }
 
+    // Serialized Fields
     [SerializeField] private float _trackRange = 25;
     [SerializeField] private float _jumpRange = 15;
     [SerializeField] private float _biteRange = 2;
 
-    public Vector3 Destination;
-    public float TargetDistance;
-    public Vector3 TargetDir;
-
     void Awake()
     {
         _transform = transform;
-        _targetFinder = GetComponent<CrocTargetFinder>();
-        _attack = GetComponent<CrocAttack>();
+        _crocRefrence = GetComponent<CrocRefrence>();
     }
 
     void Update()
@@ -57,7 +56,7 @@ public class CrocBehaviour : MonoBehaviour
 
     Behaviour GetBehaviourState()
     {
-        if(_targetFinder.Target == null)
+        if(_crocRefrence.CrocTargetFinder.Target == null)
         {
             return Behaviour.Idle;
         }
@@ -80,33 +79,16 @@ public class CrocBehaviour : MonoBehaviour
 
     private void Chase()
     {
-        // Get distance to target
-        // If target leaves range then set target to null
-        // If target is in range then set targetDir
-
-        TargetDistance = Vector3.Distance(_targetFinder.Target.position, _transform.position);
+        TargetDistance = Vector3.Distance(_crocRefrence.CrocTargetFinder.Target.position, _transform.position);
 
         if(TargetDistance < _trackRange)
         {
-            Destination = _targetFinder.Target.position;
+            Destination = _crocRefrence.CrocTargetFinder.Target.position;
         }
 
-        SelectAttack();
         
     }
     #endregion
-
-    private void SelectAttack()
-    {
-        if(!_ableToAttack) return;
-        if(_attack.DuringTackle) return;
-
-        // if(TargetDistance < _jumpRange)
-        // {
-        //     _attack.Tackle();
-        //     StartCoroutine(AttackCooldown());
-        // }
-    }
 
     private IEnumerator AttackCooldown()
     {

@@ -1,21 +1,15 @@
-using System.Collections;
 using UnityEngine;
 
 public class CrocMovement : MonoBehaviour
 {
-    private Rigidbody _rb;
-    private RaycastGround _groundCheck;
     private Transform _transform;
-    private CrocBehaviour _behaviour;
-
-    [SerializeField] private float _moveSpeed = 10f;
+    private CrocRefrence _crocRefrence;
+    private Vector3 _targetDir;
+    private Vector3 _vel;
 
     [SerializeField] private float _groundBaseLimit = 10;
     [SerializeField] private float _groundAcceleration = 20;
     [SerializeField] private bool _clampGroundSpeed = false;
-    private Vector3 _vel;
-    private Vector3 _targetDir;
-
 
     public enum CrocMove
     {
@@ -27,26 +21,24 @@ public class CrocMovement : MonoBehaviour
     private void Awake()
     {
         _transform = transform;
-        _rb = GetComponent<Rigidbody>();
-        _groundCheck = GetComponent<RaycastGround>();
-        _behaviour = GetComponent<CrocBehaviour>();
+        _crocRefrence = GetComponent<CrocRefrence>();
     }
 
     void Update()
     {
-        _targetDir = _behaviour.TargetDir;
-        _targetDir.y = _transform.position.y;
-        _targetDir.Normalize();
+        // _targetDir = _behaviour.TargetDir;
+        // _targetDir.y = _transform.position.y;
+        // _targetDir.Normalize();
     }
 
     void FixedUpdate()
     {
-        _vel = _rb.velocity;
+        _vel = _crocRefrence.Rigidbody.velocity;
 
-        Vector3 right = Vector3.Cross(_groundCheck.AdvNormal, _transform.forward);
-        Vector3 forward = Vector3.Cross(right, _groundCheck.AdvNormal);
+        Vector3 right = Vector3.Cross(_crocRefrence.RaycastGround.AdvNormal, _transform.forward);
+        Vector3 forward = Vector3.Cross(right, _crocRefrence.RaycastGround.AdvNormal);
 
-        _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(forward, _groundCheck.AdvNormal), Time.deltaTime * 5f);
+        _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(forward, _crocRefrence.RaycastGround.AdvNormal), Time.deltaTime * 5f);
         
         switch (GetMoveState())
         {
@@ -60,12 +52,12 @@ public class CrocMovement : MonoBehaviour
                 break;
         }
 
-        _rb.velocity = _vel;
+        _crocRefrence.Rigidbody.velocity = _vel;
     }
 
     private CrocMove GetMoveState()
     {
-        if(_groundCheck.IsGrounded)
+        if(_crocRefrence.RaycastGround.IsGrounded)
             return CrocMove.Ground;
         else
             return CrocMove.Air;
@@ -73,14 +65,17 @@ public class CrocMovement : MonoBehaviour
 
     private void GroundMovement()
     {
-        _targetDir = Vector3.Cross(Vector3.Cross(_groundCheck.AdvNormal, _targetDir), _groundCheck.AdvNormal).normalized;
+        if(_targetDir == Vector3.zero)
+            return;
 
-        Quaternion targetRot = Quaternion.LookRotation(_targetDir, _groundCheck.AdvNormal);
+        _targetDir = Vector3.Cross(Vector3.Cross(_crocRefrence.RaycastGround.AdvNormal, _targetDir), _crocRefrence.RaycastGround.AdvNormal).normalized;
+
+        Quaternion targetRot = Quaternion.LookRotation(_targetDir, _crocRefrence.RaycastGround.AdvNormal);
         _transform.rotation = Quaternion.Lerp(_transform.rotation, targetRot, Time.deltaTime * 5f);
 
-        if(Vector3.Distance(_transform.position, _behaviour.Destination) > 1)
-            GroundAccelerate();
+        // if(Vector3.Distance(_transform.position, _behaviour.Destination) > 2)
         
+        GroundAccelerate();
         ApplyFriction(8);
     }
 

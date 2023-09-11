@@ -4,88 +4,75 @@ using UnityEngine;
 
 public class CrocAttack : NetworkBehaviour
 {
-    private Rigidbody _rb;
-    private CrocBehaviour _behaviour;
-    private RaycastGround _groundCheck;
-
-    [SerializeField] private float _attackCooldown = 3;
+    // Fields
+    private CrocRefrence _crocRefrence;
     private bool _ableToBite = true;
+    private bool _duringTackle = false;
 
-    public bool DuringTackle = false;
+    // Properties
+    private Vector3 BiteHitboxPosition => _crocRefrence.CrocMouthController.MouthBone.position + (_crocRefrence.CrocMouthController.MouthBone.rotation * _biteHitboxOffset);
 
+    // Serialized Fields
+    [SerializeField] private float _attackCooldown = 3;
+    [SerializeField] private Vector3 _biteHitboxOffset;
     [SerializeField] private LayerMask _hitableLayers;
-    [SerializeField] private Transform _mouthBone;
-    [SerializeField] private Vector3 _mouthOffset;
     [SerializeField] private float _biteHitboxRadius = 1;
-
     [SerializeField] private float _jumpHeight = 50;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
-        _behaviour = GetComponent<CrocBehaviour>();
-        _groundCheck = GetComponent<RaycastGround>();
+        _crocRefrence = GetComponent<CrocRefrence>();
     }
 
     private void Update()
     {
         if(!IsServer) return;
 
-        // if(_ableToBite)
         BiteTrigger();
+
+        // Open mouth % based on distance
     }
+
 
     private void BiteTrigger()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(_mouthBone.position + (_mouthBone.rotation * _mouthOffset), _biteHitboxRadius, _hitableLayers);
+        Collider[] hitColliders = Physics.OverlapSphere(BiteHitboxPosition, _biteHitboxRadius, _hitableLayers);
         foreach (var hitCollider in hitColliders)
         {
             if(hitCollider.CompareTag("Player"))
             {
-                // Play Bite animation
+                // Close Mouth
+                // Play sound effect
+                // Deathevent replaces player with ragdoll and third person camera
+                
                 AttackHit(hitCollider.gameObject);
                 // StartCoroutine(AttackCooldown());
             }
         }
     }
 
-    public void Tackle()
-    {
-        Debug.Log("Tackle");
-        DuringTackle = true;
+    // public void Tackle()
+    // {
+    //     Debug.Log("Tackle");
+    //     _duringTackle = true;
 
-        _rb.AddForce(_jumpHeight * _rb.mass * _behaviour.TargetDir);
-        StartCoroutine(TackleCoroutine());
-    }
+    //     _rb.AddForce(_jumpHeight * _rb.mass * _behaviour.TargetDir);
+    //     StartCoroutine(TackleCoroutine());
+    // }
 
-    private IEnumerator TackleCoroutine()
-    {
-        while(DuringTackle)
-        {
-            BiteHitbox();
+    // private IEnumerator TackleCoroutine()
+    // {
+    //     while(_duringTackle)
+    //     {
+    //         if(_groundCheck.IsGrounded)
+    //         {
+    //             yield return new WaitForSeconds(0.1f);
+    //             _duringTackle = false;
+    //         }
+    //     }
 
-            if(_groundCheck.IsGrounded)
-            {
-                yield return new WaitForSeconds(0.1f);
-                DuringTackle = false;
-            }
-        }
-
-        yield return null;
-    }
-
-    private void BiteHitbox()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(_mouthBone.position + (_mouthBone.rotation * _mouthOffset), _biteHitboxRadius, _hitableLayers);
-        foreach (var hitCollider in hitColliders)
-        {
-            if(hitCollider.CompareTag("Player"))
-            {
-                AttackHit(hitCollider.gameObject);
-                DuringTackle = false;
-            }
-        }
-    }
+    //     yield return null;
+    // }
 
     private void AttackHit(GameObject player)
     {
@@ -99,16 +86,11 @@ public class CrocAttack : NetworkBehaviour
         EventManager.Instance.InvokePlayerDeathEvent(gibbonRefrences.ClientID);
     }
 
-    private IEnumerator AttackCooldown()
-    {
-        _ableToBite = false;
-        yield return new WaitForSeconds(_attackCooldown);
-        _ableToBite = true;
-    }
-
     private void OnDrawGizmos()
     {
+        if(!Application.isPlaying) return;
+
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(_mouthBone.position + (_mouthBone.rotation * _mouthOffset), _biteHitboxRadius);
+        Gizmos.DrawWireSphere(BiteHitboxPosition, _biteHitboxRadius);
     }
 }
