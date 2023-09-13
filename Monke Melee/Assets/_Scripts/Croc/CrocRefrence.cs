@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class CrocRefrence : NetworkBehaviour
 {
-    public Rigidbody Rigidbody; // { get; private set; }
-    public Animator Animator; // { get; private set; }
-    public Transform CrocTransform; // { get; private set; }
-    public Transform CrocModel; // { get; private set; }
+    public Rigidbody Rigidbody { get; private set; }
+    public Animator Animator { get; private set; }
+    public Transform CrocTransform { get; private set; }
+    public Transform CrocModel { get; private set; }
 
     // Scripts
-    public RaycastGround RaycastGround; // { get; private set; }
-    public CrocBehaviour CrocBehaviour; // { get; private set; }
-    public CrocTargetFinder CrocTargetFinder; // { get; private set; }
-    public CrocMovement CrocMovement; // { get; private set; }
-    public CrocAttack CrocAttack; // { get; private set; }
-    public CrocMouthController CrocMouthController; // { get; private set; }
+    public RaycastGround RaycastGround { get; private set; }
+    public CrocBehaviour CrocBehaviour { get; private set; }
+    public CrocTargetFinder CrocTargetFinder { get; private set; }
+    public CrocMovement CrocMovement { get; private set; }
+    public CrocAttack CrocAttack { get; private set; }
+    public CrocHeadController CrocHeadController { get; private set; }
 
     public void Awake()
     {
@@ -30,8 +30,8 @@ public class CrocRefrence : NetworkBehaviour
         CrocTargetFinder = GetComponent<CrocTargetFinder>();
         CrocMovement = GetComponent<CrocMovement>();
         CrocAttack = GetComponent<CrocAttack>();
-        CrocMouthController = GetComponentInChildren<CrocMouthController>();
+        CrocHeadController = GetComponentInChildren<CrocHeadController>();
 
-        print(CrocMouthController);
+        print(CrocHeadController);
     }
 }

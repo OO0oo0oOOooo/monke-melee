@@ -10,7 +10,7 @@ public class CrocAttack : NetworkBehaviour
     private bool _duringTackle = false;
 
     // Properties
-    private Vector3 BiteHitboxPosition => _crocRefrence.CrocMouthController.MouthBone.position + (_crocRefrence.CrocMouthController.MouthBone.rotation * _biteHitboxOffset);
+    private Vector3 BiteHitboxPosition => _crocRefrence.CrocHeadController.HeadBone.position + (_crocRefrence.CrocHeadController.HeadBone.rotation * _biteHitboxOffset);
 
     // Serialized Fields
     [SerializeField] private float _attackCooldown = 3;
